@@ -1,0 +1,69 @@
+package ${packagePrefix}controller;
+
+import org.solar.bean.Constants;
+import org.solar.bean.JsonResult;
+import org.solar.bean.Pageable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}service.${BeanName}Service;
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.Map;
+
+/**
+ * @Description:
+ * @author solar
+ * @date ${Date}
+ */
+@Controller
+@RequestMapping("${beanName}")
+public class ${BeanName}Controller extends BaseController {
+    Logger logger=LoggerFactory.getLogger(${BeanName}Controller.class);
+    @Resource
+    private ${BeanName}Service ${beanName}Service;
+    @RequestMapping("/select")
+    @ResponseBody
+    public  JsonResult select(@RequestParam Map<String,String> map) {
+        //按id查询
+        String id=map.get("id");
+        if (id!=null&&!"".equals(id)){
+            return JsonResult.success(${beanName}Service.getById(id));
+        }
+        //按分页查询
+        String pageNum=map.get("pageNum");
+        if (pageNum!=null&&!"".equals(pageNum)){
+            Pageable pageable=Pageable.getPageable(map);
+            return JsonResult.success(${beanName}Service.selectPage(pageable));
+        }
+        //按条件查询List
+        return JsonResult.success(${beanName}Service.selectbyWhere(map));
+    }
+    @RequestMapping("/delete")
+    @ResponseBody
+    public  JsonResult delete(String id) {
+        int row=${beanName}Service.delete(id);
+        return JsonResult.success(row);
+    }
+    @RequestMapping("/saveOrUpdate")
+    @ResponseBody
+    public  JsonResult saveOrUpdate(${BeanName} bean) {
+       //如果id为空则更新
+        Date nowTime=new Date();
+         bean.setUpdateTime(nowTime);
+        if (bean.getId()!=null&&!"".equals(bean.getId())){
+            int row=${beanName}Service.updateByPrimaryKey(bean);
+            return JsonResult.success(row);
+        }
+        bean.setDr(Constants.N);
+        bean.setCreateTime(nowTime);
+        int row=${beanName}Service.save(bean);
+        return JsonResult.success(row);
+    }
+
+
+}

@@ -1,0 +1,14 @@
+package ${packagePrefix}dao;
+
+import ${packagePrefix}bean.${BeanName};
+
+/**
+ * @Description:
+ * @author solar
+ * @date ${Date}
+ */
+
+
+public interface ${BeanName}Dao extends BaseDao<${BeanName}>{
+
+}

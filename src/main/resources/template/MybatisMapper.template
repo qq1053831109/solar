@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${BeanName}Mapper" >
+  <resultMap id="BaseResultMap" type="${packagePrefix}bean.${BeanName}" >
+    <id column="id" property="id" jdbcType="CHAR" />
+${BaseResultMap}
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id ${Base_Column_List}
+  </sql>
+  <select id="selectByWhere" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from ${tableName}
+    <where >
+        dr = "N"
+${where}
+    </where>
+    <if test="orderProperty != null and orderDirection != null " >
+          ORDER BY ${orderProperty} ${orderDirection}
+    </if>
+    <if test="pageStart != null and pageLimit != null " >
+       limit #{pageStart},#{pageLimit}
+     </if>
+  </select>
+  <select id="selectByWhereCount" resultType="java.lang.Long" >
+    select count(id) from ${tableName}
+    <where >
+        dr = "N"
+${where}
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ${tableName}
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ${tableName}
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="${packagePrefix}bean.${BeanName}" >
+    insert into ${tableName} (id
+    ${Base_Column_List}
+      )
+    values (#{id,jdbcType=CHAR},
+    ${Base_Column_Value_List}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="${packagePrefix}bean.${BeanName}" >
+    insert into ${tableName}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+${insertTrimList}
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+${insertTrimValueList}
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="${packagePrefix}bean.${BeanName}" >
+    update ${tableName}
+    <set >
+${updateSetList}
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="${packagePrefix}bean.${BeanName}" >
+    update ${tableName}
+    set
+${updateNameValueList}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

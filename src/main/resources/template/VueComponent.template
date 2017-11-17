@@ -1,0 +1,67 @@
+<script type="text/template" id="template-${beanName}-${beanName}">
+    <div class="MainContainer fullWidth company">
+        <div class="toolBar">
+            <div class="float-left">
+
+                <button class="button" type="button" onclick="location.reload()">刷新</button>
+                <button class="button" type="button" onclick="history.back()">返回</button>
+                <button class="button" type="button" @click="saveOrUpdate()">保存</button>
+                <button class="button" type="button"
+                        v-if="$route.query.id"
+                        @click="deleteBean($route.query.id)">删除</button>
+            </div>
+            <div class="float-right">
+
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="contentViewContainer" v-if="openContentView">
+            <div>
+                <a style="margin-left: 12px" href="javascript:void(0)" @click="openContentView=false">&lt;返回列表</a>
+                <hr/>
+            </div>
+            <h1 class="contentViewName" v-html="contentViewName">
+            </h1>
+            <hr/>
+            <div class="contentView" v-html="contentView">
+            </div>
+        </div>
+        <div>
+            <div class="beanView">
+
+                <ul>
+${fieldList}
+
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</script>
+<script type="application/javascript">
+    templateName = "${beanName}-${beanName}";
+    templates[templateName] = Vue.extend({
+        template: '#template-' + templateName,
+        data: function () {
+            return {
+                beanName:"${beanName}",
+                bean: {},
+                contentViewName: "",
+                contentView: "",
+                openContentView: false
+            }
+        },
+        methods: {
+            select: baseMethods.select,
+            deleteBean: baseMethods.deleteBeanGoBack,
+            saveOrUpdate: baseMethods.saveOrUpdate
+
+        },
+        mounted: function () {
+            this.select();
+
+        }
+
+    });
+</script>

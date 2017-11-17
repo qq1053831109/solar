@@ -1,0 +1,66 @@
+package ${packagePrefix}service.impl;
+
+import java.io.Serializable;
+import java.util.List;
+import org.solar.bean.Page;
+import org.solar.bean.Pageable;
+import org.solar.util.GenericsUtils;
+import org.springframework.transaction.annotation.Transactional;
+import ${packagePrefix}service.BaseService;
+import ${packagePrefix}dao.BaseDao;
+@Transactional
+public class BaseServiceImpl<T> implements BaseService<T> {
+    protected BaseDao<T> baseDao;
+    String entityName;
+    Class<T> entityClass;
+
+    public BaseServiceImpl() {
+        entityClass = GenericsUtils.getSuperClassGenricType(this.getClass());
+        entityName = entityClass.getSimpleName();
+    }
+
+    @Transactional(readOnly = true)
+    public T getById(Serializable id) {
+        return this.baseDao.selectByPrimaryKey(id);
+    }
+
+    @Transactional(readOnly = true)
+    public T getByCode(Serializable code) {
+        List<T> list = this.baseDao.selectByWhere("code", String.valueOf(code));
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public int save(T entity) {
+        return this.baseDao.save(entity);
+
+    }
+
+    public int updateByPrimaryKey(T entity) {
+        return this.baseDao.updateByPrimaryKeySelective(entity);
+    }
+
+    public int delete(T entity) {
+        return this.baseDao.delete(entity);
+    }
+
+    public int delete(Serializable id) {
+        return this.baseDao.delete(id);
+    }
+
+    public Page selectPage(Pageable pageable) {
+        return baseDao.selectPage(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<T> selectbyWhere(Object map) {
+        return baseDao.selectByWhere(map);
+    }
+
+    @Transactional(readOnly = true)
+    public List<T> selectbyWhere(String... str) {
+        return baseDao.selectByWhere(str);
+    }
+}

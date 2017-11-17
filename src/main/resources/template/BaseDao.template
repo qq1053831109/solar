@@ -1,0 +1,31 @@
+package ${packagePrefix}dao;
+
+import org.solar.bean.Page;
+import org.solar.bean.Pageable;
+
+import java.io.Serializable;
+import java.util.List;
+
+public interface BaseDao<T> {
+
+    int delete(T entity);
+
+    int delete(Serializable id);
+
+    Page<T> selectPage(Pageable pageAble);
+
+    T selectByPrimaryKey(Serializable id);
+
+    List<T> selectByWhere(Object map);
+
+    List<T> selectByWhere(String... str);
+
+    int save(T entity);
+
+    void saveList(List<T> list);
+
+    int updateByPrimaryKey(T entity);
+
+    int updateByPrimaryKeySelective(T entity);
+
+}

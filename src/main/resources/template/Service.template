@@ -1,0 +1,12 @@
+package ${packagePrefix}service;
+
+import ${packagePrefix}bean.${BeanName};
+/**
+ * @Description:
+ * @author solar
+ * @date ${Date}
+ */
+public interface ${BeanName}Service extends BaseService<${BeanName}> {
+
+
+}

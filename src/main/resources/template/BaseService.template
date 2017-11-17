@@ -1,0 +1,31 @@
+package ${packagePrefix}service;
+
+import org.solar.bean.Page;
+import org.solar.bean.Pageable;
+import java.io.Serializable;
+import java.util.List;
+
+public interface BaseService<T> {
+
+     T getById(Serializable id);
+
+     T getByCode(Serializable id);
+
+     int save(T entity);
+
+     int updateByPrimaryKey(T entity);
+
+     int delete(T entity);
+
+     int delete(Serializable id);
+
+     Page selectPage(Pageable pageable);
+
+     List<T> selectbyWhere(Object map);
+
+    /**
+     * 参数格式为[属性,搜索值,属性,搜索值,...]
+     */
+     List<T> selectbyWhere(String... str);
+
+}

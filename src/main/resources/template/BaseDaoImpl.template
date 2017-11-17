@@ -1,0 +1,144 @@
+package ${packagePrefix}dao.impl;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.solar.bean.Page;
+import org.solar.bean.Pageable;
+import org.solar.util.*;
+import ${packagePrefix}dao.BaseDao;
+
+public abstract class BaseDaoImpl<T> implements BaseDao<T> {
+
+    @Resource
+    protected SqlSessionTemplate sessionTemplate;
+
+    public BaseDaoImpl() {
+        entityClass = GenericsUtils.getSuperClassGenricType(this.getClass());
+        entityName = entityClass.getSimpleName();
+        selectByPrimaryKeyStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByPrimaryKey;
+        deleteByPrimaryKeyStatement = namespacePrefix + entityName + namespaceSuffix + "." + deleteByPrimaryKey;
+        selectByWhereStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByWhere;
+        selectByWhereCountStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByWhereCount;
+        selectByWhereStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByWhere;
+        insertSelectiveStatement = namespacePrefix + entityName + namespaceSuffix + "." + insertSelective;
+        updateByPrimaryKeySelectiveStatement = namespacePrefix + entityName + namespaceSuffix + "." + updateByPrimaryKeySelective;
+        updateByPrimaryKeyStatement = namespacePrefix + entityName + namespaceSuffix + "." + updateByPrimaryKey;
+
+    }
+
+    public int delete(T entity) {
+        Serializable id = (Serializable) GenericsUtils.getFieldValue(entity, "getId");
+        return sessionTemplate.delete(deleteByPrimaryKeyStatement, id);
+    }
+
+    public int delete(Serializable id) {
+        return sessionTemplate.delete(deleteByPrimaryKeyStatement, id);
+    }
+
+    public List<T> findByCondition(Map<String, Object> queryMap) {
+        List<T> list = sessionTemplate.selectList(selectByWhereStatement, queryMap);
+        return list;
+    }
+
+    public Page<T> selectPage(Pageable pageAble) {
+        Map<String, Object> queryMap = pageAble.getParams();
+        queryMap.put("orderProperty", pageAble.getOrderProperty());
+        queryMap.put("orderDirection", pageAble.getOrderDirection());
+        queryMap.put("pageLimit", pageAble.getPageSize());
+        long total = 10000;
+        Object total_count = queryMap.get("total_count");
+        if (total_count == null) {
+            total = sessionTemplate.selectOne(selectByWhereCountStatement, queryMap);
+        } else if ("false".equals(total_count)) {
+            total = 10000;
+        } else {
+            total = Long.valueOf(total_count.toString());
+        }
+        long totalPage = 0;
+        if (total == 0) {
+            totalPage = 1;
+        } else if (pageAble.getPageSize() == 0) {
+            totalPage = 1;
+        } else {
+            totalPage = total / pageAble.getPageSize();
+            if ((total % pageAble.getPageSize()) > 0) {
+                totalPage++;
+            }
+        }
+        if (pageAble.getPageNumber() > totalPage) {
+            pageAble.setPageNumber(totalPage);
+        }
+
+        if (pageAble.getPageNumber() < 1) {
+            pageAble.setPageNumber(1);
+        }
+
+        queryMap.put("pageStart", (pageAble.getPageNumber() - 1) * pageAble.getPageSize());
+
+        List<T> list = sessionTemplate.selectList(selectByWhereStatement, queryMap);
+
+        Page<T> page = new Page<T>(list, total, pageAble);
+
+        return page;
+    }
+
+
+    public T selectByPrimaryKey(Serializable id) {
+        return sessionTemplate.selectOne(selectByPrimaryKeyStatement, id);
+    }
+
+    public List<T> selectByWhere(Object map) {
+        return sessionTemplate.selectList(selectByWhereStatement, map);
+    }
+
+    public List<T> selectByWhere(String... str) {
+        Map map = new HashMap();
+        for (int i = 0; i < str.length; i = i + 2) {
+            map.put(str[i], str[i + 1]);
+        }
+        return sessionTemplate.selectList(selectByWhereStatement, map);
+    }
+
+    public int save(T bean) {
+        return sessionTemplate.insert(insertSelectiveStatement, bean);
+    }
+
+    public void saveList(List<T> list) {
+        for (T t : list) {
+            save(t);
+        }
+    }
+
+    public int updateByPrimaryKey(T entity) {
+        return sessionTemplate.update(updateByPrimaryKeyStatement, entity);
+    }
+
+    public int updateByPrimaryKeySelective(T entity) {
+        return sessionTemplate.update(updateByPrimaryKeySelectiveStatement, entity);
+    }
+
+    final String namespacePrefix = "";
+    final String namespaceSuffix = "Mapper";
+    final String insert = "insert";
+    final String insertSelective = "insertSelective";
+    final String deleteByPrimaryKey = "deleteByPrimaryKey";
+    final String selectByPrimaryKey = "selectByPrimaryKey";
+    final String updateByPrimaryKey = "updateByPrimaryKey";
+    final String updateByPrimaryKeySelective = "updateByPrimaryKeySelective";
+    final String selectByWhere = "selectByWhere";
+    final String selectByWhereCount = "selectByWhereCount";
+    String entityName;
+    Class<T> entityClass;
+    //sql Statement
+    String selectByPrimaryKeyStatement;
+    String deleteByPrimaryKeyStatement;
+    String selectByWhereStatement;
+    String selectByWhereCountStatement;
+    String insertSelectiveStatement;
+    String updateByPrimaryKeySelectiveStatement;
+    String updateByPrimaryKeyStatement;
+}

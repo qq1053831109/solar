@@ -1,0 +1,16 @@
+package ${packagePrefix}dao.impl;
+
+import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}dao.${BeanName}Dao;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @Description:
+ * @author solar
+ * @date ${Date}
+ */
+@Repository("${BeanName}Dao")
+public class ${BeanName}DaoImpl extends BaseDaoImpl<${BeanName}> implements ${BeanName}Dao {
+
+
+}

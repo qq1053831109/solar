@@ -1,0 +1,26 @@
+package ${packagePrefix}service.impl;
+
+import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}dao.${BeanName}Dao;
+import ${packagePrefix}service.${BeanName}Service;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+/**
+ * @Description:
+ * @author solar
+ * @date ${Date}
+ */
+@Service("${BeanName}Service")
+public class ${BeanName}ServiceImpl extends BaseServiceImpl<${BeanName}> implements ${BeanName}Service {
+
+
+	private ${BeanName}Dao dao;
+
+    @Resource
+    public void setBaseDao(${BeanName}Dao dao) {
+    	super.baseDao = dao;
+    	this.dao = dao;
+    }
+
+}

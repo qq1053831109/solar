@@ -1,0 +1,129 @@
+<script type="text/template" id="template-${beanName}-${beanName}Page">
+    <div class="MainContainer fullWidth company">
+        <div class="toolBar">
+            <div class="float-left">
+                <button class="button" type="button" onclick="location.reload()">刷新</button>
+                <button class="button" type="button" @click="goBeanPage(null)">新增</button>
+                <button class="button" type="button" @click="goUpdatePage()">修改</button>
+                <button class="button" type="button" @click="deleteBeans(checkboxModel)">删除</button>
+            </div>
+            <div class="float-right">
+                <input type="text" v-model="fullTextSearchValue" placeholder="全文搜索"/>
+                <button class="button" type="button" @click="pageNum=1;select()">搜索</button>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="contentViewContainer" v-if="openContentView">
+            <div>
+                <a style="margin-left: 12px" href="javascript:void(0)" @click="openContentView=false">&lt;返回列表</a>
+                <hr/>
+            </div>
+            <h1 class="contentViewName" v-html="contentViewName">
+            </h1>
+            <hr/>
+            <div class="contentView" v-html="contentView">
+            </div>
+        </div>
+        <div class="tableContainer">
+            <table>
+                <thead>
+                <tr>
+                    <td>
+                        <div style="width: 25px">
+
+                        </div>
+
+                    </td>
+                    <td>
+                        <div style="width: 30px">
+
+                            <input type="checkbox" v-model="checked" @click="checkedAll()"/>
+
+                        </div>
+                    </td>
+${fieldNameHtmlList}
+                    <td>
+                        <div style="width: 100px">操作</div>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(bean,index) in beans">
+                    <td>{{index+1}}</td>
+                    <td>
+                        <input type="checkbox" v-model="checkboxModel" :value="bean.id" name="checkbox">
+
+                    </td>
+${fieldValueHtmlList}
+                    <td>
+                        <a href="javascript:void(0)" @click="goBeanPage(bean.id)">查看</a>|
+                        <a href="javascript:void(0)" @click="deleteBean(bean.id)">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="footBar">
+            <div class="float-left">
+
+            </div>
+            <div class="float-right">
+                <span>第{{listPageNum}}页</span>
+                <span>|</span>
+                <span>每页
+                    <select v-model="pageSize">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                    </select>
+                    条</span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <span>共{{totalRecordNum}}条记录</span>
+                <span>|</span>
+                <span>共{{totalPageNum}}页</span>
+                <span style="width: 100px">&nbsp;&nbsp;&nbsp;</span>
+                <a href="javascript:void(0)" @click="pageNum=1;select();">首页</a>
+                <a href="javascript:void(0)" @click="pageNum--;select();">上一页</a>
+                <input type="text" @change="select();" v-model="pageNum"/>
+                <span><a href="javascript:void(0)" @click="select();">跳转</a></span>
+                <a href="javascript:void(0)" @click="pageNum++;select();">下一页</a>
+                <a href="javascript:void(0)" @click="pageNum=totalPageNum;select();">尾页</a>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+
+    </div>
+</script>
+<script type="application/javascript">
+    templateName = "${beanName}-${beanName}Page";
+    templates[templateName] = Vue.extend({
+        template: '#template-' + templateName,
+        data: function () {
+            var data=copyObject(baseData);
+            data.beanName="${beanName}";
+            return data;
+
+        },
+        methods: {
+            select: baseMethods.selectPage,
+            checkedAll: baseMethods.checkedAll,
+            deleteBean: baseMethods.deleteBean,
+            deleteBeans: baseMethods.deleteBeans,
+            changeEnable: baseMethods.changeEnable,
+            goBeanPage: baseMethods.goBeanPage,
+            goUpdatePage: baseMethods.goUpdatePage,
+            changeOrder: baseMethods.changeOrder
+        },
+        mounted: function () {
+            this.select();
+
+        },
+        watch: {//深度 watcher
+            'checkboxModel':checkboxModelWatch
+        }
+
+    });
+</script>
