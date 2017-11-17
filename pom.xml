@@ -2,13 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.solar</groupId>
-    <artifactId>solar</artifactId>
+    <artifactId>core</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
-    <name>solar</name>
+    <name>solar-core</name>
     <url>http://maven.apache.org</url>
     <build>
-        <finalName>solar</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>

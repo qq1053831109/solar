@@ -23,14 +23,14 @@ public class Generator {
     String beanPackage;
     public static String packagePrefix;
     String mapperXMLRootPath;
-    String vueHtmlRootPath;
+    public String vueHtmlRootPath;
 
     public Generator(String jdbcUrl, String classPath, String packagePrefix) {
         this.jdbcUrl = jdbcUrl;
         this.rootpath = classPath;
         this.packagePrefix = packagePrefix;
         beanPackage = packagePrefix + "bean";
-        String packagePath = packagePrefix.replace("\\.", "/");
+        String packagePath = packagePrefix.replace(".", "/");
         beanPath = classPath + packagePath + "bean/";
         servicePath = classPath + packagePath + "service/";
         daoPath = classPath + packagePath + "dao/";
