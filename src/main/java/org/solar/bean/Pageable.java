@@ -59,7 +59,12 @@ public class Pageable implements Serializable {
     }
 
     public void setOrderDirection(String orderDirection) {
-        this.orderDirection = orderDirection;
+        if (orderDirection != null && !"".equals(orderDirection)) {
+            orderDirection = orderDirection.toLowerCase();
+            if ("desc".equals(orderDirection) || "asc".equals(orderDirection)) {
+                this.orderDirection = orderDirection;
+            }
+        }
     }
 
     /**
@@ -145,10 +150,27 @@ public class Pageable implements Serializable {
 
     /**
      * 设置排序属性
-     *
+     * 由于mybatis用$取值 所以这里有sql注入风险 需要手动检查数据是否合法
+     * 有字符编码风险？
      * @param orderProperty 排序属性
      */
     public void setOrderProperty(String orderProperty) {
+        if(orderProperty==null||"".equals(orderProperty)){
+            return;
+        }
+        orderProperty=orderProperty.toLowerCase();
+        //关键字校验
+        if (orderProperty.contains("update ")||orderProperty.contains("delete ")
+            ||orderProperty.contains("insert ")||orderProperty.contains("select ")
+            ||orderProperty.contains(";")||orderProperty.contains("--")
+            ||orderProperty.contains("or ")||orderProperty.contains("in ")
+            ){
+            return;
+        }
+        //长度校验
+        if(orderProperty.length()>30){
+            return;
+        }
         this.orderProperty = orderProperty;
     }
 
@@ -168,10 +190,7 @@ public class Pageable implements Serializable {
             pageable.setOrderProperty(orderProperty);
             String orderDirection = map.get("orderDirection");
             if (orderDirection != null && !"".equals(orderDirection)) {
-                orderDirection = orderDirection.toLowerCase();
-                if ("desc".equals(orderDirection) || "asc".equals(orderDirection)) {
                     pageable.setOrderDirection(orderDirection);
-                }
             }else {
                 pageable.setOrderDirection("desc");
             }
