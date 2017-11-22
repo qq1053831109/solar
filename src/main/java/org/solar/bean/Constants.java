@@ -7,8 +7,8 @@ public class Constants {
     /**
      * dr字段 Y=该数据已删除。N=该数据未删除
      */
-    public static final String Y="Y";
-    public static final String N="N";
+    public static final String Y="y";
+    public static final String N="n";
     /**
      *  CrawlerConfig_type_list 列表抓取方式
      */
