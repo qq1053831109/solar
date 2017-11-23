@@ -13,7 +13,7 @@ ${BaseResultMap}
     <include refid="Base_Column_List" />
     from ${tableName}
     <where >
-${where}
+       <include refid="where_Column_List" />
     </where>
     <if test="orderProperty != null and orderDirection != null " >
           ORDER BY ${orderProperty} ${orderDirection}
@@ -25,7 +25,7 @@ ${where}
   <select id="selectByWhereCount" resultType="java.lang.Long" >
     select count(id) from ${tableName}
     <where >
-${where}
+       <include refid="where_Column_List" />
     </where>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -74,4 +74,7 @@ ${updateSetList}
 ${updateNameValueList}
     where id = #{id}
   </update>
+  <sql id="where_Column_List" >
+${where}
+  </sql>
 </mapper>
