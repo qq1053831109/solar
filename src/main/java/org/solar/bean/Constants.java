@@ -39,5 +39,5 @@ public class Constants {
     /**
      *  Log level 状态
      */
-    public static final String Log_Level_Excep="Excep";//Exception
+    public static final String Exception="exception";//Exception
 }

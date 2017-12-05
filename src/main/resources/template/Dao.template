@@ -1,6 +1,6 @@
 package ${packagePrefix}dao;
 
-import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}entity.${BeanName};
 
 /**
  * @Description:

@@ -1,4 +1,4 @@
-package ${packagePrefix}bean;
+package ${packagePrefix}entity;
 
 import java.util.Date;
 /**

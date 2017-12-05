@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="${BeanName}Mapper" >
-  <resultMap id="BaseResultMap" type="${packagePrefix}bean.${BeanName}" >
+<mapper namespace="${BeanName}" >
+  <resultMap id="BaseResultMap" type="${packagePrefix}entity.${BeanName}" >
     <id column="id" property="id" jdbcType="CHAR" />
 ${BaseResultMap}
   </resultMap>
@@ -38,7 +38,7 @@ ${BaseResultMap}
     delete from ${tableName}
     where id = #{id,jdbcType=CHAR}
   </delete>
-  <insert id="insert" parameterType="${packagePrefix}bean.${BeanName}" >
+  <insert id="insert" parameterType="${packagePrefix}entity.${BeanName}" >
     insert into ${tableName} (id
     ${Base_Column_List}
       )
@@ -46,7 +46,7 @@ ${BaseResultMap}
     ${Base_Column_Value_List}
       )
   </insert>
-  <insert id="insertSelective" parameterType="${packagePrefix}bean.${BeanName}" >
+  <insert id="insertSelective" parameterType="${packagePrefix}entity.${BeanName}" >
     insert into ${tableName}
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -61,17 +61,11 @@ ${insertTrimList}
 ${insertTrimValueList}
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="${packagePrefix}bean.${BeanName}" >
+  <update id="updateByPrimaryKeySelective" parameterType="${packagePrefix}entity.${BeanName}" >
     update ${tableName}
     <set >
 ${updateSetList}
     </set>
-    where id = #{id}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="${packagePrefix}bean.${BeanName}" >
-    update ${tableName}
-    set
-${updateNameValueList}
     where id = #{id}
   </update>
   <sql id="where_Column_List" >

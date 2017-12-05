@@ -19,14 +19,12 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     public BaseDaoImpl() {
         entityClass = GenericsUtils.getSuperClassGenricType(this.getClass());
         entityName = entityClass.getSimpleName();
-        selectByPrimaryKeyStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByPrimaryKey;
-        deleteByPrimaryKeyStatement = namespacePrefix + entityName + namespaceSuffix + "." + deleteByPrimaryKey;
-        selectByWhereStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByWhere;
-        selectByWhereCountStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByWhereCount;
-        selectByWhereStatement = namespacePrefix + entityName + namespaceSuffix + "." + selectByWhere;
-        insertSelectiveStatement = namespacePrefix + entityName + namespaceSuffix + "." + insertSelective;
-        updateByPrimaryKeySelectiveStatement = namespacePrefix + entityName + namespaceSuffix + "." + updateByPrimaryKeySelective;
-        updateByPrimaryKeyStatement = namespacePrefix + entityName + namespaceSuffix + "." + updateByPrimaryKey;
+        selectByPrimaryKeyStatement = entityName + "." + selectByPrimaryKey;
+        deleteByPrimaryKeyStatement = entityName + "." + deleteByPrimaryKey;
+        selectByWhereStatement = entityName + "." + selectByWhere;
+        selectByWhereCountStatement = entityName + "." + selectByWhereCount;
+        insertSelectiveStatement = entityName + "." + insertSelective;
+        updateByPrimaryKeySelectiveStatement = entityName + "." + updateByPrimaryKeySelective;
 
     }
 
@@ -113,32 +111,23 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         }
     }
 
-    public int updateByPrimaryKey(T entity) {
-        return sessionTemplate.update(updateByPrimaryKeyStatement, entity);
-    }
-
     public int updateByPrimaryKeySelective(T entity) {
         return sessionTemplate.update(updateByPrimaryKeySelectiveStatement, entity);
     }
 
-    final String namespacePrefix = "";
-    final String namespaceSuffix = "Mapper";
-    final String insert = "insert";
-    final String insertSelective = "insertSelective";
-    final String deleteByPrimaryKey = "deleteByPrimaryKey";
-    final String selectByPrimaryKey = "selectByPrimaryKey";
-    final String updateByPrimaryKey = "updateByPrimaryKey";
-    final String updateByPrimaryKeySelective = "updateByPrimaryKeySelective";
-    final String selectByWhere = "selectByWhere";
-    final String selectByWhereCount = "selectByWhereCount";
-    String entityName;
-    Class<T> entityClass;
+    final static String insertSelective = "insertSelective";
+    final static String deleteByPrimaryKey = "deleteByPrimaryKey";
+    final static String selectByPrimaryKey = "selectByPrimaryKey";
+    final static String updateByPrimaryKeySelective = "updateByPrimaryKeySelective";
+    final static String selectByWhere = "selectByWhere";
+    final static String selectByWhereCount = "selectByWhereCount";
+    final String entityName;
+    final Class<T> entityClass;
     //sql Statement
-    String selectByPrimaryKeyStatement;
-    String deleteByPrimaryKeyStatement;
-    String selectByWhereStatement;
-    String selectByWhereCountStatement;
-    String insertSelectiveStatement;
-    String updateByPrimaryKeySelectiveStatement;
-    String updateByPrimaryKeyStatement;
+    final String selectByPrimaryKeyStatement;
+    final String deleteByPrimaryKeyStatement;
+    final String selectByWhereStatement;
+    final String selectByWhereCountStatement;
+    final String insertSelectiveStatement;
+    final String updateByPrimaryKeySelectiveStatement;
 }

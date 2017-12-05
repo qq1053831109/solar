@@ -10,14 +10,8 @@ import ${packagePrefix}service.BaseService;
 import ${packagePrefix}dao.BaseDao;
 @Transactional
 public class BaseServiceImpl<T> implements BaseService<T> {
-    protected BaseDao<T> baseDao;
-    String entityName;
-    Class<T> entityClass;
 
-    public BaseServiceImpl() {
-        entityClass = GenericsUtils.getSuperClassGenricType(this.getClass());
-        entityName = entityClass.getSimpleName();
-    }
+    protected BaseDao<T> baseDao;
 
     @Transactional(readOnly = true)
     public T getById(Serializable id) {

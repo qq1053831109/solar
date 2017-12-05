@@ -29,9 +29,9 @@ public class Generator {
         this.jdbcUrl = jdbcUrl;
         this.rootpath = classPath;
         this.packagePrefix = packagePrefix;
-        beanPackage = packagePrefix + "bean";
+        beanPackage = packagePrefix + "entity";
         String packagePath = packagePrefix.replace(".", "/");
-        beanPath = classPath + packagePath + "bean/";
+        beanPath = classPath + packagePath + "entity/";
         servicePath = classPath + packagePath + "service/";
         daoPath = classPath + packagePath + "dao/";
         ServiceImplPath = classPath + packagePath + "service/impl/";
@@ -40,9 +40,9 @@ public class Generator {
         mapperXMLRootPath = classPath + packagePath + "mapper/";
     }
 
-    public void generateBeanCode() {
+    public void generateBeanCode(String... overrideNames) {
         try {
-            generateBean("Bean");
+            generateBean("Bean",overrideNames);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,7 +55,7 @@ public class Generator {
             generateCodeByType("DaoImpl", daoImplPath);
             generateCodeByType("Service", servicePath);
             generateCodeByType("ServiceImpl", ServiceImplPath);
-            generateCodeByType("Controller", ControllerPath);
+            generateCodeByType("CrudController", ControllerPath);
         } catch (Exception e) {
             e.printStackTrace();
         }

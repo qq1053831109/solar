@@ -24,8 +24,6 @@ public interface BaseDao<T> {
 
     void saveList(List<T> list);
 
-    int updateByPrimaryKey(T entity);
-
     int updateByPrimaryKeySelective(T entity);
 
 }

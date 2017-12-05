@@ -24,7 +24,7 @@ public class StringUtil {
             return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
     }
 
-    //首字母转大写
+    //裁剪字符串 如果长度小于需要裁剪的长度 则返回原字符串
     public static String substring(String s,int len){
         if (s==null){
             return null;
@@ -40,6 +40,12 @@ public class StringUtil {
             return false;
         }
         return true;
+    }
+    public static boolean isEmpty(String str) {
+        if (str==null||"".equals(str)){
+            return true;
+        }
+        return false;
     }
     /**
      * 下划线转驼峰法

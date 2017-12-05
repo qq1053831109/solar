@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}entity.${BeanName};
 import ${packagePrefix}service.${BeanName}Service;
 import javax.annotation.Resource;
 import java.util.Date;
@@ -22,8 +22,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("${beanName}")
-public class ${BeanName}Controller extends BaseController {
-    Logger logger=LoggerFactory.getLogger(${BeanName}Controller.class);
+public class ${BeanName}CrudController extends BaseController {
+    Logger logger=LoggerFactory.getLogger(${BeanName}CrudController.class);
     @Resource
     private ${BeanName}Service ${beanName}Service;
     @RequestMapping("/select")
@@ -54,13 +54,10 @@ public class ${BeanName}Controller extends BaseController {
     public  JsonResult saveOrUpdate(${BeanName} bean) {
        //如果id为空则更新
         Date nowTime=new Date();
-         bean.setUpdateTime(nowTime);
         if (bean.getId()!=null&&!"".equals(bean.getId())){
             int row=${beanName}Service.updateByPrimaryKey(bean);
             return JsonResult.success(row);
         }
-        bean.setDr(Constants.N);
-        bean.setCreateTime(nowTime);
         int row=${beanName}Service.save(bean);
         return JsonResult.success(row);
     }

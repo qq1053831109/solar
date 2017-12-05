@@ -1,6 +1,6 @@
 package ${packagePrefix}service;
 
-import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}entity.${BeanName};
 /**
  * @Description:
  * @author solar

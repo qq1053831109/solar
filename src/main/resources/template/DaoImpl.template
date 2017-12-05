@@ -1,9 +1,9 @@
 package ${packagePrefix}dao.impl;
 
-import ${packagePrefix}bean.${BeanName};
+import ${packagePrefix}entity.${BeanName};
 import ${packagePrefix}dao.${BeanName}Dao;
 import org.springframework.stereotype.Repository;
-
+import java.util.List;
 /**
  * @Description:
  * @author solar
@@ -12,5 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository("${BeanName}Dao")
 public class ${BeanName}DaoImpl extends BaseDaoImpl<${BeanName}> implements ${BeanName}Dao {
 
+//    private final String demoSqlId = entityName + ".demoId";
+
+//    public List demoMethod(Object obj) {
+//        return sessionTemplate.selectList(demoSqlId, obj);
+//    }
 
 }
