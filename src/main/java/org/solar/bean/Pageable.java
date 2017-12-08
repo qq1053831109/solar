@@ -14,17 +14,6 @@ import java.util.Map;
 public class Pageable implements Serializable {
 
     private static final long serialVersionUID = -3930180379790344299L;
-
-    /**
-     * 默认页码
-     */
-    private static final long DEFAULT_PAGE_NUMBER = 1;
-
-    /**
-     * 默认每页记录数
-     */
-    private static final long DEFAULT_PAGE_SIZE = 10;
-
     /**
      * 最大每页记录数
      */
@@ -33,12 +22,12 @@ public class Pageable implements Serializable {
     /**
      * 页码
      */
-    private long pageNumber = DEFAULT_PAGE_NUMBER;
+    private long pageNumber = 1;
 
     /**
      * 每页记录数
      */
-    private long pageSize = DEFAULT_PAGE_SIZE;
+    private long pageSize = 10;
 
 
     /**
@@ -53,6 +42,16 @@ public class Pageable implements Serializable {
 
 
     private String orderDirection;
+
+    private boolean countTotalRecord = true;
+
+    public boolean isCountTotalRecord() {
+        return countTotalRecord;
+    }
+
+    public void setCountTotalRecord(boolean countTotalRecord) {
+        this.countTotalRecord = countTotalRecord;
+    }
 
     public String getOrderDirection() {
         return orderDirection;
@@ -105,7 +104,7 @@ public class Pageable implements Serializable {
      */
     public void setPageNumber(long pageNumber) {
         if (pageNumber < 1) {
-            pageNumber = DEFAULT_PAGE_NUMBER;
+            pageNumber = 1;
         }
         this.pageNumber = pageNumber;
     }
@@ -126,7 +125,7 @@ public class Pageable implements Serializable {
      */
     public void setPageSize(long pageSize) {
         if (pageSize < 1 || pageSize > MAX_PAGE_SIZE) {
-            pageSize = DEFAULT_PAGE_SIZE;
+            pageSize = 10;
         }
         this.pageSize = pageSize;
     }
