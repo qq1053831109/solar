@@ -23,7 +23,7 @@ ${BaseResultMap}
      </if>
   </select>
   <select id="selectByWhereCount" resultType="java.lang.Long" >
-    select count(id) from ${tableName}
+    select count(*) from ${tableName}
     <where >
        <include refid="where_Column_List" />
     </where>
