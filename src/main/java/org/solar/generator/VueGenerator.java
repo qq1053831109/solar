@@ -140,7 +140,11 @@ public class VueGenerator {
             sb.append("\n");
             sb.append("                    <td>");
             if (isFirst){
-                sb.append("<a href=\"javascript:void(0)\" @click=\"goBeanPage(bean.id)\">{{bean."+fieldName+"}}</a>");
+                if ("Date".equals(javaType)){
+                    sb.append("<a href=\"javascript:void(0)\" @click=\"goBeanPage(bean.id)\">{{bean."+fieldName+" | time }}</a>");
+                }else {
+                    sb.append("<a href=\"javascript:void(0)\" @click=\"goBeanPage(bean.id)\">{{bean."+fieldName+"}}</a>");
+                }
                 isFirst=false;
             }else {
                 if ("Date".equals(javaType)){
