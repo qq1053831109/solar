@@ -1,5 +1,5 @@
 <script type="text/template" id="template-${beanName}-${beanName}Page">
-    <div class="MainContainer fullWidth company">
+    <div class="MainContainer fullWidth ${beanName}">
         <div class="toolBar">
             <div class="float-left">
                 <button class="button" type="button" onclick="location.reload()">刷新</button>

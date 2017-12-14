@@ -1,5 +1,5 @@
 <script type="text/template" id="template-${beanName}-${beanName}">
-    <div class="MainContainer fullWidth company">
+    <div class="MainContainer fullWidth ${beanName}">
         <div class="toolBar">
             <div class="float-left">
 
@@ -14,17 +14,6 @@
 
             </div>
             <div style="clear: both"></div>
-        </div>
-        <div class="contentViewContainer" v-if="openContentView">
-            <div>
-                <a style="margin-left: 12px" href="javascript:void(0)" @click="openContentView=false">&lt;返回列表</a>
-                <hr/>
-            </div>
-            <h1 class="contentViewName" v-html="contentViewName">
-            </h1>
-            <hr/>
-            <div class="contentView" v-html="contentView">
-            </div>
         </div>
         <div>
             <div class="beanView">
