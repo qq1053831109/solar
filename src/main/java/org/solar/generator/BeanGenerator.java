@@ -8,6 +8,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.solar.generator.Generator.packagePrefix;
 
@@ -51,6 +53,18 @@ public class BeanGenerator {
         template=template.replace("${Date}",date);
         return  template;
     }
+
+    /**
+     * wxc
+     */
+    public static String conver(String str){
+        Pattern CRLF = Pattern.compile("(\r\n|\r|\n|\n\r|\\r)");
+        Matcher m = CRLF.matcher(str);
+        if (m.find()) {
+            str = m.replaceAll("");
+        }
+        return str;
+    }
     public String getBeanFields(List<Map> tableFields) throws Exception {
         StringBuilder sb=new StringBuilder();
         for(Map  tableField:tableFields){
@@ -61,7 +75,9 @@ public class BeanGenerator {
             fieldName=StringUtil.underline2Camel(fieldName,true);
             Object obj=tableField.get("comment");
             if (obj!=null){
-                sb.append("    //"+obj.toString()+"\n");
+                String comment=obj.toString();
+                comment=conver(comment);
+                sb.append("    //"+comment+"\n");
             }
             sb.append("    private "+javaType+" "+fieldName+";\n");
         }
