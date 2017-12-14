@@ -11,12 +11,12 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 public class Captcha  {
-    char[] ch = "abcdefghjkmnpqrstuvwxyz23456789".toCharArray(); // 随即产生的字符串 不包�?i l(小写L) o（小写O�?1（数�?�?(数字0)
+    static char[] ch = "abcdefghjkmnpqrstuvwxyz23456789".toCharArray(); // 随即产生的字符串 不包�?i l(小写L) o（小写O�?1（数�?�?(数字0)
 
 
-    Font font=new Font("Ravie", Font.PLAIN, 24);
+    static Font font=new Font("Ravie", Font.PLAIN, 24);
 
-    public byte[] generateImage(String sRand)   throws  IOException {
+    public static byte[]  generateImage(String sRand)   throws  IOException {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         int width = 83, height = 30;  
@@ -51,7 +51,7 @@ public class Captcha  {
   
     }  
   
-    public String  randomString()  {
+    public static String  randomString()  {
         int length = ch.length;
         String sRand = "";
         Random random = new Random();
