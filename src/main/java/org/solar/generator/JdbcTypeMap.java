@@ -32,19 +32,20 @@ public class JdbcTypeMap {
         if ("TEXT".equals(type)){
             return "String";
         }
-        if ("Date".equals(type)){
+        if ("DATE".equals(type)){
             return "Date";
         }
         if ("DATETIME".equals(type)){
             return "Date";
         }
-        if ("Timestamp".equals(type)){
+        if ("TIMESTAMP".equals(type)){
             return "Date";
         }
-        if ("INT".equals(type)){
+        if (type.startsWith("INT")||type.startsWith("SMALLINT")){
             return "Integer";
         }
-        if ("BIGINT".equals(type)){
+        //BIGINT UNSIGNED
+        if (type.startsWith("BIGINT")){
             return "Long";
         }
         return "String";
