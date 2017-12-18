@@ -52,7 +52,7 @@ public class ${BeanName}CrudController extends BaseController {
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
     public  JsonResult saveOrUpdate(${BeanName} bean) {
-       //如果id为空则更新
+       //如果id不为空则更新
         Date nowTime=new Date();
         if (bean.getId()!=null&&!"".equals(bean.getId())){
             int row=${beanName}Service.updateByPrimaryKey(bean);
