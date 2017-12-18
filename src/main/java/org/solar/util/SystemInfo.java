@@ -25,7 +25,7 @@ public class SystemInfo {
         String str=getSystemInfo();
         System.out.println(str);
     }
-    public static String getSystemInfo() throws UnknownHostException {
+    public static String getSystemInfo()  {
         StringBuffer sb=new StringBuffer(200);
         Runtime rt=Runtime.getRuntime();
         String result="initTime="+ DateUtil.format(initTime)+"\r\n";
