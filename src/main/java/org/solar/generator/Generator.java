@@ -24,6 +24,7 @@ public class Generator {
     public static String packagePrefix;
     String mapperXMLRootPath;
     public String vueHtmlRootPath;
+    public String dataBaseFieldDictPath;
 
     public Generator(String jdbcUrl, String classPath, String packagePrefix) {
         this.jdbcUrl = jdbcUrl;
@@ -39,7 +40,18 @@ public class Generator {
         ControllerPath = classPath + packagePath + "controller/";
         mapperXMLRootPath = classPath + packagePath + "mapper/";
     }
-
+    public  void generatorDataBaseFieldDict() {
+        if (dataBaseFieldDictPath==null){
+            dataBaseFieldDictPath=rootpath+"dataBaseFieldDict.properties";
+        }
+        DataBaseFieldDictGenerator dataBaseFieldDictGenerator = new DataBaseFieldDictGenerator(jdbcUrl);
+        dataBaseFieldDictGenerator.dataBaseFieldDictPath=dataBaseFieldDictPath;
+        try {
+            dataBaseFieldDictGenerator.generatorDataBaseFieldDict();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void generateBeanCode(String... overrideNames) {
         try {
             generateBean("Bean",overrideNames);
