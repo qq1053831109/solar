@@ -32,7 +32,7 @@ public class Md5Util {
             return null;
         }
         byte[] bs = md5.digest(str.getBytes());
-        StringBuffer sb = new StringBuffer(40);
+        StringBuilder sb = new StringBuilder(40);
         for(byte x:bs) {
             if((x & 0xff)>>4 == 0) {
                 sb.append("0").append(Integer.toHexString(x & 0xff));
