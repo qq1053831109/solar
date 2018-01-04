@@ -15,7 +15,7 @@ public class Server {
         HttpServer server = HttpServer.create(addr, 0);
         //通过简单的http方式运行远程服务器程序！由于不安全，切记不能在生产环境启动该服务！
         //该方法可以做测试环境的自动部署
-//        server.createContext("/run", new RunHandler());
+        server.createContext("/run", new RunHandler());
 
 
         server.setExecutor(Executors.newCachedThreadPool());
