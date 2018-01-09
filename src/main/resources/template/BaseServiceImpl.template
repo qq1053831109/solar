@@ -54,7 +54,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Transactional(readOnly = true)
-    public List<T> selectbyWhere(String... str) {
+    public List<T> selectbyWhere(Object... str) {
         return baseDao.selectByWhere(str);
     }
 }

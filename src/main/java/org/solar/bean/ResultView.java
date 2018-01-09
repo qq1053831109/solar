@@ -3,48 +3,48 @@ package org.solar.bean;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class JsonResult implements Serializable {
+public class ResultView implements Serializable {
 
 	private int code;
 	private String msg;
 	private Object body;
 
     private String requestId;
-	
-	public JsonResult() {
+
+	public ResultView() {
 	}
-	
-	public JsonResult(int code, String msg) {
+
+	public ResultView(int code, String msg) {
 		this.code = code;
 		this.msg = msg;
 	}
-	
-	public JsonResult(int code, String msg, Object body) {
+
+	public ResultView(int code, String msg, Object body) {
 		this.code = code;
 		this.msg = msg;
 		this.body = body;
 	}
 
-	  public static JsonResult success() {
-	        return new JsonResult(ResultCode.SUCCESS_CODE, ResultCode.SUCCESS_MSG);
+	  public static ResultView success() {
+	        return new ResultView(ResultCode.SUCCESS_CODE, ResultCode.SUCCESS_MSG);
 	    }
-	    public static JsonResult success(String msg) {
-	        return new JsonResult(ResultCode.SUCCESS_CODE, msg);
+	    public static ResultView success(String msg) {
+	        return new ResultView(ResultCode.SUCCESS_CODE, msg);
 	    }
-	    public static JsonResult success(Object t) {
-	        return new JsonResult(ResultCode.SUCCESS_CODE, ResultCode.SUCCESS_MSG,t);
+	    public static ResultView success(Object t) {
+	        return new ResultView(ResultCode.SUCCESS_CODE, ResultCode.SUCCESS_MSG,t);
 	    }
 
-    public static JsonResult error() {
-        return new JsonResult(ResultCode.ERROR_CODE, ResultCode.ERROR_MSG);
+    public static ResultView error() {
+        return new ResultView(ResultCode.ERROR_CODE, ResultCode.ERROR_MSG);
     }
 
-	public static JsonResult error(String errorMsg) {
-		return new JsonResult(ResultCode.ERROR_CODE,errorMsg);
+	public static ResultView error(String errorMsg) {
+		return new ResultView(ResultCode.ERROR_CODE,errorMsg);
 	}
 
-	public static JsonResult dbError(String errorMsg) {
-		return new JsonResult(ResultCode.DB_ERROR_CODE,errorMsg);
+	public static ResultView dbError(String errorMsg) {
+		return new ResultView(ResultCode.DB_ERROR_CODE,errorMsg);
 	}
 
 	public int getCode() {

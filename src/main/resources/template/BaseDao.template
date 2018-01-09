@@ -18,7 +18,7 @@ public interface BaseDao<T> {
 
     List<T> selectByWhere(Object map);
 
-    List<T> selectByWhere(String... str);
+    List<T> selectByWhere(Object... str);
 
     int save(T entity);
 

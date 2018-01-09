@@ -26,6 +26,6 @@ public interface BaseService<T> {
     /**
      * 参数格式为[属性,搜索值,属性,搜索值,...]
      */
-     List<T> selectbyWhere(String... str);
+     List<T> selectbyWhere(Object... str);
 
 }
