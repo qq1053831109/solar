@@ -41,7 +41,7 @@ public class JdbcTypeMap {
         if ("TIMESTAMP".equals(type)){
             return "Date";
         }
-        if (type.startsWith("INT")||type.startsWith("SMALLINT")){
+        if (type.startsWith("INT") || type.startsWith("SMALLINT") || type.startsWith("TINYINT")) {
             return "Integer";
         }
         //BIGINT UNSIGNED
