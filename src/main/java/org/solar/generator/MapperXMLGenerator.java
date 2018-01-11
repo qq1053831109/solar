@@ -162,12 +162,19 @@ public class MapperXMLGenerator {
             where.append("      <if test=\""+key+" != null\" >\n");
             where.append("        AND "+column+" = #{"+key+"}\n");
             where.append("      </if>\n");
-            // fullTextSearch
             String javaType=beanNameMap.get(key);
+            //&lt;=<  &gt;=>
             if ("Date".equals(javaType)||"Timestamp".equals(javaType)){
-                continue;//时间字段不加入全文搜索
+                where.append("      <if test=\"" + key + "Start != null\" >\n");
+                where.append("        AND " + column + " &gt;= #{" + key + "Start}\n");
+                where.append("      </if>\n");
+                //end
+                where.append("      <if test=\"" + key + "End != null\" >\n");
+                where.append("        AND " + column + " &lt; #{" + key + "End}\n");
+                where.append("      </if>\n");
             }
-            if ("content".equals(key)||"Timestamp".equals(key)||"dr".equals(key)){
+            // fullTextSearch
+            if ("content".equals(key) || "dr".equals(key)) {
                 continue;//某些字段不加入全文搜索
             }
             if (isFirst){
