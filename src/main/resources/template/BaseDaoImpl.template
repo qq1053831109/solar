@@ -92,17 +92,15 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 
     public List<T> selectByWhere(Object obj) {
         Map map=(Map)obj;
-        if (map.containsKey("orderProperty")){
-            String orderProperty=(String)map.get("orderProperty");
-            if (!tableFields.contains(orderProperty)){
-                throw new SolarRuntimeException(orderProperty+"字段在表中不存在");
-            }
-        };
-        if (map.containsKey("orderDirection")){
-            String orderDirection=(String)map.get("orderDirection");
-            if (!"asc".equalsIgnoreCase(orderDirection)&&!"desc".equalsIgnoreCase(orderDirection)){
-                throw new SolarRuntimeException(orderDirection+"排序方向值不正确");
-            }
+        if (map.get("orderProperty") != null) {
+           String orderProperty = (String) map.get("orderProperty");
+           if (!tableFields.contains(orderProperty)) {
+               throw new SolarRuntimeException(orderProperty + "字段在表中不存在");
+           }
+           String orderDirection = (String) map.get("orderDirection");
+           if (!"asc".equalsIgnoreCase(orderDirection) && !"desc".equalsIgnoreCase(orderDirection)) {
+               throw new SolarRuntimeException(orderDirection + "排序方向值不正确");
+           }
         };
 
         return sessionTemplate.selectList(selectByWhereStatement, map);
