@@ -10,6 +10,19 @@ public class Constants {
     public static final String Y="y";
     public static final String N="n";
     /**
+     * 字段 0=该数据已删除 1=默认 2-9=其他
+     */
+    public static final int Num0 = 0;
+    public static final int Num1 = 1;
+    public static final int Num2 = 2;
+    public static final int Num3 = 3;
+    public static final int Num4 = 4;
+    public static final int Num5 = 5;
+    public static final int Num6 = 6;
+    public static final int Num7 = 7;
+    public static final int Num8 = 8;
+    public static final int Num9 = 9;
+    /**
      *  CrawlerConfig_type_list 列表抓取方式
      */
     public static final String CrawlerConfig_type_list="list";
