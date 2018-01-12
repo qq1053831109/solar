@@ -49,12 +49,26 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Transactional(readOnly = true)
-    public List<T> selectbyWhere(Object map) {
+    public List<T> selectByWhere(Object map) {
+
         return baseDao.selectByWhere(map);
     }
 
     @Transactional(readOnly = true)
-    public List<T> selectbyWhere(Object... str) {
+    public List<T> selectByWhere(Object... str) {
+
         return baseDao.selectByWhere(str);
+    }
+
+    @Transactional(readOnly = true)
+    public List<T> selectByWhereIn(Object map) {
+
+        return baseDao.selectByWhereIn(map);
+    }
+
+    @Transactional(readOnly = true)
+    public List<T> selectByWhereIn(Object... str) {
+
+        return baseDao.selectByWhereIn(str);
     }
 }

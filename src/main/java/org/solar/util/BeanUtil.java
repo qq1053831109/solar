@@ -1,5 +1,8 @@
 package org.solar.util;
 
+import org.solar.bean.JsonResult;
+import org.solar.bean.Pageable;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -23,51 +26,51 @@ public class BeanUtil {
         }
     }
 
-    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass)     {
+    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) {
         if (map == null)
             return null;
         try {
             Object obj = beanClass.newInstance();
-        BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
-        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-        for (PropertyDescriptor property : propertyDescriptors) {
-            Method setter = property.getWriteMethod();
-            if (setter != null) {
-                setter.invoke(obj, map.get(property.getName()));
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor property : propertyDescriptors) {
+                Method setter = property.getWriteMethod();
+                if (setter != null) {
+                    setter.invoke(obj, map.get(property.getName()));
+                }
             }
-        }
 
-        return obj;
-        } catch ( Exception e) {
+            return obj;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static Map<String, Object> objectToMap(Object obj) {
-        if (obj == null)
+    public static Map<String, Object> objectToMap(Object... obj) {
+        if (obj == null){
             return null;
-
+        }
         Map<String, Object> map = new HashMap<String, Object>();
-
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
-
-            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-            for (PropertyDescriptor property : propertyDescriptors) {
-                String key = property.getName();
-                if (key.compareToIgnoreCase("class") == 0) {
-                    continue;
+            for (int i = 0; i < obj.length; i++) {
+                BeanInfo beanInfo = Introspector.getBeanInfo(obj[i].getClass());
+                PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+                for (PropertyDescriptor property : propertyDescriptors) {
+                    String key = property.getName();
+                    if (key.compareToIgnoreCase("class") == 0) {
+                        continue;
+                    }
+                    Method getter = property.getReadMethod();
+                    Object value = getter != null ? getter.invoke(obj[i]) : null;
+                    map.put(key, value);
                 }
-                Method getter = property.getReadMethod();
-                Object value = getter != null ? getter.invoke(obj) : null;
-                map.put(key, value);
             }
-
             return map;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
 }

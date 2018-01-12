@@ -173,12 +173,17 @@ public class Generator {
             File gcfile = new File(gcPath + beanName + "Mapper.xml");
             if (!gcfile.exists()) {
                 gcfile.createNewFile();
-                Map beanNameMap = mapperXMLGenerateUtil.getBeanNameMap(beanPackage, beanName);
-                FileOutputStream fos = new FileOutputStream(gcfile);
-                String mapperXMLContent = mapperXMLGenerateUtil.getMapperXMLContent(template, beanName, beanNameMap);
-                fos.write(mapperXMLContent.getBytes());
-                fos.flush();
-                fos.close();
+                try {
+                    Map beanNameMap = mapperXMLGenerateUtil.getBeanNameMap(beanPackage, beanName);
+                    FileOutputStream fos = new FileOutputStream(gcfile);
+                    String mapperXMLContent = mapperXMLGenerateUtil.getMapperXMLContent(template, beanName, beanNameMap);
+                    fos.write(mapperXMLContent.getBytes());
+                    fos.flush();
+                    fos.close();
+                }catch (Exception e){
+                    gcfile.delete();
+                    throw e;
+                }
                 System.out.println("生成" + beanName + "Mapper.xml 成功!");
             }
         }

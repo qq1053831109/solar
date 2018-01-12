@@ -5,9 +5,11 @@
     <id column="id" property="id" jdbcType="CHAR" />
 ${BaseResultMap}
   </resultMap>
+
   <sql id="Base_Column_List" >
     id ${Base_Column_List}
   </sql>
+
   <select id="selectByWhere" resultMap="BaseResultMap"  >
     select
     <include refid="Base_Column_List" />
@@ -22,22 +24,48 @@ ${BaseResultMap}
        limit #{pageStart},#{pageLimit}
      </if>
   </select>
+
   <select id="selectByWhereCount" resultType="java.lang.Long" >
     select count(*) from ${tableName}
     <where >
        <include refid="where_Column_List" />
     </where>
   </select>
+
+  <select id="selectByWhereIn" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ${tableName}
+        <where>
+            <include refid="where_In_Column_List"/>
+        </where>
+        <if test="orderProperty != null and orderDirection != null ">
+            ORDER BY ${orderProperty} ${orderDirection}
+        </if>
+        <if test="pageStart != null and pageLimit != null ">
+            limit #{pageStart},#{pageLimit}
+        </if>
+  </select>
+
+  <select id="selectByWhereInCount" resultType="java.lang.Long">
+        select count(*) from ${tableName}
+        <where>
+            <include refid="where_In_Column_List"/>
+        </where>
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from ${tableName}
     where id = #{id}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ${tableName}
     where id = #{id,jdbcType=CHAR}
   </delete>
+
   <insert id="insert" parameterType="${packagePrefix}entity.${BeanName}" >
     insert into ${tableName} (id
     ${Base_Column_List}
@@ -46,6 +74,7 @@ ${BaseResultMap}
     ${Base_Column_Value_List}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="${packagePrefix}entity.${BeanName}" >
     insert into ${tableName}
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -61,6 +90,7 @@ ${insertTrimList}
 ${insertTrimValueList}
     </trim>
   </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="${packagePrefix}entity.${BeanName}" >
     update ${tableName}
     <set >
@@ -68,7 +98,18 @@ ${updateSetList}
     </set>
     where id = #{id}
   </update>
+
   <sql id="where_Column_List" >
 ${where}
+  </sql>
+
+  <sql id="where_In_Column_List" >
+     <if test="id != null" >
+         AND id in
+         <foreach collection="id" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+         </foreach>
+     </if>
+${whereInColumnList}
   </sql>
 </mapper>

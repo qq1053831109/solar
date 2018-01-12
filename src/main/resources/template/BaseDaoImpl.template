@@ -28,13 +28,14 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
             tableFields.add(StringUtil.camel2Underline(fieldName));
         }
         entityName = entityClass.getSimpleName();
-        selectByPrimaryKeyStatement = entityName + "." + selectByPrimaryKey;
-        deleteByPrimaryKeyStatement = entityName + "." + deleteByPrimaryKey;
-        selectByWhereStatement = entityName + "." + selectByWhere;
-        selectByWhereCountStatement = entityName + "." + selectByWhereCount;
-        insertSelectiveStatement = entityName + "." + insertSelective;
-        updateByPrimaryKeySelectiveStatement = entityName + "." + updateByPrimaryKeySelective;
-
+        selectByPrimaryKeyStatement = entityName + ".selectByPrimaryKey";
+        deleteByPrimaryKeyStatement = entityName + ".deleteByPrimaryKey";
+        selectByWhereStatement = entityName + ".selectByWhere";
+        selectByWhereCountStatement = entityName + ".selectByWhereCount";
+        selectByWhereInStatement = entityName + ".selectByWhereIn";
+        selectByWhereInCountStatement = entityName + ".selectByWhereInCount";
+        insertSelectiveStatement = entityName + ".insertSelective";
+        updateByPrimaryKeySelectiveStatement = entityName + ".updateByPrimaryKeySelective";
     }
 
     public int delete(T entity) {
@@ -114,6 +115,30 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return selectByWhere(map);
     }
 
+    public List<T> selectByWhereIn(Object obj) {
+        Map map=(Map)obj;
+        if (map.get("orderProperty") != null) {
+            String orderProperty = (String) map.get("orderProperty");
+            if (!tableFields.contains(orderProperty)) {
+                throw new SolarRuntimeException(orderProperty + "字段在表中不存在");
+            }
+            String orderDirection = (String) map.get("orderDirection");
+            if (!"asc".equalsIgnoreCase(orderDirection) && !"desc".equalsIgnoreCase(orderDirection)) {
+                throw new SolarRuntimeException(orderDirection + "排序方向值不正确");
+            }
+        };
+
+        return sessionTemplate.selectList(selectByWhereInStatement, map);
+    }
+
+    public List<T> selectByWhereIn(Object... str) {
+        Map map = new HashMap();
+        for (int i = 0; i < str.length; i = i + 2) {
+            map.put(str[i], str[i + 1]);
+        }
+        return selectByWhere(map);
+    }
+
     final static Class[] dateParam = new Class[]{Date.class};
 
     public void saveList(List<T> list) {
@@ -158,12 +183,6 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return sessionTemplate.update(updateByPrimaryKeySelectiveStatement, entity);
     }
 
-    final static String insertSelective = "insertSelective";
-    final static String deleteByPrimaryKey = "deleteByPrimaryKey";
-    final static String selectByPrimaryKey = "selectByPrimaryKey";
-    final static String updateByPrimaryKeySelective = "updateByPrimaryKeySelective";
-    final static String selectByWhere = "selectByWhere";
-    final static String selectByWhereCount = "selectByWhereCount";
     final String entityName;
     final Class<T> entityClass;
     //sql Statement
@@ -171,6 +190,8 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     final String deleteByPrimaryKeyStatement;
     final String selectByWhereStatement;
     final String selectByWhereCountStatement;
+    final String selectByWhereInStatement;
+    final String selectByWhereInCountStatement;
     final String insertSelectiveStatement;
     final String updateByPrimaryKeySelectiveStatement;
 }

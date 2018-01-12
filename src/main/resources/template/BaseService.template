@@ -21,11 +21,18 @@ public interface BaseService<T> {
 
      Page selectPage(Pageable pageable);
 
-     List<T> selectbyWhere(Object map);
+     List<T> selectByWhere(Object map);
 
-    /**
+     /**
      * 参数格式为[属性,搜索值,属性,搜索值,...]
      */
-     List<T> selectbyWhere(Object... str);
+     List<T> selectByWhere(Object... str);
+
+     List<T> selectByWhereIn(Object map);
+
+     /**
+      * 参数格式为[属性,搜索值,属性,搜索值,...]
+      */
+     List<T> selectByWhereIn(Object... str);
 
 }

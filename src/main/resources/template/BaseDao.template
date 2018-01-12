@@ -20,6 +20,10 @@ public interface BaseDao<T> {
 
     List<T> selectByWhere(Object... str);
 
+    List<T> selectByWhereIn(Object map);
+
+    List<T> selectByWhereIn(Object... str);
+
     int save(T entity);
 
     void saveList(List<T> list);

@@ -30,6 +30,7 @@ public class MapperXMLGenerator {
         String tableName=StringUtil.camel2Underline(StringUtil.toLowerCaseFirstOne(beanName));
         replaceMap.put("tableName",tableName);
         replaceMap.put("where",getWhere(beanNameMap));
+        replaceMap.put("whereInColumnList",getWhereInColumnList(beanNameMap));
         replaceMap.put("insertTrimList",getInsertTrimList(beanNameMap));
         replaceMap.put("insertTrimValueList",getInsertTrimValueList(beanNameMap));
         replaceMap.put("updateSetList",getUpdateSetList(beanNameMap));
@@ -45,6 +46,7 @@ public class MapperXMLGenerator {
         template= template.replace("${Base_Column_List}", map.get("Base_Column_List"));
         template= template.replace("${tableName}", map.get("tableName"));
         template= template.replace("${where}", map.get("where"));
+        template= template.replace("${whereInColumnList}", map.get("whereInColumnList"));
         template= template.replace("${insertTrimList}", map.get("insertTrimList"));
         template= template.replace("${insertTrimValueList}", map.get("insertTrimValueList"));
         template= template.replace("${updateSetList}", map.get("updateSetList"));
@@ -188,6 +190,23 @@ public class MapperXMLGenerator {
         fullTextSearch.append("           )\n");
         fullTextSearch.append("      </if>\n");
         where.append(fullTextSearch);
+        return where.toString();
+    }
+    public  String getWhereInColumnList(Map<String,String> beanNameMap){
+        Set<String> keys=beanNameMap.keySet();
+        StringBuilder where=new StringBuilder();
+
+        for (String key: keys){
+            String  column=StringUtil.camel2Underline(key);
+            where.append("      <if test=\""+key+" != null\" >\n");
+            where.append("        AND "+column+" in\n");
+            where.append("        <foreach collection=\""+key+"\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");
+            where.append("            #{item}\n");
+            where.append("        </foreach>\n");
+            where.append("      </if>\n");
+
+
+        }
         return where.toString();
     }
 

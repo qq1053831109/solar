@@ -120,7 +120,6 @@ public class BeanGenerator {
             String name = colRet.getString("COLUMN_NAME");
             String type = colRet.getString("TYPE_NAME");
             byte[] commentBytes = colRet.getBytes("REMARKS");
-            System.out.println(new String(commentBytes, "latin1"));
             String comment = colRet.getString("REMARKS");
             int size= colRet.getInt("COLUMN_SIZE");
             if ("id".equals(name)){
@@ -129,7 +128,7 @@ public class BeanGenerator {
             Map map =new  LinkedHashMap();
             map.put("name",name);
             map.put("type",type);
-            System.out.println(comment);
+//            System.out.println(comment);
             if (comment!=null){
                 map.put("comment",comment);
             }
