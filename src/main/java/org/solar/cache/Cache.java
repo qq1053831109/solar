@@ -24,7 +24,7 @@ public interface Cache {
             cache = new CacheImpl();
             cacheImplMap.put(key, cache);
         }
-        return cacheImpl;
+        return cache;
     }
 
 
