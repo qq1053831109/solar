@@ -79,6 +79,9 @@ public class AESCoder {
      * 3.将加密内容解密
      */
     public  String AESDecode(  String content) {
+        if (content==null||"".equals(content)){
+            return null;
+        }
         try {
 
             //6.根据指定算法AES自成密码器
@@ -94,7 +97,7 @@ public class AESCoder {
             String AES_decode = new String(byte_decode, "utf-8");
             return AES_decode;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         //如果有错就返加nulll
