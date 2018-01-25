@@ -1,5 +1,5 @@
 <script type="text/template" id="template-${beanName}-${beanName}Page">
-    <div class="MainContainer fullWidth ${beanName}">
+    <div class="MainContainer ${beanName}">
         <div class="toolBar">
             <div class="float-left">
                 <button class="button" type="button" onclick="location.reload()">刷新</button>
@@ -12,17 +12,6 @@
                 <button class="button" type="button" @click="pageNum=1;select()">搜索</button>
             </div>
             <div style="clear: both"></div>
-        </div>
-        <div class="contentViewContainer" v-if="openContentView">
-            <div>
-                <a style="margin-left: 12px" href="javascript:void(0)" @click="openContentView=false">&lt;返回列表</a>
-                <hr/>
-            </div>
-            <h1 class="contentViewName" v-html="contentViewName">
-            </h1>
-            <hr/>
-            <div class="contentView" v-html="contentView">
-            </div>
         </div>
         <div class="tableContainer">
             <table>
@@ -76,8 +65,6 @@ ${fieldValueHtmlList}
                         <option value="20">20</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                        <option value="500">500</option>
-                        <option value="1000">1000</option>
                     </select>
                     条</span>
                 <span>&nbsp;&nbsp;&nbsp;</span>

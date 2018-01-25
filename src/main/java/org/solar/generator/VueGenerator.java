@@ -55,7 +55,14 @@ public class VueGenerator {
 
         return false;
     }
-
+//                    <tr>
+//                    <td>
+//                        <div>名称</div>
+//                    </td>
+//                    <td>
+//                        <div><input v-model="bean.name"></div>
+//                    </td>
+//                </tr>
     public String getFieldListHtml(List<Map> tableFields) throws Exception {
         StringBuilder sb=new StringBuilder();
         for(Map  tableField:tableFields){
@@ -72,19 +79,21 @@ public class VueGenerator {
             if ("dr".equals(fieldName)){
                 continue;
             }
-            sb.append("\n");
-            sb.append("                    <li>\n");
+//            sb.append("\n");
+            sb.append("                <tr>\n");
+            sb.append("                    <td>\n");
             sb.append("                        <div>"+comment+"</div>\n");
-            sb.append("                    </li>\n");
-            sb.append("                    <li>\n");
+            sb.append("                    </td>\n");
+            sb.append("                    <td>\n");
             if ("TEXT".equals(jdbcType)||size>=1000){
-                sb.append("                        <div><textarea rows=\"10\" style=\"width: 800px\" v-model=\"bean."+fieldName+"\"/></div>");
-            }else {
-                sb.append("                        <div><input v-model=\"bean."+fieldName+"\"></div>\n");
+                sb.append("                        <div><textarea rows=\"10\" style=\"width: 500px\" v-model=\"bean."+fieldName+"\"/></div>");
+            }else if(jdbcType.startsWith("DATE")||jdbcType.startsWith("TIMESTAMP")) {
+                sb.append("                        <div><input v-model=\"bean."+fieldName+"\" type=\"date\"/></div>\n");
+            }else{
+                sb.append("                        <div><input v-model=\"bean."+fieldName+"\"/></div>\n");
             }
-
-
-            sb.append("                    </li>\n");
+            sb.append("                    </td>\n");
+            sb.append("                </tr>\n");
         }
         return sb.toString();
     }

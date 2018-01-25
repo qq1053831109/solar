@@ -1,5 +1,5 @@
 <script type="text/template" id="template-${beanName}-${beanName}">
-    <div class="MainContainer fullWidth ${beanName}">
+    <div class="MainContainer beanView ${beanName}">
         <div class="toolBar">
             <div class="float-left">
 
@@ -15,15 +15,18 @@
             </div>
             <div style="clear: both"></div>
         </div>
-        <div>
-            <div class="beanView">
-
-                <ul>
+        <div class="bean">
+            <table>
 ${fieldList}
-
-                </ul>
-            </div>
-
+                <tr>
+                    <td>
+                        <div>名称</div>
+                    </td>
+                    <td>
+                        <div><input v-model="bean.name"></div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
     </div>
