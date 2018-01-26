@@ -33,6 +33,9 @@ public class CacheImpl implements Cache{
 
     @Override
     public <T> T put(Object key, Object value, long expireTime) {
+        if (expireTime<=0){
+            return null;
+        }
         CacheBean cacheBean=cacheMap.put(key,new CacheBean(value,expireTime));
         if (cacheBean==null){
             return null;

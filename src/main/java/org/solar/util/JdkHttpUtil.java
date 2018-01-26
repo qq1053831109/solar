@@ -13,18 +13,22 @@ public class JdkHttpUtil {
 	 * 
 	 * @param url
 	 *            发送请求的URL
-	 * @param param
 	 *            请求参数，请求参数应该是name1=value1&name2=value2的形式。
 	 * @return URL所代表远程资源的响应
 	 * @throws Exception
 	 */
+	public static String get(String url ){
+		return   get(  url,null);
+	}
 	public static String get(String url, String param){
 		InputStream in = null;
 		ByteArrayOutputStream bain=null;
 		String result=null;
 		try {
-			String urlName = url + "?" + param;
-			URL realUrl = new URL(urlName);
+			if (param!=null){
+				url = url + "?" + param;
+			}
+			URL realUrl = new URL(url);
 			// 打开和URL之间的连接
 			URLConnection conn = realUrl.openConnection();
 			// 设置通用的请求属性
