@@ -9,8 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WeChatPublicService {
-    //http请求方式: POST
+    //POST
     public final static String sendTemplateMessageUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send";
+    public final static String createMenuUrl = "https://api.weixin.qq.com/cgi-bin/menu/create";
     //GET
     public final static String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token";
     public final static String getUserListUrl = "https://api.weixin.qq.com/cgi-bin/user/get";
@@ -54,8 +55,18 @@ public class WeChatPublicService {
         }
         requetMap.put("data", data);
         String requetBody = JsonUtil.toJSONString(requetMap);
-        System.out.println(requetBody);
         return JdkHttpUtil.post(sendTemplateMessageUrl + "?access_token=" + getAccessToken(), requetBody);
+    }
+    //https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141013
+    public String createMenu(Object obj) {
+        String requetBody = null;
+        if (obj instanceof String){
+            requetBody=(String)obj;
+        }else {
+              requetBody = JsonUtil.toJSONString(obj);
+        }
+
+        return JdkHttpUtil.post(createMenuUrl + "?access_token=" + getAccessToken(), requetBody);
     }
 
     /**

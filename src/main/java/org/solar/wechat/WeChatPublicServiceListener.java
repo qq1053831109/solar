@@ -41,6 +41,48 @@ public class WeChatPublicServiceListener {
         return null;
     }
 
+    /**
+     ScanCodeInfo={ScanType=qrcode, ScanResult=阿斯顿发撒地方}
+     CreateTime=1517016063
+     EventKey=scancode_push
+     Event=scancode_push
+     ToUserName=gh_87e09a2ad8fa
+     FromUserName=ojNbawHeaQSSJMH024-MF78m6GOA
+     MsgType=event
+     * @param map
+     * @return
+     */
+    public  String onScancodePush(Map map) {
+        Map scanCodeInfo=(Map)map.get("ScanCodeInfo");
+        Map result=new HashMap();
+        result.put("ToUserName",map.get("FromUserName"));
+        result.put("FromUserName",map.get("ToUserName"));
+        result.put("CreateTime",System.currentTimeMillis()/1000);
+        result.put("MsgType","text");
+        result.put("Content","已收到扫码内容:"+scanCodeInfo.get("ScanResult")+"\nwww.baidu.com");
+        return XMLUtil.toXml(result);
+    }
+
+    /**
+     CreateTime=1517018854
+     EventKey=V1001_GOOD
+     Event=CLICK
+     ToUserName=gh_87e09a2ad8fa
+     FromUserName=ojNbawHeaQSSJMH024-MF78m6GOA
+     MsgType=event
+     * @param map
+     * @return
+     */
+    public  String onClick(Map map) {
+        Map result=new HashMap();
+        result.put("ToUserName",map.get("FromUserName"));
+        result.put("FromUserName",map.get("ToUserName"));
+        result.put("CreateTime",System.currentTimeMillis()/1000);
+        result.put("MsgType","text");
+        result.put("Content","已收到点击事件:"+map.get("EventKey")+"\nwww.baidu.com");
+        return XMLUtil.toXml(result);
+    }
+
 
     /**
      Content=111
@@ -69,6 +111,10 @@ public class WeChatPublicServiceListener {
                 return onTEMPLATESENDJOBFINISH(map);
             case "subscribe":
                 return onSubscribe(map);
+            case "scancode_push":
+                return onScancodePush(map);
+            case "CLICK":
+                return onClick(map);
         }
 
         return null;
@@ -86,7 +132,7 @@ public class WeChatPublicServiceListener {
         Map result=new HashMap();
         result.put("ToUserName",map.get("FromUserName"));
         result.put("FromUserName",map.get("ToUserName"));
-        result.put("CreateTime",System.currentTimeMillis()/1000+60*60*24);
+        result.put("CreateTime",System.currentTimeMillis()/1000);
         result.put("MsgType","text");
         String content="你的消息:\r\n";
           content=content+map.get("Content");

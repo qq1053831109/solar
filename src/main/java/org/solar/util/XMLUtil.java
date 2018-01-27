@@ -17,11 +17,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class XMLUtil {
-    /**
-     * 只有一级节点
-     * @param xmlString
-     * @return
-     */
     public  static Map parseXml(String xmlString){
         Map map = new HashMap();
         Element element = null;
@@ -36,13 +31,29 @@ public class XMLUtil {
             for (int i = 0; i < childNodes.getLength(); i++) // 遍历这些子节点
             {
                 Node node = childNodes.item(i); // childNodes.item(i);
-                // 获得每个对应位置i的结点
-                map.put(node.getNodeName(),node.getTextContent());
+                map.put(node.getNodeName(),nodeToJavaObject(node));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return map;
+    }
+
+    private static Object nodeToJavaObject(Node node) {
+        // 获得每个对应位置i的结点
+        if (node.getChildNodes().getLength()>1){
+            Map childNodeMap=new HashMap();
+            NodeList childNodes =node.getChildNodes();
+            for (int j = 0; j <childNodes.getLength(); j++) {
+                Node node2 = childNodes.item(j);
+                childNodeMap.put(node2.getNodeName(),nodeToJavaObject(node2));
+
+            }
+            return childNodeMap;
+        }else {
+            return node.getTextContent();
+        }
     }
     /**
      * 只有一级节点

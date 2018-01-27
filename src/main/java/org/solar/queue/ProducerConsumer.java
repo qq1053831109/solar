@@ -6,6 +6,9 @@ import org.solar.exception.SolarRuntimeException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 可用JDK自带线程池代替该功能
+ */
 public interface ProducerConsumer {
 
 
