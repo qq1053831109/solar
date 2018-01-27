@@ -37,7 +37,7 @@ public class WeChatPublicServiceListener {
      MsgID=123400940492570624
      * @param map
      */
-    public  String onTEMPLATESENDJOBFINISH(Map map) {
+    public  String onTemplateSendJobFinish(Map map) {
         return null;
     }
 
@@ -108,7 +108,7 @@ public class WeChatPublicServiceListener {
         String event=map.get("Event");
         switch (event){
             case "TEMPLATESENDJOBFINISH":
-                return onTEMPLATESENDJOBFINISH(map);
+                return onTemplateSendJobFinish(map);
             case "subscribe":
                 return onSubscribe(map);
             case "scancode_push":
