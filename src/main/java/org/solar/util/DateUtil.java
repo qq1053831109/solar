@@ -70,8 +70,7 @@ public class DateUtil {
 
 
 
-    public static void main(String args[]) {
-
-      System.out.println(DateUtil.format(new Date(), "yyyyMMddHHmmssSSS"));
+    public static String getNowTime() {
+      return DateUtil.format(new Date(), "yyyyMMddHHmmss");
     }
 }
