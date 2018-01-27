@@ -38,12 +38,18 @@ public class ScheduleUtil {
     }
 
     //ScheduleAtFixedRate 是基于固定时间间隔进行任务调度，ScheduleWithFixedDelay 取决于每次任务执行的时间长短
-    public static ScheduledFuture everydayTask(Runnable task, String HH_mm) throws ParseException {
+    public static ScheduledFuture everydayTask(Runnable task, String HH_mm) {
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String str = sdf.format(now);
         sdf.applyPattern("yyyy-MM-dd HH:mm");
-        Date runTaskTime = sdf.parse(str + " " + HH_mm);
+        Date runTaskTime = null;
+        try {
+            runTaskTime = sdf.parse(str + " " + HH_mm);
+        } catch (ParseException e) {
+            runTaskTime = new Date();
+            e.printStackTrace();
+        }
         long initialDelay = runTaskTime.getTime() - now.getTime();
         if (initialDelay < 0) {
             initialDelay = initialDelay + 60 * 60 * 24 * 1000;

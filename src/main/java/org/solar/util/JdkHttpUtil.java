@@ -78,11 +78,10 @@ public class JdkHttpUtil {
 	 * 
 	 * @param url
 	 *            发送请求的URL
-	 * @param param
 	 *            请求体。
 	 * @return URL所代表远程资源的响应
 	 */
-	public static String post(String url, String param) {
+	public static String post(String url, String body) {
 		PrintWriter out = null;
 		InputStream in = null;
 		ByteArrayOutputStream bain=null;
@@ -101,7 +100,7 @@ public class JdkHttpUtil {
 			// 获取URLConnection对象对应的输出流
 			out = new PrintWriter(conn.getOutputStream());
 			// 发送请求参数
-			out.print(param);
+			out.print(body);
 			// flush输出流的缓冲
 			out.flush();
 			in = conn.getInputStream();
