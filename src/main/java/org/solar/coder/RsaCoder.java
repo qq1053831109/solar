@@ -1,5 +1,6 @@
 package org.solar.coder;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -26,42 +27,54 @@ import javax.crypto.NoSuchPaddingException;
  * @author xianchuanwu
  *
  */
-public class RSACoder {
+public class RsaCoder {
 	private static final String KEY_ALGORITHM = "RSA";
     private static final String CIPHER_ALGORITHM = "RSA/ECB/PKCS1Padding";
     private static final String PUBLIC_KEY = "publicKey";
     private static final String PRIVATE_KEY = "privateKey";
 
     /** RSA密钥长度必须是64的倍数，在512~65536之间。默认是1024 */
-    public static final int KEY_SIZE = 1024;
+    public static final  int KEY_SIZE = 2048;
 
-     public static final String PLAIN_TEXT = "{\"id\":\"12345678911131517192123252729312\",\"loginTime\":123456789111315,\"rememberMe\":\"y\",\"loginIp\":\"225.225.225.255\"}";
-    //172 public static final String PLAIN_TEXT = "g9SsjacZtSE8tigFcKYa9UupMPY3awoHf11hYppk4o5MVrIlXaKGNdeeur/AnJ7dTWc1bNExih2J6rk+g7MdoVQM0VjDBhkAi0c01N6SvWKKn15IPxQkSJyPLcw3doaq3r5KaW60iWPWvEGb+B5YRGU2W6B0fiDDUUFQ9q2LNZ0=";
+     public static final String PLAIN_TEXT = "{\"id\":\"12345678911131517192123252729312\",\"loginTime\":123456789111315,\"expireTime\":\"123456789111315\",\"ip\":\"225.225.225.255\"}";
+      private PrivateKey privateKey ;
+      private PublicKey publicKey  ;
+
+    public RsaCoder(String privateKey , String publicKey) {
+        this.privateKey = restorePrivateKey(Base64.getDecoder().decode(privateKey));
+        this.publicKey = restorePublicKey(Base64.getDecoder().decode(publicKey));
+    }
 
     public static void main(String[] args) {
-        Map<String, byte[]> keyMap = generateKeyBytes();
-        byte[] ppk= keyMap.get(PUBLIC_KEY);
-        System.out.println("PLAIN_TEXT.length()="+PLAIN_TEXT.length());
-        System.out.println("公钥长度="+ppk.length+"|公钥="+Base64.getEncoder().encodeToString(ppk));
-        byte[] prk =keyMap.get(PRIVATE_KEY);
-        System.out.println("私钥长度="+prk.length+"|私钥="+Base64.getEncoder().encodeToString(prk));
-        PublicKey publicKey = restorePublicKey(ppk);
-        PrivateKey privateKey = restorePrivateKey(prk);
-        
-        long nowTime=System.currentTimeMillis();
+        //generateKey();
+        RsaCoder rSACoder=new RsaCoder(null,null);
+       long nowTime=System.currentTimeMillis();
         //用私钥加密
-        byte[] encodedText = RSAEncode(privateKey, PLAIN_TEXT.getBytes());
-        String str=Base64.getEncoder().encodeToString(encodedText);
+        String str = rSACoder.encode(  PLAIN_TEXT);
         System.out.println("RSA encoded的长度="+str.length()+"|RSA encoded: " +str );
         System.out.println("加密时间:"+(System.currentTimeMillis()-nowTime)+"ms");
         nowTime=System.currentTimeMillis();
         //用公钥解密
-        String end=new String(RSADecode(publicKey, Base64.getDecoder().decode(str)));
+        String end=new String(rSACoder.decode(str));
         System.out.println("解密时间:"+(System.currentTimeMillis()-nowTime)+"ms");
-   
+
 
         System.out.println("RSA decoded: "
                 + end);
+    }
+    public static void generateKey() {
+        Map<String, byte[]> keyMap = generateKeyBytes();
+        byte[] ppk= keyMap.get(PUBLIC_KEY);
+        System.out.println("公钥长度="+ppk.length+"|公钥=");
+        System.out.println(Base64.getEncoder().encodeToString(ppk));
+        byte[] prk =keyMap.get(PRIVATE_KEY);
+        System.out.println();
+        System.out.println();
+        System.out.println("私钥长度="+prk.length+"|私钥=");
+        System.out.println(Base64.getEncoder().encodeToString(prk));
+
+
+
     }
 
     /**MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyO5gIsMpW/m255XmRyQgSJ/3DGF+p9Kl7ymf7181E7XjjeRiAdlNeJ6tBSiQnQaIHPyVI5ekFsEGY0EA4ovxA5XCIEwk5Y+4RmjaVW17lVKGuPgORLc1T2Z7nF/7pqvbp2EpAYjeHoXiBGamh5aFAXPZ0vU45PejgHWIyhNfPYi3mH7NstZ782W3TVLKXBFL7CeFWGrQcCCOJVAeXyouIKX3m2zuqzF3WfS/YXt3S33tqjdEY4qHES16fPjs3mwHvJCU5Wl/+3xr1JTOqNr2yT6KH1rGEyH1T712Q8q0dQOzJi6s4UTWJt1+iopccB8l2iAdrEccD9L0KN3M1toH1wIDAQAB
@@ -131,7 +144,16 @@ public class RSACoder {
         }
         return null;
     }
+    public String encode(String str){
+        try {
+            byte[] b=RSAEncode(privateKey,str.getBytes("utf-8"));
+            return Base64.getUrlEncoder().encodeToString(b);
 
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 加密，三步走。
      * 
@@ -139,7 +161,7 @@ public class RSACoder {
      * @param plainText
      * @return
      */
-    public static byte[] RSAEncode(Key key, byte[] plainText) {
+    public byte[] RSAEncode(Key key, byte[] plainText) {
 
         try {
             Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
@@ -154,7 +176,14 @@ public class RSACoder {
         return null;
 
     }
-
+    public String decode(String str) {
+        try {
+            return new String(RSADecode(publicKey,Base64.getUrlDecoder().decode(str)),"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 解密，三步走。
      * 
@@ -162,7 +191,7 @@ public class RSACoder {
      * @param encodedText
      * @return
      */
-    public static byte[] RSADecode(Key key, byte[] encodedText) {
+    public byte[] RSADecode(Key key, byte[] encodedText) {
 
         try {
             Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);

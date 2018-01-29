@@ -2,6 +2,7 @@ package org.solar.util;
 
 import org.solar.bean.JsonResult;
 import org.solar.bean.Pageable;
+import org.solar.exception.SolarRuntimeException;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -41,10 +42,13 @@ public class BeanUtil {
             }
 
             return (T)obj;
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            throw new SolarRuntimeException("数据类型错误",e);
+        }catch ( Exception e) {
+            e.printStackTrace();
+            throw new SolarRuntimeException( e);
         }
-        return null;
     }
 
     public static Map<String, Object> objectToMap(Object... obj) {

@@ -14,9 +14,13 @@ public class WeChatPublicServiceCreateMenuTest {
     public static String open_id="ojNbawHeaQSSJMH024-MF78m6GOA";
     static WeChatPublicService weChatPublicService=new WeChatPublicService(appid,secret);
 
+    /**
+     {"button":[{"name":"????","sub_button":[{"type":"view","name":"????","url":"http://wx.baozhenche.com/wechatLogin?uri=ppxc"},{"type":"view","name":"???","url":"http://wx.baozhenche.com/wechatLogin?uri=yqt"}]},{"type":"view","name":"????","url":"http://wx.baozhenche.com/wechatLogin?uri=zxyh"},{"name":"??","sub_button":[{"type":"view","name":"??","url":"http://wx.baozhenche.com/wechatLogin?uri=dd"},{"type":"view","name":"??","url":"http://wx.baozhenche.com/wechatLogin?uri=rz"},{"type":"click","name":"????","key":"lxkf"},{"type":"click","name":"??","key":"wq"}]}]}
+
+     */
     public static void main(String[] args) {
 
-       String str= weChatPublicService.createMenu("{ }");
-        System.out.println(str);
+       String str= weChatPublicService.createMenu("");
+       System.out.println(str);
     }
 }
