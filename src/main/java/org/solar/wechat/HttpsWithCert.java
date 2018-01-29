@@ -13,31 +13,32 @@ public class HttpsWithCert {
 //    String trustStorePass = "changeit";
 
     // 私钥证书
-    private String keyStore = null;
-    private String keyStorePass = null;
-    public void setKeyStore(String keyStore) {
-        this.keyStore = keyStore;
-    }
-
-    public void setKeyStorePass(String keyStorePass) {
-        this.keyStorePass = keyStorePass;
-    }
+    private SSLSocketFactory ssf;
 
     public HttpsWithCert(String keyStore, String keyStorePass) {
-        this.keyStore = keyStore;
-        this.keyStorePass = keyStorePass;
+        try {
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            KeyManager[] kms = null;
+            if (keyStore != null) {
+                kms = getKeyManagers(keyStore, keyStorePass);
+            }
+            sslContext.init(kms, null, new java.security.SecureRandom());
+            ssf = sslContext.getSocketFactory();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) throws Exception {
 
-      String str=  new HttpsWithCert(null,null).post("https://124.227.108.87:4443 ","");
+        String str = new HttpsWithCert(null, null).post("https://www.jd.com ", "");
         System.out.println(str);
     }
 
     /**
      * post 请求，带双证书验证
      */
-    public String post(String urlStr,String params) {
+    public String post(String urlStr, String params) {
 
 
         PrintWriter out = null;
@@ -47,18 +48,9 @@ public class HttpsWithCert {
         try {
 //            TrustManager[] tms =null;
 
-            KeyManager[] kms = null;
-            if (keyStore!=null){
-                kms=getKeyManagers(keyStore, keyStorePass);
-            }
-
-            SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(kms, null, new java.security.SecureRandom());
-
-            SSLSocketFactory ssf = sslContext.getSocketFactory();
 
             // 服务链接
-            URL url = new URL( urlStr);
+            URL url = new URL(urlStr);
             // 请求参数
 
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -124,7 +116,7 @@ public class HttpsWithCert {
             TrustManager[] tms = factory.getTrustManagers();
             System.out.println(tms);
             return tms;
-        }   catch ( Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
