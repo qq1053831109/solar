@@ -26,7 +26,7 @@ public class BeanUtil {
         }
     }
 
-    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) {
+    public static <T> T mapToObject(Map<String, Object> map, Class<T> beanClass) {
         if (map == null)
             return null;
         try {
@@ -40,7 +40,7 @@ public class BeanUtil {
                 }
             }
 
-            return obj;
+            return (T)obj;
         } catch (Exception e) {
             e.printStackTrace();
         }

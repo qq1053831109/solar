@@ -16,33 +16,7 @@ public class WeChatPublicServiceCreateMenuTest {
 
     public static void main(String[] args) {
 
-       String str= weChatPublicService.createMenu("{\n" +
-               "     \"button\":[\n" +
-               "     {    \n" +
-               "          \"type\":\"click\",\n" +
-               "          \"name\":\"今日歌曲\",\n" +
-               "          \"key\":\"V1001_TODAY_MUSIC\"\n" +
-               "      },\n" +
-               "      {\n" +
-               "           \"name\":\"菜单\",\n" +
-               "           \"sub_button\":[\n" +
-               "           {    \n" +
-               "               \"type\":\"view\",\n" +
-               "               \"name\":\"搜索\",\n" +
-               "               \"url\":\"http://www.soso.com/\"\n" +
-               "            },\n" +
-               "            {\n" +
-               "                 \"type\":\"scancode_push\",\n" +
-               "                 \"name\":\"扫码推事件\",\n" +
-               "                 \"key\":\"scancode_push\"\n"+
-               "             },\n" +
-               "            {\n" +
-               "               \"type\":\"click\",\n" +
-               "               \"name\":\"赞一下我们\",\n" +
-               "               \"key\":\"V1001_GOOD\"\n" +
-               "            }]\n" +
-               "       }]\n" +
-               " }");
+       String str= weChatPublicService.createMenu("{ }");
         System.out.println(str);
     }
 }

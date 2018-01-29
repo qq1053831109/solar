@@ -29,6 +29,7 @@ public class WeChatWebOAuth {
      * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
      *
      * @return 如果用户同意授权，页面将跳转至 redirect_uri/?code=CODE&state=STATE。
+     *    redirect:redirect_uri
      */
     public String getOauthBaseUrl(String redirect_uri, String state) {
         StringBuilder sb = new StringBuilder();
