@@ -12,7 +12,8 @@ import static org.solar.generator.Generator.packagePrefix;
  * Created by xianchuanwu on 2017/9/25.
  */
 public class MapperXMLGenerator {
-    public   boolean fullTextSearchValueDate=true;
+    public   boolean fullTextSearchContainDate=true;
+    public   boolean whereContainWherein=true;
 
     public static void main(String[] args) throws  Exception {
         new MapperXMLGenerator().start();
@@ -174,7 +175,7 @@ public class MapperXMLGenerator {
                 where.append("      <if test=\"" + key + "End != null\" >\n");
                 where.append("        AND " + column + " &lt; #{" + key + "End}\n");
                 where.append("      </if>\n");
-                if (!fullTextSearchValueDate){
+                if (!fullTextSearchContainDate){
                     continue;
                 }
             }
@@ -192,6 +193,9 @@ public class MapperXMLGenerator {
         }
         fullTextSearch.append("           )\n");
         fullTextSearch.append("      </if>\n");
+        if (whereContainWherein){
+            where.append(getWhereInColumnListKeyList(beanNameMap));
+        }
         where.append(fullTextSearch);
         return where.toString();
     }
@@ -204,6 +208,23 @@ public class MapperXMLGenerator {
             where.append("      <if test=\""+key+" != null\" >\n");
             where.append("        AND "+column+" in\n");
             where.append("        <foreach collection=\""+key+"\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");
+            where.append("            #{item}\n");
+            where.append("        </foreach>\n");
+            where.append("      </if>\n");
+
+
+        }
+        return where.toString();
+    }
+    public  String getWhereInColumnListKeyList(Map<String,String> beanNameMap){
+        Set<String> keys=beanNameMap.keySet();
+        StringBuilder where=new StringBuilder();
+
+        for (String key: keys){
+            String  column=StringUtil.camel2Underline(key);
+            where.append("      <if test=\""+key+"List != null\" >\n");
+            where.append("        AND "+column+" in\n");
+            where.append("        <foreach collection=\""+key+"List\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");
             where.append("            #{item}\n");
             where.append("        </foreach>\n");
             where.append("      </if>\n");

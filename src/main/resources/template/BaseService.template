@@ -23,18 +23,12 @@ public interface BaseService<T> {
 
      List<T> selectByWhere(Object map);
 
-     /**
-     * 参数格式为[属性,搜索值,属性,搜索值,...]
-     */
+      /**
+       * 参数格式为[属性,搜索值,属性,搜索值,...]
+       * where in 参数格式为 "属性+List",搜索值(List或数组)
+       */
      List<T> selectByWhere(Object... obj);
 
-     List<T> selectByWhereIn(Object map);
-
-     /**
-     * 参数格式为[属性,搜索值(List或数组),属性,搜索值(List或数组),...]
-     */
-     List<T> selectByWhereIn(Object... obj);
-
-     Long selectCountByWhereIn(Object... obj);
+     Long selectCountByWhere(Object... obj);
 
 }
