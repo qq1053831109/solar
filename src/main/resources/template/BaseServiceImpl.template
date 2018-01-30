@@ -29,7 +29,6 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     public int save(T entity) {
         return this.baseDao.save(entity);
-
     }
 
     public int updateByPrimaryKey(T entity) {
@@ -50,25 +49,31 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Transactional(readOnly = true)
     public List<T> selectByWhere(Object map) {
-
         return baseDao.selectByWhere(map);
     }
 
     @Transactional(readOnly = true)
-    public List<T> selectByWhere(Object... str) {
+    public List<T> selectByWhere(Object... obj) {
+        return baseDao.selectByWhere(obj);
+    }
 
-        return baseDao.selectByWhere(str);
+    @Transactional(readOnly = true)
+    public Long selectCountByWhere(Object... obj) {
+        return baseDao.selectCountByWhere(obj);
     }
 
     @Transactional(readOnly = true)
     public List<T> selectByWhereIn(Object map) {
-
         return baseDao.selectByWhereIn(map);
     }
 
     @Transactional(readOnly = true)
-    public List<T> selectByWhereIn(Object... str) {
+    public List<T> selectByWhereIn(Object... obj) {
+        return baseDao.selectByWhereIn(obj);
+    }
 
-        return baseDao.selectByWhereIn(str);
+    @Transactional(readOnly = true)
+    public Long selectCountByWhereIn(Object... obj) {
+        return baseDao.selectCountByWhereIn(obj);
     }
 }

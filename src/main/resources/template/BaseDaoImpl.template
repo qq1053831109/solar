@@ -107,12 +107,20 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return sessionTemplate.selectList(selectByWhereStatement, map);
     }
 
-    public List<T> selectByWhere(Object... str) {
+    public List<T> selectByWhere(Object... obj) {
         Map map = new HashMap();
-        for (int i = 0; i < str.length; i = i + 2) {
-            map.put(str[i], str[i + 1]);
+        for (int i = 0; i < obj.length; i = i + 2) {
+            map.put(obj[i], obj[i + 1]);
         }
         return selectByWhere(map);
+    }
+
+    public Long selectCountByWhere(Object... obj) {
+        Map map = new HashMap();
+        for (int i = 0; i < obj.length; i = i + 2) {
+            map.put(obj[i], obj[i + 1]);
+        }
+        return sessionTemplate.selectOne(selectByWhereCountStatement, map);
     }
 
     public List<T> selectByWhereIn(Object obj) {
@@ -131,12 +139,20 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return sessionTemplate.selectList(selectByWhereInStatement, map);
     }
 
-    public List<T> selectByWhereIn(Object... str) {
+    public List<T> selectByWhereIn(Object... obj) {
         Map map = new HashMap();
-        for (int i = 0; i < str.length; i = i + 2) {
-            map.put(str[i], str[i + 1]);
+        for (int i = 0; i < obj.length; i = i + 2) {
+            map.put(obj[i], obj[i + 1]);
         }
         return selectByWhere(map);
+    }
+
+    public Long selectCountByWhereIn(Object... obj) {
+        Map map = new HashMap();
+        for (int i = 0; i < obj.length; i = i + 2) {
+            map.put(obj[i], obj[i + 1]);
+        }
+        return sessionTemplate.selectOne(selectByWhereInCountStatement, map);
     }
 
     final static Class[] dateParam = new Class[]{Date.class};

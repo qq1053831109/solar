@@ -18,11 +18,15 @@ public interface BaseDao<T> {
 
     List<T> selectByWhere(Object map);
 
-    List<T> selectByWhere(Object... str);
+    List<T> selectByWhere(Object... obj);
+
+    Long selectCountByWhere(Object... obj);
 
     List<T> selectByWhereIn(Object map);
 
-    List<T> selectByWhereIn(Object... str);
+    List<T> selectByWhereIn(Object... obj);
+
+    Long selectCountByWhereIn(Object... obj);
 
     int save(T entity);
 
