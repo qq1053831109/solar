@@ -12,7 +12,7 @@ import static org.solar.generator.Generator.packagePrefix;
  * Created by xianchuanwu on 2017/9/25.
  */
 public class MapperXMLGenerator {
-
+    public   boolean fullTextSearchValueDate=true;
 
     public static void main(String[] args) throws  Exception {
         new MapperXMLGenerator().start();
@@ -174,9 +174,12 @@ public class MapperXMLGenerator {
                 where.append("      <if test=\"" + key + "End != null\" >\n");
                 where.append("        AND " + column + " &lt; #{" + key + "End}\n");
                 where.append("      </if>\n");
+                if (!fullTextSearchValueDate){
+                    continue;
+                }
             }
             // fullTextSearch
-            if ("content".equals(key) || "dr".equals(key)) {
+            if ("content".equals(key) || "dr".equals(key)|| "html".equals(key)) {
                 continue;//某些字段不加入全文搜索
             }
             if (isFirst){

@@ -18,7 +18,6 @@ public class GenerateDemo {
         generator.generateBeanCode();// generator.generateBean("Bean","Resume");
         //生成DaoServiceControllerCode//根据已有的实体文件生成
         generator.generateDaoServiceControllerCode();
-        generator.generateMybatisMapperXML();
         //生成VUE的CRUD界面
         generator.generateVueCode();
         //生成数据库字段与备注的properties

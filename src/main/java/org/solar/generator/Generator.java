@@ -25,6 +25,7 @@ public class Generator {
     String mapperXMLRootPath;
     public String vueHtmlRootPath;
     public String dataBaseFieldDictPath;
+    public MapperXMLGenerator mapperXMLGenerateUtil = new MapperXMLGenerator();
 
     public Generator(String jdbcUrl, String classPath, String packagePrefix) {
         this.jdbcUrl = jdbcUrl;
@@ -163,7 +164,6 @@ public class Generator {
     public void generateMybatisMapperXML() throws Exception {
         String type = "MybatisMapper";
         String gcPath = mapperXMLRootPath;
-        MapperXMLGenerator mapperXMLGenerateUtil = new MapperXMLGenerator();
         String template = getTemplate(type + ".template");
         File file = new File(beanPath);
         File[] files = file.listFiles();
