@@ -73,4 +73,16 @@ public class DateUtil {
     public static String getNowTime() {
       return DateUtil.format(new Date(), "yyyyMMddHHmmss");
     }
+
+    public static String getTodayString() {
+      return DateUtil.format(new Date(), "yyyy-MM-dd");
+    }
+    public static String getYesterdayString() {
+        long yesterdayTime=System.currentTimeMillis()-(1000*60*60*24);
+      return DateUtil.format(new Date(yesterdayTime), "yyyy-MM-dd");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(DateUtil.format(new Date(), "HH"));
+    }
 }
