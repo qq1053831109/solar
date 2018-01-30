@@ -1,4 +1,4 @@
-package ${packagePrefix}controller;
+package ${packagePrefix}controller.base;
 
 import org.solar.bean.Constants;
 import org.solar.bean.JsonResult;

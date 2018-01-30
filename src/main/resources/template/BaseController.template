@@ -1,4 +1,4 @@
-package ${packagePrefix}controller;
+package ${packagePrefix}controller.base;
 import org.solar.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;

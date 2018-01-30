@@ -38,7 +38,7 @@ public class Generator {
         daoPath = classPath + packagePath + "dao/";
         ServiceImplPath = classPath + packagePath + "service/impl/";
         daoImplPath = classPath + packagePath + "dao/impl/";
-        ControllerPath = classPath + packagePath + "controller/";
+        ControllerPath = classPath + packagePath + "controller/base/";
         mapperXMLRootPath = classPath + packagePath + "mapper/";
     }
     public  void generatorDataBaseFieldDict() {
