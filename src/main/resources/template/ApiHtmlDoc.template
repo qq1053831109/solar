@@ -9,18 +9,22 @@
 }
 
 .nav{
-	background-color: #ccc;
+	background-color: #313D4D;
 	width: 300px;
 }
 ul.nav{
 	position: fixed;
 	text-align: left;
-    overflow: scroll;
+    overflow: auto;
     height:100%;
 }
 ul.nav li{
-	padding-left: 20px;
+	padding :0 20px;
     margin-bottom: 10px;
+    color: #ccc;
+}
+ul.nav li a{
+    color: #fff;
 }
 h3,h6{
     background-color: #fff;
@@ -39,7 +43,13 @@ table {
     height: 40px;
 }
 .api{
-    border-bottom: 20px solid #ccc;
+    border-bottom: 45px solid #fff;
+}
+h3{
+	background-color: #313D4D;
+	height: 50px;
+	line-height: 50px;
+	color: #fff;
 }
 .api table tr:nth-child(odd) {
     background-color: #F9F9F9;
@@ -47,6 +57,15 @@ table {
 
 .api table tr:nth-child(even) {
     background-color: #fff;
+}
+.api table tr td:nth-child(1) {
+    width: 30%;
+}
+.api table tr td:nth-child(2) {
+    width: 10%;
+}
+.api table tr td:nth-child(3) {
+    width: 58%;
 }
  </style>
 	<script type="text/javascript">
