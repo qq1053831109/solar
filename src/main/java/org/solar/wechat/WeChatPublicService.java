@@ -7,6 +7,7 @@ import org.solar.util.JsonUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class WeChatPublicService {
     //POST
@@ -52,6 +53,16 @@ public class WeChatPublicService {
         requetMap.put("template_id", template_id);
         if (url != null) {
             requetMap.put("url", url);
+        }
+        Set keySet=data.keySet();
+        for (Object key:keySet) {
+            Object val=data.get(key);
+            if (val instanceof String||val instanceof Integer||val instanceof Long||val==null){
+                Map dataValMap=new HashMap();
+                dataValMap.put("value",val);
+//                dataValMap.put("color","#173177");
+                data.put(key,dataValMap);
+            }
         }
         requetMap.put("data", data);
         String requetBody = JsonUtil.toJSONString(requetMap);
