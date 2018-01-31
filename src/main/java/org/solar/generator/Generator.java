@@ -68,7 +68,6 @@ public class Generator {
     }
 
 
-
     public void generateDaoServiceControllerCode() {
         try {
             generateCodeByType("Dao", daoPath);
@@ -79,7 +78,6 @@ public class Generator {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("程序结束!");
     }
 
     public void generateVueCode() {
@@ -90,7 +88,6 @@ public class Generator {
             e.printStackTrace();
         }
 
-        System.out.println("程序结束!");
     }
 
     public void generatePackageAndBaseDaoAndBaseService() {
@@ -156,23 +153,29 @@ public class Generator {
             map.put("beanName", StringUtil.toLowerCaseFirstOne(beanName));
             map.put("Date", date);
             map.put("packagePrefix", packagePrefix);
-            if (!gcfile.exists()) {
+            if (gcfile.exists() && !overWriteFile) {
+                continue;
+            } else {
                 gcfile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(gcfile);
-                String fosStr = replaceTemplateEL(daoTemplate, map);
-                fos.write(fosStr.getBytes());
-                fos.flush();
-                fos.close();
-                System.out.println("生成" + beanName + type + "成功!");
             }
+
+            FileOutputStream fos = new FileOutputStream(gcfile);
+            String fosStr = replaceTemplateEL(daoTemplate, map);
+            fos.write(fosStr.getBytes());
+            fos.flush();
+            fos.close();
+            System.out.println("生成" + beanName + type + "成功!");
         }
+
+        System.out.println("----------------------生成"+type+"结束!----------------------");
+
     }
+
 
     public void generateMybatisMapperXML() throws Exception {
 
         String type = "MybatisMapper";
         String gcPath = mapperXMLRootPath;
-        File file = new File(beanPath);
         for (Table table : tableList) {
             File gcfile = new File(gcPath + table.getCamelName(false) + "Mapper.xml");
             if (gcfile.exists()) {
@@ -194,6 +197,8 @@ public class Generator {
             }
             System.out.println("生成" + table.getCamelName(false) + "Mapper.xml 成功!");
         }
+        System.out.println("----------------------生成"+type+"结束!----------------------");
+
     }
 
     public void generateBean() throws Exception {
@@ -217,6 +222,8 @@ public class Generator {
             System.out.println("生成 " + BeanName + " 成功!");
 
         }
+        System.out.println("----------------------生成Entity结束!----------------------");
+
     }
 
     public void generateApiHtmlDoc() throws Exception {
@@ -263,6 +270,7 @@ public class Generator {
             System.out.println("生成 " + beanName + ".html 成功!");
 
         }
+        System.out.println("----------------------生成Vue.Html结束!----------------------");
 
     }
 
@@ -276,7 +284,7 @@ public class Generator {
             if (!fileFolder.exists()) {
                 fileFolder.mkdir();
             }
-            File beanFile = new File(gcPath + beanName + "/" + beanName + ".html");
+            File beanFile = new File(gcPath + beanName + "/" + beanName + "Page.html");
             if (beanFile.exists() && !overWriteFile) {
                 return;
             } else {
@@ -291,6 +299,7 @@ public class Generator {
             System.out.println("生成 " + beanName + "Page.html 成功!");
 
         }
+        System.out.println("----------------------生成VuePage.Html结束!----------------------");
 
     }
 

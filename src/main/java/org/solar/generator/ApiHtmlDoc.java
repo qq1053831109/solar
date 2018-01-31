@@ -71,8 +71,8 @@ public class ApiHtmlDoc {
         sb.append("        <div class=\"api\" id=\""+tableCamelName+"\">\n");
         sb.append("             <h3>"+table.getCommentInOneLine()+"</h3>");
         sb.append("             <h6><a  href=\"\" onclick=\"openUri('/"+tableCamelName+"/select?pageNum=1');\" >查询接口</a> host+\"/"+tableCamelName+"/select\"</h6>\n");
-        sb.append("             <h6>删除接口 host+\"/"+tableCamelName+"/delete\"</h3>\n");
-        sb.append("             <h6>保存或修改接口 host+\"/"+tableCamelName+"/saveOrUpdate\"</h3>\n");
+        sb.append("             <h6>删除接口 host+\"/"+tableCamelName+"/delete\"</h6>\n");
+        sb.append("             <h6>保存或修改接口 host+\"/"+tableCamelName+"/saveOrUpdate\"</h6>\n");
         sb.append("             <table>\n");
         sb.append("                 <tr>\n");
         sb.append("                     <td>参数名</td>\n");

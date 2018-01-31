@@ -149,29 +149,12 @@ public class Pageable implements Serializable {
 
     /**
      * 设置排序属性
-     * 由于mybatis用$取值 所以这里有sql注入风险 需要手动检查数据是否合法
-     * 或者在mybatis 用<if></if>判断
+     * 由于mybatis用$取值 所以这里有sql注入风险 必须手动检查数据是否合法
+     * 在mybatis 用<if></if>判断
      * 或者在dao 根据表字段判断
      * @param orderProperty 排序属性
      */
     public void setOrderProperty(String orderProperty) {
-        if(orderProperty==null||"".equals(orderProperty)){
-            return;
-        }
-        orderProperty=orderProperty.toLowerCase();
-        //关键字校验
-        if (orderProperty.contains("update ")||orderProperty.contains("delete ")
-            ||orderProperty.contains("insert ")||orderProperty.contains("select ")
-            ||orderProperty.contains(";")||orderProperty.contains("--")
-            ||orderProperty.contains("or ")||orderProperty.contains("in ")
-            ||orderProperty.contains("and ")
-            ){
-            return;
-        }
-        //长度校验
-        if(orderProperty.length()>50){
-            return;
-        }
         this.orderProperty = orderProperty;
     }
 

@@ -38,9 +38,7 @@ public class DataBase {
         }
 
     }
-    public static void main(String[] args) {
 
-    }
     public List<String> getTableNames()  {
         ResultSet tableRet = null;
         try {
