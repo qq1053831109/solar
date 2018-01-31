@@ -72,6 +72,9 @@ public class StringUtil {
         }
         return sb.toString();
     }
+    public static String underline2Camel(String line){
+       return underline2Camel(line,true);
+    }
     /**
      * 驼峰法转下划线
      * @param

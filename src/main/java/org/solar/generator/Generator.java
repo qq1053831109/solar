@@ -25,6 +25,10 @@ public class Generator {
     String mapperXMLRootPath;
     public String vueHtmlRootPath;
     public String dataBaseFieldDictPath;
+    public String apiHtmlDocPath;
+    public String apiHtmlDocHost;
+    public boolean overWriteFile=false;
+    private DataBase dataBase;
     public MapperXMLGenerator mapperXMLGenerateUtil = new MapperXMLGenerator();
 
     public Generator(String jdbcUrl, String classPath, String packagePrefix) {
@@ -40,6 +44,7 @@ public class Generator {
         daoImplPath = classPath + packagePath + "dao/impl/";
         ControllerPath = classPath + packagePath + "controller/base/";
         mapperXMLRootPath = classPath + packagePath + "mapper/";
+        dataBase=new DataBase(jdbcUrl);
     }
     public  void generatorDataBaseFieldDict() {
         if (dataBaseFieldDictPath==null){
@@ -222,7 +227,24 @@ public class Generator {
             }
         }
     }
-
+    public void generateApiHtmlDoc() throws Exception {
+        String template = getTemplate( "ApiHtmlDoc.template");
+        ApiHtmlDoc generate = new ApiHtmlDoc(dataBase,template,apiHtmlDocHost);
+        File file=new File(apiHtmlDocPath);
+        if (file.exists()){
+            if (!overWriteFile){
+                return;
+            }
+        }else {
+            file.createNewFile();
+        }
+        FileOutputStream fos = new FileOutputStream(file);
+        String text = generate.toString( );
+        fos.write(text.getBytes());
+        fos.flush();
+        fos.close();
+        System.out.println("生成 ApiHtmlDoc 成功!");
+    }
     public void generateVueHtml(String gcPath) throws Exception {
         VueGenerator beanCodeGenerate = new VueGenerator(jdbcUrl);
         String template = getTemplate("VueComponent.template");

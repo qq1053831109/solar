@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+*{
+    padding: 0px;
+    margin: 0px;
+    text-decoration:none;
+}
+
+.nav{
+	background-color: #ccc;
+	width: 300px;
+}
+ul.nav{
+	position: fixed;
+	text-align: left;
+    overflow: scroll;
+    height:100%;
+}
+ul.nav li{
+	padding-left: 20px;
+    margin-bottom: 10px;
+}
+h3,h6{
+    background-color: #fff;
+}
+body{
+	width: 98%;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+ table td {
+    text-align: center;
+    border: 1px solid #fff;
+    min-width: 40px;
+    height: 40px;
+}
+.api{
+    border-bottom: 20px solid #ccc;
+}
+.api table tr:nth-child(odd) {
+    background-color: #F9F9F9;
+}
+
+.api table tr:nth-child(even) {
+    background-color: #fff;
+}
+ </style>
+	<script type="text/javascript">
+		var host="${host}"
+
+		function openUri(uri){
+		     if(host==""||host=="null"){
+		        host="";
+		     }
+			 window.open(host+uri);
+		}
+	</script>
+</head>
+<body>
+	<table id="content-body" class="body">
+        <tr>
+            <td valign="top" class="nav">
+                    <ul class="nav">
+                    	<li>
+                        文档版本:${date}
+                        </li>
+                        <li>
+                      host: <a href="http://wx.baozhenche.com" target="_blank">${host}</a>
+                        </li>
+                        <li><hr/></li>
+${apiNavList}
+                    </ul>
+            </td>
+            <td valign="top">
+                <div id="mainView">
+${apiList}
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

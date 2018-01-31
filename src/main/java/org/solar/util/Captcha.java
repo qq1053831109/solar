@@ -10,6 +10,9 @@ import java.io.OutputStream;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+/**
+ * 验证码
+ */
 public class Captcha  {
     static char[] ch = "abcdefghjkmnpqrstuvwxyz23456789".toCharArray(); // 随即产生的字符串 不包�?i l(小写L) o（小写O�?1（数�?�?(数字0)
 
@@ -61,6 +64,18 @@ public class Captcha  {
             sRand += rand;
         }
         return sRand;
-    }  
-  
+    }
+
+    public static String  randomString(int len)  {
+        int length = ch.length;
+        String sRand = "";
+        Random random = new Random();
+        for (int i = 0; i < len; i++) {
+            // 随即生成0-9的数�?
+            String rand = new Character(ch[random.nextInt(length)]).toString();
+            sRand += rand;
+        }
+        return sRand;
+    }
+
 }  
