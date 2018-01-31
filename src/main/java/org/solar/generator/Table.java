@@ -15,6 +15,10 @@ public class Table {
         return name;
     }
 
+    public String getCamelName(boolean bool) {
+        return StringUtil.underline2Camel(name,bool);
+    }
+
     public String getCamelName() {
         return StringUtil.underline2Camel(name);
     }

@@ -24,8 +24,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         entityClass = GenericsUtils.getSuperClassGenricType(this.getClass());
         Field[] fieldArray = entityClass.getDeclaredFields();
         for (Field field : fieldArray) {
-            String fieldName = field.getName();
-            tableFields.add(StringUtil.camel2Underline(fieldName));
+            tableFields.add(field.getName());
         }
         entityName = entityClass.getSimpleName();
         selectByPrimaryKeyStatement = entityName + ".selectByPrimaryKey";
@@ -98,6 +97,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
            if (!tableFields.contains(orderProperty)) {
                throw new SolarRuntimeException(orderProperty + "字段在表中不存在");
            }
+           map.put("orderProperty",StringUtil.camel2Underline(orderProperty));
            String orderDirection = (String) map.get("orderDirection");
            if (!"asc".equalsIgnoreCase(orderDirection) && !"desc".equalsIgnoreCase(orderDirection)) {
                throw new SolarRuntimeException(orderDirection + "排序方向值不正确");

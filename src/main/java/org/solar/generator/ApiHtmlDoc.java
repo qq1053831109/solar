@@ -18,15 +18,15 @@ import static org.solar.generator.Generator.packagePrefix;
  * Created by xianchuanwu on 2017/9/25.
  */
 public class ApiHtmlDoc {
-    private DataBase dataBase;
     private String template;
     private String host;
-    public ApiHtmlDoc(DataBase dataBase, String template ) {
-        this.dataBase = dataBase;
+    private List<Table> tableList;
+    public ApiHtmlDoc(List<Table> tableList, String template ) {
+        this.tableList = tableList;
         this.template = template;
     }
-    public ApiHtmlDoc(DataBase dataBase, String template, String host) {
-        this.dataBase = dataBase;
+    public ApiHtmlDoc(List<Table> tableList, String template, String host) {
+        this.tableList = tableList;
         this.template = template;
         this.host = host;
     }
@@ -46,7 +46,6 @@ public class ApiHtmlDoc {
     }
     public String getApiListHtml() throws Exception {
         StringBuilder sb=new StringBuilder();
-        List<Table> tableList=dataBase.getTables();
         for (int i = 0; i < tableList.size(); i++) {
             String api=getApiHtml(tableList.get(i));
             sb.append(api);
@@ -55,7 +54,6 @@ public class ApiHtmlDoc {
     }
     public String getApiNavListHtml() throws Exception {
         StringBuilder sb=new StringBuilder();
-        List<Table> tableList=dataBase.getTables();
         for (int i = 0; i < tableList.size(); i++) {
             Table table=tableList.get(i);
             sb.append("                        <li>\n");

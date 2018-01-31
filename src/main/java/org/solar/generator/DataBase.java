@@ -15,8 +15,6 @@ import static org.solar.generator.Generator.packagePrefix;
  * Created by xianchuanwu on 2017/9/25.
  */
 public class DataBase {
-    private String jdbcUrl;
-    private  String driverName;
     private  String dataBaseName;
     private Connection connection ;
     //2. 下面就是获取表的信息。
@@ -25,14 +23,11 @@ public class DataBase {
         this( jdbcUrl,"com.mysql.jdbc.Driver");
     }
     public DataBase(String jdbcUrl, String driverName) {
-        this.jdbcUrl = jdbcUrl;
         int beginIndex=jdbcUrl.lastIndexOf("/");
         String dataBaseName=jdbcUrl.substring(beginIndex+1);
         if (dataBaseName!=null&&dataBaseName.contains("?")){
             this.dataBaseName=dataBaseName.split("\\?")[0];
         }
-        this.driverName = driverName;
-        //1. JDBC连接MYSQL的代码很标准。
         try {
             Class.forName(driverName).newInstance();
             connection = DriverManager.getConnection(jdbcUrl);

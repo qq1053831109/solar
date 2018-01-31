@@ -1,8 +1,10 @@
 package org.solar.generator;
+import org.solar.util.ELUtil;
 import org.solar.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,65 +17,42 @@ public class MapperXMLGenerator {
     public   boolean fullTextSearchContainDate=true;
     public   boolean whereContainWherein=true;
 
-    public static void main(String[] args) throws  Exception {
-        new MapperXMLGenerator().start();
+    private final String template;
+    private String packagePrefix;
+    private List<Table> tableList;
+    public MapperXMLGenerator(List<Table> tableList, String template, String packagePrefix ) {
+        this.tableList = tableList;
+        this.template = template;
+        this.packagePrefix = packagePrefix;
     }
-    public  void start() throws  Exception {
-
-
-    }
-    public  String getMapperXMLContent(String template,String beanName,Map beanNameMap) throws  Exception {
+    public  String toString(Table table){
         Map replaceMap=new  LinkedHashMap();
-        replaceMap.put("BeanName",beanName);
-        replaceMap.put("BaseResultMap",getBaseResultMap(beanNameMap));
-        replaceMap.put("Base_Column_List",getBase_Column_List(beanNameMap));
-        replaceMap.put("Base_Column_Value_List",getBase_Column_Value_List(beanNameMap));
-        String tableName=StringUtil.camel2Underline(StringUtil.toLowerCaseFirstOne(beanName));
-        replaceMap.put("tableName",tableName);
-        replaceMap.put("where",getWhere(beanNameMap));
-        replaceMap.put("whereInColumnList",getWhereInColumnList(beanNameMap));
-        replaceMap.put("insertTrimList",getInsertTrimList(beanNameMap));
-        replaceMap.put("insertTrimValueList",getInsertTrimValueList(beanNameMap));
-        replaceMap.put("updateSetList",getUpdateSetList(beanNameMap));
-        replaceMap.put("updateNameValueList",getUpdateNameValueList(beanNameMap));
+        List<TableField> tableFieldList=table.getTableFields();
+        replaceMap.put("BeanName",table.getCamelName(false));
+        replaceMap.put("BaseResultMap",getBaseResultMap(tableFieldList));
+        replaceMap.put("Base_Column_List",getBase_Column_List(tableFieldList));
+        replaceMap.put("Base_Column_Value_List",getBase_Column_Value_List(tableFieldList));
+        replaceMap.put("tableName",table.getName());
+        replaceMap.put("where",getWhere(tableFieldList));
+        replaceMap.put("whereInColumnList",getWhereInColumnList(tableFieldList));
+        replaceMap.put("insertTrimList",getInsertTrimList(tableFieldList));
+        replaceMap.put("insertTrimValueList",getInsertTrimValueList(tableFieldList));
+        replaceMap.put("updateSetList",getUpdateSetList(tableFieldList));
+        replaceMap.put("updateNameValueList",getUpdateNameValueList(tableFieldList));
         replaceMap.put("packagePrefix",packagePrefix);
-        String mapperXMLContent=replaceTemplateEL(template,replaceMap);
+        String mapperXMLContent= ELUtil.replace(template,replaceMap);
         return mapperXMLContent;
 
     }
-    private String replaceTemplateEL(String template, Map<String, String> map) {
-        template= template.replace("${BeanName}", map.get("BeanName"));
-        template= template.replace("${BaseResultMap}", map.get("BaseResultMap"));
-        template= template.replace("${Base_Column_List}", map.get("Base_Column_List"));
-        template= template.replace("${tableName}", map.get("tableName"));
-        template= template.replace("${where}", map.get("where"));
-        template= template.replace("${whereInColumnList}", map.get("whereInColumnList"));
-        template= template.replace("${insertTrimList}", map.get("insertTrimList"));
-        template= template.replace("${insertTrimValueList}", map.get("insertTrimValueList"));
-        template= template.replace("${updateSetList}", map.get("updateSetList"));
-        template= template.replace("${updateNameValueList}", map.get("updateNameValueList"));
-        template= template.replace("${packagePrefix}", map.get("packagePrefix"));
-        return template;
-    }
 
-    public  Map<String,String> getBeanNameMap(String beanPackage,String beanName) throws  Exception{
-        Class beanClass=Class.forName(beanPackage+"."+beanName);
-        Field[] fieleArray = beanClass.getDeclaredFields();
-        Map map=new  LinkedHashMap();
-        for (Field field:fieleArray){
-            String fieldName=field.getName();
-            String fieldType=field.getType().getSimpleName();
-            map.put(fieldName,fieldType);
-        }
-        map.remove("id");
-        return map;
-    }
-    public  String getBase_Column_List(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+
+
+
+    public  String getBase_Column_List(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
         int maxLineLen=100;
-        for (String key: keys){
-            sb.append(" , "+StringUtil.camel2Underline(key));
+        for (TableField tableField: tableFieldList){
+            sb.append(" , "+tableField.getName());
             if (sb.length()>maxLineLen){
                 sb.append("\n");
                 maxLineLen=maxLineLen+100;
@@ -81,14 +60,13 @@ public class MapperXMLGenerator {
         }
         return sb.toString();
     }
-    public  String getUpdateNameValueList(Map<String,String> beanNameMap){
-        String[] keys=new String[beanNameMap.keySet().size()];
-        keys=beanNameMap.keySet().toArray(keys);
+    public  String getUpdateNameValueList(List<TableField> tableFieldList){
+        String[] keys=new String[tableFieldList.size()];
         StringBuilder sb=new StringBuilder();
-        for (int i = 0; i < keys.length; i++) {
-            String key=keys[i];
-            String  column=StringUtil.camel2Underline(key);
-            sb.append("      "+column+" = #{"+key+"}");
+        for (int i = 0; i < tableFieldList.size(); i++) {
+            TableField tableField=tableFieldList.get(i);
+            String  column=tableField.getName();
+            sb.append("      "+column+" = #{"+tableField.getCamelName()+"}");
             if (i<(keys.length-1)){
                 sb.append(",");
             }
@@ -96,12 +74,11 @@ public class MapperXMLGenerator {
         }
         return sb.toString();
     }
-    public  String getBase_Column_Value_List(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getBase_Column_Value_List(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
         int maxLineLen=100;
-        for (String key: keys){
-            sb.append(" , #{"+key+"}");
+        for (TableField tableField: tableFieldList){
+            sb.append(" , #{"+tableField.getCamelName()+"}");
             if (sb.length()>maxLineLen){
                 sb.append("\n");
                 maxLineLen=maxLineLen+100;
@@ -109,63 +86,57 @@ public class MapperXMLGenerator {
         }
         return sb.toString();
     }
-    public  String getBaseResultMap(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getBaseResultMap(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
-        for (String key: keys){
-            String  column=StringUtil.camel2Underline(key);
-            String  jdbcType=JdbcTypeMap.getJdbcTypeByJavaType(beanNameMap.get(key));
+        for (TableField tableField: tableFieldList){
+            String  column=tableField.getName();
+            String  jdbcType=tableField.getJdbcType();
             sb.append("    ");//前面空格
-            sb.append("<result column=\""+column+"\" property=\""+key+"\" jdbcType=\""+jdbcType+"\" />\n");
+            sb.append("<result column=\""+column+"\" property=\""+tableField.getCamelName()+"\" jdbcType=\""+jdbcType+"\" />\n");
         }
         return sb.toString();
     }
-    public  String getInsertTrimList(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getInsertTrimList(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
-        for (String key: keys){
-            String  column=StringUtil.camel2Underline(key);
-            sb.append("      <if test=\""+key+" != null\" >\n");
-            sb.append("        "+column+",\n");
+        for (TableField tableField: tableFieldList){
+            sb.append("      <if test=\""+tableField.getCamelName()+" != null\" >\n");
+            sb.append("        "+tableField.getName()+",\n");
             sb.append("      </if>\n");
         }
         return sb.toString();
     }
-    public  String getInsertTrimValueList(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getInsertTrimValueList(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
-        for (String key: keys){
-            sb.append("      <if test=\""+key+" != null\" >\n");
-            sb.append("        #{"+key+"},\n");
+        for (TableField tableField: tableFieldList){
+            sb.append("      <if test=\""+tableField.getCamelName()+" != null\" >\n");
+            sb.append("        #{"+tableField.getCamelName()+"},\n");
             sb.append("      </if>\n");
         }
         return sb.toString();
     }
-    public  String getUpdateSetList(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getUpdateSetList(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
-        for (String key: keys){
-            String  column=StringUtil.camel2Underline(key);
-            sb.append("      <if test=\""+key+" != null\" >\n");
-            sb.append("        "+column+" = #{"+key+"},\n");
+        for (TableField tableField: tableFieldList){
+            sb.append("      <if test=\""+tableField.getCamelName()+" != null\" >\n");
+            sb.append("        "+tableField.getName()+" = #{"+tableField.getCamelName()+"},\n");
             sb.append("      </if>\n");
         }
         return sb.toString();
     }
-    public  String getWhere(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getWhere(List<TableField> tableFieldList){
         StringBuilder where=new StringBuilder();
         StringBuilder fullTextSearch=new StringBuilder();
         fullTextSearch.append("       <if test=\"fullTextSearchValue != null\" >\n");
         fullTextSearch.append("           AND (\n");
 
         boolean isFirst=true;
-        for (String key: keys){
-            String  column=StringUtil.camel2Underline(key);
+        for (TableField tableField: tableFieldList){
+            String  column=tableField.getName();
+            String  key=tableField.getCamelName();
             where.append("      <if test=\""+key+" != null\" >\n");
             where.append("        AND "+column+" = #{"+key+"}\n");
             where.append("      </if>\n");
-            String javaType=beanNameMap.get(key);
+            String javaType=tableField.getJAVAType();
             //&lt;=<  &gt;=>
             if ("Date".equals(javaType)||"Timestamp".equals(javaType)){
                 where.append("      <if test=\"" + key + "Start != null\" >\n");
@@ -194,17 +165,17 @@ public class MapperXMLGenerator {
         fullTextSearch.append("           )\n");
         fullTextSearch.append("      </if>\n");
         if (whereContainWherein){
-            where.append(getWhereInColumnListKeyList(beanNameMap));
+            where.append(getWhereInColumnListKeyList(tableFieldList));
         }
         where.append(fullTextSearch);
         return where.toString();
     }
-    public  String getWhereInColumnList(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getWhereInColumnList(List<TableField> tableFieldList){
         StringBuilder where=new StringBuilder();
 
-        for (String key: keys){
-            String  column=StringUtil.camel2Underline(key);
+        for (TableField tableField: tableFieldList){
+            String  column=tableField.getName();
+            String  key=tableField.getCamelName();
             where.append("      <if test=\""+key+" != null\" >\n");
             where.append("        AND "+column+" in\n");
             where.append("        <foreach collection=\""+key+"\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");
@@ -216,12 +187,12 @@ public class MapperXMLGenerator {
         }
         return where.toString();
     }
-    public  String getWhereInColumnListKeyList(Map<String,String> beanNameMap){
-        Set<String> keys=beanNameMap.keySet();
+    public  String getWhereInColumnListKeyList(List<TableField> tableFieldList){
         StringBuilder where=new StringBuilder();
 
-        for (String key: keys){
-            String  column=StringUtil.camel2Underline(key);
+        for (TableField tableField: tableFieldList){
+            String  column=tableField.getName();
+            String  key=tableField.getCamelName();
             where.append("      <if test=\""+key+"List != null\" >\n");
             where.append("        AND "+column+" in\n");
             where.append("        <foreach collection=\""+key+"List\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");

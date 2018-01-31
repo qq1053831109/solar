@@ -2,6 +2,7 @@ package org.solar.generator;
 
 import org.solar.util.DateUtil;
 import org.solar.util.FileUtil;
+import org.solar.util.PropertiesUtil;
 import org.solar.util.StringUtil;
 
 import java.io.File;
@@ -27,9 +28,10 @@ public class Generator {
     public String dataBaseFieldDictPath;
     public String apiHtmlDocPath;
     public String apiHtmlDocHost;
-    public boolean overWriteFile=false;
+    public boolean overWriteFile = false;
     private DataBase dataBase;
-    public MapperXMLGenerator mapperXMLGenerateUtil = new MapperXMLGenerator();
+    private List<Table> tableList;
+    public MapperXMLGenerator mapperXMLGenerator;
 
     public Generator(String jdbcUrl, String classPath, String packagePrefix) {
         this.jdbcUrl = jdbcUrl;
@@ -44,28 +46,28 @@ public class Generator {
         daoImplPath = classPath + packagePath + "dao/impl/";
         ControllerPath = classPath + packagePath + "controller/base/";
         mapperXMLRootPath = classPath + packagePath + "mapper/";
-        dataBase=new DataBase(jdbcUrl);
+        dataBase = new DataBase(jdbcUrl);
+        tableList = dataBase.getTables();
+        tableList = dataBase.getTables();
+        String mybatisMapperTemplate = getTemplate("MybatisMapper.template");
+        mapperXMLGenerator = new MapperXMLGenerator(tableList, mybatisMapperTemplate, packagePrefix);
     }
-    public  void generatorDataBaseFieldDict() {
-        if (dataBaseFieldDictPath==null){
-            dataBaseFieldDictPath=rootpath+"dataBaseFieldDict.properties";
+
+    public void generatorDataBaseFieldDict() {
+        if (dataBaseFieldDictPath == null) {
+            dataBaseFieldDictPath = rootpath + "dataBaseFieldDict.properties";
         }
-        DataBaseFieldDictGenerator dataBaseFieldDictGenerator = new DataBaseFieldDictGenerator(jdbcUrl);
-        dataBaseFieldDictGenerator.dataBaseFieldDictPath=dataBaseFieldDictPath;
+        DataBaseFieldDictGenerator dataBaseFieldDictGenerator = new DataBaseFieldDictGenerator(tableList, dataBaseFieldDictPath);
+
         try {
-            dataBaseFieldDictGenerator.generatorDataBaseFieldDict();
+            dataBaseFieldDictGenerator.generatorPropertiesFile();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void generateBeanCode(String... overrideNames) {
-        try {
-            generateBean("Bean",overrideNames);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("程序结束!");
-    }
+
+
 
     public void generateDaoServiceControllerCode() {
         try {
@@ -119,13 +121,13 @@ public class Generator {
     }
 
     public String getTemplate(String templateName) {
-        byte[] bytes =null;
-        if (templateRootPath==null||"".equals(templateRootPath)){
-            InputStream in= this.getClass().getClassLoader().getResourceAsStream("template/"+templateName);
-            bytes =FileUtil.getBytesFromFileIo(in);
+        byte[] bytes = null;
+        if (templateRootPath == null || "".equals(templateRootPath)) {
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream("template/" + templateName);
+            bytes = FileUtil.getBytesFromFileIo(in);
             //System.out.println("从ClassPath读取文件!");
-        }else {
-            bytes =FileUtil.getBytesFromFile(templateRootPath + templateName);
+        } else {
+            bytes = FileUtil.getBytesFromFile(templateRootPath + templateName);
         }
 
         String template = new String(bytes);
@@ -167,130 +169,129 @@ public class Generator {
     }
 
     public void generateMybatisMapperXML() throws Exception {
+
         String type = "MybatisMapper";
         String gcPath = mapperXMLRootPath;
-        String template = getTemplate(type + ".template");
         File file = new File(beanPath);
-        File[] files = file.listFiles();
-        for (File f : files) {
-            String beanName = f.getName();
-            beanName = beanName.replace(".java", "");
-            File gcfile = new File(gcPath + beanName + "Mapper.xml");
-            if (!gcfile.exists()) {
-                gcfile.createNewFile();
-                try {
-                    Map beanNameMap = mapperXMLGenerateUtil.getBeanNameMap(beanPackage, beanName);
-                    FileOutputStream fos = new FileOutputStream(gcfile);
-                    String mapperXMLContent = mapperXMLGenerateUtil.getMapperXMLContent(template, beanName, beanNameMap);
-                    fos.write(mapperXMLContent.getBytes());
-                    fos.flush();
-                    fos.close();
-                }catch (Exception e){
-                    gcfile.delete();
-                    throw e;
+        for (Table table : tableList) {
+            File gcfile = new File(gcPath + table.getCamelName(false) + "Mapper.xml");
+            if (gcfile.exists()) {
+                if (!overWriteFile) {
+                    continue;
                 }
-                System.out.println("生成" + beanName + "Mapper.xml 成功!");
+            } else {
+                gcfile.createNewFile();
             }
-        }
-    }
-
-    public void generateBean(String type, String... overrideNames) throws Exception {
-        BeanGenerator beanCodeGenerate = new BeanGenerator(jdbcUrl);
-        String template = getTemplate(type + ".template");
-        List<String> tableNames = beanCodeGenerate.getTableNames();
-        for (String tableName : tableNames) {
-            String BeanName = StringUtil.underline2Camel(tableName.toLowerCase(), false);
-            File beanFile = new File(beanPath + BeanName + ".java");
-            if (!beanFile.exists()) {
-                beanFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(beanFile);
-                List list = beanCodeGenerate.getTableFields(tableName);
-                String text = beanCodeGenerate.getBeanFileContent(template, list, BeanName);
-                fos.write(text.getBytes());
+            try {
+                FileOutputStream fos = new FileOutputStream(gcfile);
+                String mapperXMLContent = mapperXMLGenerator.toString(table);
+                fos.write(mapperXMLContent.getBytes());
                 fos.flush();
                 fos.close();
-                System.out.println("生成 " + BeanName + " 成功!");
-
-            } else if (overrideNames != null) {
-                for (int i = 0; i < overrideNames.length; i++) {
-                    String overrideName = overrideNames[i];
-                    if (overrideName.equals(BeanName)) {
-                        FileOutputStream fos = new FileOutputStream(beanFile);
-                        List list = beanCodeGenerate.getTableFields(tableName);
-                        String text = beanCodeGenerate.getBeanFileContent(template, list, BeanName);
-                        fos.write(text.getBytes());
-                        fos.flush();
-                        fos.close();
-                        System.out.println("生成 " + BeanName + " 成功!");
-                    }
-                }
+            } catch (Exception e) {
+                gcfile.delete();
+                throw e;
             }
+            System.out.println("生成" + table.getCamelName(false) + "Mapper.xml 成功!");
         }
     }
+
+    public void generateBean() throws Exception {
+        String template = getTemplate("Bean.template");
+        BeanGenerator beanCodeGenerate = new BeanGenerator(template, packagePrefix);
+        for (Table table : tableList) {
+            String BeanName = StringUtil.underline2Camel(table.getName().toLowerCase(), false);
+            File beanFile = new File(beanPath + BeanName + ".java");
+            if (beanFile.exists()) {
+                if (!overWriteFile) {
+                    continue;
+                }
+            } else {
+                beanFile.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(beanFile);
+            String text = beanCodeGenerate.toString(table);
+            fos.write(text.getBytes());
+            fos.flush();
+            fos.close();
+            System.out.println("生成 " + BeanName + " 成功!");
+
+        }
+    }
+
     public void generateApiHtmlDoc() throws Exception {
-        String template = getTemplate( "ApiHtmlDoc.template");
-        ApiHtmlDoc generate = new ApiHtmlDoc(dataBase,template,apiHtmlDocHost);
-        File file=new File(apiHtmlDocPath);
-        if (file.exists()){
-            if (!overWriteFile){
+        String template = getTemplate("ApiHtmlDoc.template");
+        ApiHtmlDoc generate = new ApiHtmlDoc(tableList, template, apiHtmlDocHost);
+        File file = new File(apiHtmlDocPath);
+        if (file.exists()) {
+            if (!overWriteFile) {
                 return;
             }
-        }else {
+        } else {
             file.createNewFile();
         }
         FileOutputStream fos = new FileOutputStream(file);
-        String text = generate.toString( );
+        String text = generate.toString();
         fos.write(text.getBytes());
         fos.flush();
         fos.close();
         System.out.println("生成 ApiHtmlDoc 成功!");
     }
+
     public void generateVueHtml(String gcPath) throws Exception {
-        VueGenerator beanCodeGenerate = new VueGenerator(jdbcUrl);
         String template = getTemplate("VueComponent.template");
-        List<String> tableNames = beanCodeGenerate.getTableNames();
-        for (String tableName : tableNames) {
-            String beanName = StringUtil.underline2Camel(tableName.toLowerCase(), true);
+        VueGenerator vueGenerator = new VueGenerator(tableList, template);
+
+        for (Table table : tableList) {
+            String beanName = table.getCamelName();
             File fileFolder = new File(gcPath + beanName);
             if (!fileFolder.exists()) {
                 fileFolder.mkdir();
             }
             File beanFile = new File(gcPath + beanName + "/" + beanName + ".html");
-            if (!beanFile.exists()) {
+            if (beanFile.exists() && !overWriteFile) {
+                return;
+            } else {
                 beanFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(beanFile);
-                String text = beanCodeGenerate.getVueHtmlCode(template, tableName);
-                fos.write(text.getBytes());
-                fos.flush();
-                fos.close();
-                System.out.println("生成 " + beanName + ".html 成功!");
-
             }
+
+            FileOutputStream fos = new FileOutputStream(beanFile);
+            String text = vueGenerator.toString(table);
+            fos.write(text.getBytes());
+            fos.flush();
+            fos.close();
+            System.out.println("生成 " + beanName + ".html 成功!");
+
         }
+
     }
 
     public void generateVuePageHtml(String gcPath) throws Exception {
-        VueGenerator beanCodeGenerate = new VueGenerator(jdbcUrl);
         String template = getTemplate("VuePageComponent.template");
-        List<String> tableNames = beanCodeGenerate.getTableNames();
-        for (String tableName : tableNames) {
-            String beanName = StringUtil.underline2Camel(tableName.toLowerCase(), true);
+        VueGenerator vueGenerator = new VueGenerator(tableList, template);
+
+        for (Table table : tableList) {
+            String beanName = table.getCamelName();
             File fileFolder = new File(gcPath + beanName);
             if (!fileFolder.exists()) {
                 fileFolder.mkdir();
             }
-            File beanFile = new File(gcPath + beanName + "/" + beanName + "Page.html");
-            if (!beanFile.exists()) {
+            File beanFile = new File(gcPath + beanName + "/" + beanName + ".html");
+            if (beanFile.exists() && !overWriteFile) {
+                return;
+            } else {
                 beanFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(beanFile);
-                String text = beanCodeGenerate.getVuePageHtmlCode(template, tableName);
-                fos.write(text.getBytes());
-                fos.flush();
-                fos.close();
-                System.out.println("生成 " + beanName + "Page.html 成功!");
-
             }
+
+            FileOutputStream fos = new FileOutputStream(beanFile);
+            String text = vueGenerator.toString(table);
+            fos.write(text.getBytes());
+            fos.flush();
+            fos.close();
+            System.out.println("生成 " + beanName + "Page.html 成功!");
+
         }
+
     }
 
 

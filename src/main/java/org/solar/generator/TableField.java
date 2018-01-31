@@ -49,6 +49,10 @@ public class TableField {
         return JdbcTypeMap.getJavaTypeByJdbcType(type);
     }
 
+    public String getJdbcType() {
+        return JdbcTypeMap.getJdbcTypeByJavaType(getJAVAType());
+    }
+
     public void setType(String type) {
         this.type = type;
     }

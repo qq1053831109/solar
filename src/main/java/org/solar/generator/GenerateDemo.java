@@ -11,11 +11,12 @@ public class GenerateDemo {
         Generator generator = new Generator(jdbcUrl, classPath, packagePrefix);
 
         //配置
+//        generator.overWriteFile=true;
         //generator.templateRootPath="/templatePath/";//自定义模版
         generator.vueHtmlRootPath = vueHtmlRootPath;
         //生成//根据数据库生成实体文件
         generator.generatePackageAndBaseDaoAndBaseService();
-        generator.generateBeanCode();// generator.generateBean("Bean","Resume");
+        generator.generateBean();
         //生成DaoServiceControllerCode//根据已有的实体文件生成
         generator.generateDaoServiceControllerCode();
         generator.generateMybatisMapperXML();
