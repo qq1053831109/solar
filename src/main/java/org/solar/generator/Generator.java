@@ -60,6 +60,10 @@ public class Generator {
         DataBaseFieldDictGenerator dataBaseFieldDictGenerator = new DataBaseFieldDictGenerator(tableList, dataBaseFieldDictPath);
 
         try {
+            File file=new File(dataBaseFieldDictPath);
+            if ( file.exists()&&!overWriteFile){
+                return;
+            }
             dataBaseFieldDictGenerator.generatorPropertiesFile();
 
         } catch (Exception e) {

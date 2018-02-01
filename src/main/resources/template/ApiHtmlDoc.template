@@ -91,11 +91,185 @@ h3{
                       host: <a href="http://wx.baozhenche.com" target="_blank">${host}</a>
                         </li>
                         <li><hr/></li>
+ <li>
+                    <a href="#apiDocExplain">*、 接口文档说明</a>
+                </li>
+                <li>
+                    <a href="#selectCommon">*、 查询公共参数</a>
+                </li>
+                <li>
+                    <a href="#deleteCommon">*、 删除接口公共参数</a>
+                </li>
+                <li>
+                    <a href="#saveOrUpdateCommon">*、 保存或修改接口公共参数</a>
+                </li>
+                <li>
+                    <a href="#returnCommon">*、 返回公共字段</a>
+                </li>
+                <li>
+                    <a href="#loginCommon">*、 登录接口</a>
+                </li>
+                <li>
+                    <hr/>
+                </li>
 ${apiNavList}
                     </ul>
             </td>
             <td valign="top">
                 <div id="mainView">
+<div class="api" id="apiDocExplain">
+                    <h3>接口文档说明</h3>
+
+                    <table>
+                        <tr>
+                            <td>参数名</td>
+                            <td>类型</td>
+                            <td>备注</td>
+                        </tr>
+                        <tr>
+                            <td>请求方法</td>
+                            <td>http</td>
+                            <td>get/post都可以</td>
+                        </tr>
+                        <tr>
+                            <td>请求参数格式</td>
+                            <td>表单格式</td>
+                            <td>application/x-www-form-urlencoded</td>
+                        </tr>
+                        <tr>
+                            <td>返回格式</td>
+                            <td>json格式</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="api" id="selectCommon">
+                    <h3>查询公共参数</h3>
+
+                    <table>
+                        <tr>
+                            <td>参数名</td>
+                            <td>类型</td>
+                            <td>备注</td>
+                        </tr>
+                        <tr>
+                            <td>pageNum</td>
+                            <td>Integer</td>
+                            <td>分页查询的第几页(分页查询必传该参数)</td>
+                        </tr>
+                        <tr>
+                            <td>pageSize</td>
+                            <td>Integer</td>
+                            <td>每页显示的条数</td>
+                        </tr>
+                        <tr>
+                            <td>orderProperty</td>
+                            <td>String</td>
+                            <td>根据该属性进行排序</td>
+                        </tr>
+                        <tr>
+                            <td>orderDirection</td>
+                            <td>String</td>
+                            <td>desc/asc(降序/升序)</td>
+                        </tr>
+                        <tr>
+                            <td>fullTextSearchValue</td>
+                            <td>String</td>
+                            <td>全文搜索(正则表达式匹配)</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>一对多参数规则:
+                                参数key为表名,值为json数组字符串，数组内对象的key为字段名
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="api" id="deleteCommon">
+                    <h3>删除接口公共参数</h3>
+
+                    <table>
+                        <tr>
+                            <td>参数名</td>
+                            <td>类型</td>
+                            <td>备注</td>
+                        </tr>
+                        <tr>
+                            <td>id</td>
+                            <td>String</td>
+                            <td>需要删除数据的id(必填)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="api" id="saveOrUpdateCommon">
+                    <h3>保存或修改接口公共参数</h3>
+
+                    <table>
+                        <tr>
+                            <td>参数名</td>
+                            <td>类型</td>
+                            <td>备注</td>
+                        </tr>
+                        <tr>
+                            <td>id</td>
+                            <td>String</td>
+                            <td>需要修改数据的id(不传该值为新增保存)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="api" id="returnCommon">
+                    <h3>返回公共字段</h3>
+
+                    <table>
+                        <tr>
+                            <td>参数名</td>
+                            <td>类型</td>
+                            <td>备注</td>
+                        </tr>
+                        <tr>
+                            <td>code</td>
+                            <td>Integer</td>
+                            <td>200为成功500与其他值为失败</td>
+                        </tr>
+                        <tr>
+                            <td>msg</td>
+                            <td>String</td>
+                            <td>提示消息</td>
+                        </tr>
+                        <tr>
+                            <td>body</td>
+                            <td>Object</td>
+                            <td>返回的数据(见具体接口数据结构)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="api" id="loginCommon">
+                    <h3>登录接口</h3>
+
+                    <table>
+                        <tr>
+                            <td>参数名</td>
+                            <td>类型</td>
+                            <td>备注</td>
+                        </tr>
+                        <tr>
+                            <td>account</td>
+                            <td>String</td>
+                            <td>账号</td>
+                        </tr>
+                        <tr>
+                            <td>password</td>
+                            <td>String</td>
+                            <td>密码</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>将返回的token放到http请求头中</td>
+                        </tr>
+                    </table>
+                </div>
 ${apiList}
                 </div>
             </td>
