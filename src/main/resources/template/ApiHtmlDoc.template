@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<style type="text/css">
+    <meta charset="utf-8"/>
+    <link rel="Shortcut Icon" href="http://g.hiphotos.baidu.com/zhidao/pic/item/e1fe9925bc315c60e9ece95a8ab1cb134954770e.jpg"/>
+    <title>接口文档(solar)</title>
+<style type="text/css">
 *{
     padding: 0px;
     margin: 0px;
