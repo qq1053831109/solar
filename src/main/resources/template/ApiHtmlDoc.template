@@ -91,7 +91,7 @@ h3{
                         文档版本:${date}
                         </li>
                         <li>
-                      host: <a href="http://wx.baozhenche.com" target="_blank">${host}</a>
+                      host: <a href="${host}" target="_blank">${host}</a>
                         </li>
                         <li><hr/></li>
  <li>
