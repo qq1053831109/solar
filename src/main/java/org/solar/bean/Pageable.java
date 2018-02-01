@@ -38,12 +38,12 @@ public class Pageable implements Serializable {
     /**
      * 排序属性
      */
-    private String orderProperty;
+    private transient String orderProperty;
 
 
-    private String orderDirection;
+    private transient String orderDirection;
 
-    private boolean countTotalRecord = true;
+    private transient boolean countTotalRecord = true;
 
     public boolean isCountTotalRecord() {
         return countTotalRecord;

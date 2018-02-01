@@ -107,16 +107,6 @@ public class Page<T> implements Serializable {
 
 
 
-	/**
-	 * 获取排序属性
-	 * 
-	 * @return 排序属性
-	 */
-	public String getOrderProperty() {
-		return pageable.getOrderProperty();
-	}
-
-
 
 	public void setList(List<T> list) {
 		this.list = list;

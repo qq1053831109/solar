@@ -178,12 +178,32 @@ ${apiNavList}
                             <td>全文搜索(正则表达式匹配)</td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td>一对多参数规则:
-                                参数key为表名,值为json数组字符串，数组内对象的key为字段名
-                            </td>
-                        </tr>
+                             <td>参数名+"Start"</td>
+                             <td>查询大于或等于某Date</td>
+                             <td> 如查询创建时间大于或等于某时间则传createTimeStart="yyyy-MM-dd HH:mm:ss"
+                             </td>
+                         </tr>
+                         <tr>
+                             <td>参数名+"End"</td>
+                             <td>查询小于某Date</td>
+                             <td>
+                                  如查询创建时间小于某时间则传createTimeEnd="2018-1-30 23:59:59.9"(yyyy-MM-dd HH:mm:ss.SSS)S为毫秒
+                             </td>
+                         </tr>
+                         <tr>
+                             <td>参数名+"List"</td>
+                             <td>值为多个或匹配</td>
+                             <td>
+                                  如查询类型为a或者b的数据则传type=['a','b']
+                             </td>
+                         </tr>
+                         <tr>
+                             <td></td>
+                             <td></td>
+                             <td>值为一对多关联表的参数规则:
+                                 参数key为表名,值为json数组字符串，数组内对象的key为字段名
+                             </td>
+                         </tr>
                     </table>
                 </div>
                 <div class="api" id="deleteCommon">
