@@ -107,6 +107,9 @@ public class WeChatPublicService {
     data	列表数据，OPENID的列表
     next_openid	拉取列表的最后一个用户的OPENID
      */
+    public String getUserList( ) {
+       return getUserList(null);
+    }
     public   String getUserList(String next_openid) {
         //?access_token=ACCESS_TOKEN&=NEXT_OPENID
             String param="access_token=" + getAccessToken();
