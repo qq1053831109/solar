@@ -114,7 +114,7 @@ public class Generator {
         File gcfile = new File(gcPath + type + ".java");
         Map map = new LinkedHashMap();
         map.put("packagePrefix", packagePrefix);
-        if (!gcfile.exists()) {
+        if (!gcfile.exists()||overWriteFile) {
             String fosStr = replaceTemplateEL(daoTemplate, map);
             FileUtil.writeToFile(fosStr.getBytes(), gcfile);
             System.out.println("生成" + type + "成功!");
