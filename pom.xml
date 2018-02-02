@@ -56,7 +56,11 @@
             <artifactId>ip2region</artifactId>
             <version>1.0.3</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.2</version>
+        </dependency>
     </dependencies>
 
 </project>

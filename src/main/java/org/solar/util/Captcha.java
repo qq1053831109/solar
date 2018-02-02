@@ -19,7 +19,7 @@ public class Captcha  {
 
     static Font font=new Font("Ravie", Font.PLAIN, 24);
 
-    public static byte[]  generateImage(String sRand)   throws  IOException {
+    public static byte[]  generateCaptchaImage(String sRand)   throws  IOException {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         int width = 83, height = 30;  
