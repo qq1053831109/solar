@@ -2,12 +2,12 @@ package org.solar.wechat;
 
 import org.solar.cache.Cache;
 import org.solar.cache.CacheImpl;
+import org.solar.coder.Md5Util;
+import org.solar.coder.ShaUtil;
 import org.solar.util.JdkHttpUtil;
 import org.solar.util.JsonUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class WeChatPublicService {
     //POST
@@ -17,6 +17,8 @@ public class WeChatPublicService {
     public final static String getAccessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token";
     public final static String getUserListUrl = "https://api.weixin.qq.com/cgi-bin/user/get";
     public final static String getUserInfoUrl = "https://api.weixin.qq.com/cgi-bin/user/info";
+    //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+    public final static String getticketUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket";
     public String appid;
     public String secret;
 
@@ -141,6 +143,43 @@ public class WeChatPublicService {
             String param="access_token=" + getAccessToken()+"&openid="+openid;
             String result=JdkHttpUtil.get(getUserInfoUrl,param);
             return  result;
+    }
+    public synchronized String getJsapiTicket() {
+        String jsapiTicket=cache.get("WeChatPublicService:"+appid+":ticket:jsapi");
+        if (jsapiTicket==null){
+            String result=JdkHttpUtil.get(getticketUrl+"?access_token=" + getAccessToken()+"&type=jsapi");
+            Map resultMap=JsonUtil.parseObject(result);
+            jsapiTicket=(String)resultMap.get("ticket");
+            long expires_in=Long.valueOf(String.valueOf(resultMap.get("expires_in")));
+            cache.put("WeChatPublicService:"+appid+":ticket:jsapi",jsapiTicket,(expires_in-60)*1000);
+        }
+        return jsapiTicket;
+    }
+    public  Map getJsSdkConfig(String url) {
+         String noncestr="solar";
+         Map map=new HashMap();
+         map.put("noncestr", UUID.randomUUID().toString().replace("-", ""));
+         map.put("jsapi_ticket",getJsapiTicket());
+         map.put("timestamp",System.currentTimeMillis()/1000+"");
+        if (url.contains("#")){
+            url=url.substring(0,url.indexOf("#"));
+        }
+         map.put("url",url);
+         map.put("signature",generateSignature(map));
+         map.put("appId",appid);
+         return map;
+    }
+    public static String generateSignature(final Map<String, String> data)  {
+        Set<String> keySet = data.keySet();
+        String[] keyArray = keySet.toArray(new String[keySet.size()]);
+        Arrays.sort(keyArray);
+        StringBuilder sb = new StringBuilder();
+        for (String k : keyArray) {
+            if (data.get(k).trim().length() > 0) // 参数值为空，则不参与签名
+                sb.append(k).append("=").append(String.valueOf(data.get(k)).trim()).append("&");
+        }
+        String str=sb.toString().substring(0,sb.length()-1);
+        return ShaUtil.SHA1(str);
     }
     private Cache cache=new CacheImpl();
 }
