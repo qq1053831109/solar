@@ -29,6 +29,8 @@ public interface BaseService<T> {
        */
      List<T> selectByWhere(Object... obj);
 
+     T selectOneByWhere(Object... obj);
+
      Long selectCountByWhere(Object... obj);
 
 }

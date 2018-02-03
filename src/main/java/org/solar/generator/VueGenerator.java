@@ -156,6 +156,7 @@ public class VueGenerator {
         map.put("fieldNameHtmlList",fieldNameHtmlList);
         map.put("fieldValueHtmlList",fieldValueHtmlList);
         map.put("beanName",beanName);
+        map.put("beanComment",table.getCommentInOneLine());
         return ELUtil.replace(template,map);
     }
 

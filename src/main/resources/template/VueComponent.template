@@ -1,5 +1,7 @@
 <script type="text/template" id="template-${beanName}-${beanName}">
     <div class="MainContainer beanView ${beanName}">
+        <h5 class="title">当前位置: ${beanComment}</h5>
+        <hr class="split"/>
         <div class="toolBar">
             <div class="float-left">
 

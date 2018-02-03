@@ -58,6 +58,15 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Transactional(readOnly = true)
+    public T selectOneByWhere(Object... obj) {
+        List<T> li= baseDao.selectByWhere(obj);
+        if (li==null||li.size()==0){
+            return null;
+        }
+        return li.get(0);
+    }
+
+    @Transactional(readOnly = true)
     public Long selectCountByWhere(Object... obj) {
         return baseDao.selectCountByWhere(obj);
     }
