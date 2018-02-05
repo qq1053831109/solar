@@ -52,7 +52,7 @@ public class CacheImpl implements Cache{
 
     @Override
     public <T> T put(Object key, Object value) {
-        return put(key,value,1000*60*60*24*30);//最大缓存30天
+        return put(key,value,1000*60*60*24*150);//最大缓存150天
     }
 
     @Override

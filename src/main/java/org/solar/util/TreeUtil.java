@@ -6,6 +6,7 @@ import org.solar.bean.Tree;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -75,22 +76,29 @@ public class TreeUtil {
     }
 
     public static List<Map> convertToTreeByParentId(List list) {
-        List treeList = new ArrayList();
-        for (Object obj : list) {
+        List<Map> listMap=new ArrayList();
+        for (Object obj:list) {
             Map map = BeanUtil.objectToMap(obj);
+            listMap.add(map);
+        }
+        List treeList = new ArrayList();
+        Iterator<Map> iterator=listMap.iterator();
+        while (iterator.hasNext()){
+            Map map=iterator.next();
             String parentId = (String) map.get("parentId");
             if (parentId == null || "".equals(parentId)) {
                 treeList.add(map);
-                map.put("childList", getChildListByParentId(list, (String) map.get("id")));
+                map.put("childList", getChildListByParentId(listMap, (String) map.get("id")));
             }
         }
         return treeList;
     }
 
-    public static List<Map> getChildListByParentId(List list, String id) {
+    public static List<Map> getChildListByParentId(List<Map> list, String id) {
         List childList = new ArrayList();
-        for (Object obj : list) {
-            Map map = BeanUtil.objectToMap(obj);
+        Iterator<Map> iterator=list.iterator();
+        while (iterator.hasNext()){
+            Map map=iterator.next();
             String parentId = (String) map.get("parentId");
             if (id.equals(parentId)) {
                 childList.add(map);
