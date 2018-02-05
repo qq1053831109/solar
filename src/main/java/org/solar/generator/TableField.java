@@ -2,16 +2,57 @@ package org.solar.generator;
 
 import org.solar.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TableField {
+    private static List<String> sqlKeyWord=new ArrayList();
+    static {
+        sqlKeyWord.add("key");
+        sqlKeyWord.add("index");
+        sqlKeyWord.add("distinct");
+        sqlKeyWord.add("form");
+        sqlKeyWord.add("table");
+        sqlKeyWord.add("between");
+        sqlKeyWord.add("except");
+        sqlKeyWord.add("null");
+        sqlKeyWord.add("union");
+        sqlKeyWord.add("intersect");
+        sqlKeyWord.add("sum");
+        sqlKeyWord.add("count");
+        sqlKeyWord.add("max");
+        sqlKeyWord.add("min");
+        sqlKeyWord.add("group");
+        sqlKeyWord.add("limit");
+        sqlKeyWord.add("avg");
+        sqlKeyWord.add("having");
+        sqlKeyWord.add("order");
+        sqlKeyWord.add("by");
+        sqlKeyWord.add("all");
+        sqlKeyWord.add("as");
+        sqlKeyWord.add("primary");
+        sqlKeyWord.add("database");
+        sqlKeyWord.add("where");
+        sqlKeyWord.add("value");
+        sqlKeyWord.add("values");
+        sqlKeyWord.add("foreign");
+        sqlKeyWord.add("references");
+    }
     private String name;
     private String comment;
     private String type;
     private Integer size;
 
     public String getName() {
+        return name;
+    }
+
+    public String getSqlEscapeName() {
+        if (sqlKeyWord.contains(name)){
+            return "'"+name+"'";
+        }
         return name;
     }
 

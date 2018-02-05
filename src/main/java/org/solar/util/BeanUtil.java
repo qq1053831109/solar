@@ -9,9 +9,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by xianchuanwu on 2017/9/23.
@@ -27,6 +25,55 @@ public class BeanUtil {
         }
     }
 
+    public static List<Map> objectToMap(List list) {
+        if (list==null){
+            return null;
+        }
+        List<Map> listMap=new ArrayList();
+        for (Object obj:list) {
+            Map map = BeanUtil.objectToMap(obj);
+            listMap.add(map);
+        }
+        return listMap;
+    }
+    public static List<Map> leftJoin(List li1,List li2,String name1,String name2) {
+        if (li1==null){
+            return null;
+        }
+        if (li2==null){
+            return objectToMap(li1);
+        }
+        li1=objectToMap(li1);
+        li2=objectToMap(li2);
+        for (Object obj:li1) {
+            Map map=(Map)obj;
+            Object val=map.get(name1);
+            for (Object obj2:li2) {
+                Map map2=(Map)obj2;
+                Object val2=map2.get(name2);
+                if (val.equals(val2)){
+                    if (name1.endsWith("Id")){
+                        map.put(name1.substring(0,name1.length()-2),map2);
+                    }else {
+                        map.put(name1+"Object",map2);
+                    }
+
+                }
+            }
+        }
+        return li1;
+    }
+    public static List getProperties(List li,String name) {
+        if (li==null){
+            return null;
+        }
+        List result=new ArrayList();
+        for (Object obj:li) {
+            Map map=objectToMap(obj);
+            result.add(map.get(name));
+        }
+        return result;
+    }
     public static <T> T mapToObject(Map<String, Object> map, Class<T> beanClass) {
         if (map == null)
             return null;

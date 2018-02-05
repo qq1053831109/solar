@@ -52,7 +52,7 @@ public class MapperXMLGenerator {
         StringBuilder sb=new StringBuilder();
         int maxLineLen=100;
         for (TableField tableField: tableFieldList){
-            sb.append(" , "+tableField.getName());
+            sb.append(" , "+tableField.getSqlEscapeName());
             if (sb.length()>maxLineLen){
                 sb.append("\n");
                 maxLineLen=maxLineLen+100;
@@ -65,7 +65,7 @@ public class MapperXMLGenerator {
         StringBuilder sb=new StringBuilder();
         for (int i = 0; i < tableFieldList.size(); i++) {
             TableField tableField=tableFieldList.get(i);
-            String  column=tableField.getName();
+            String  column=tableField.getSqlEscapeName();
             sb.append("      "+column+" = #{"+tableField.getCamelName()+"}");
             if (i<(keys.length-1)){
                 sb.append(",");
@@ -89,7 +89,7 @@ public class MapperXMLGenerator {
     public  String getBaseResultMap(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
         for (TableField tableField: tableFieldList){
-            String  column=tableField.getName();
+            String  column=tableField.getSqlEscapeName();
             String  jdbcType=tableField.getJdbcType();
             sb.append("    ");//前面空格
             sb.append("<result column=\""+column+"\" property=\""+tableField.getCamelName()+"\" jdbcType=\""+jdbcType+"\" />\n");
@@ -100,7 +100,7 @@ public class MapperXMLGenerator {
         StringBuilder sb=new StringBuilder();
         for (TableField tableField: tableFieldList){
             sb.append("      <if test=\""+tableField.getCamelName()+" != null\" >\n");
-            sb.append("        "+tableField.getName()+",\n");
+            sb.append("        "+tableField.getSqlEscapeName()+",\n");
             sb.append("      </if>\n");
         }
         return sb.toString();
@@ -118,7 +118,7 @@ public class MapperXMLGenerator {
         StringBuilder sb=new StringBuilder();
         for (TableField tableField: tableFieldList){
             sb.append("      <if test=\""+tableField.getCamelName()+" != null\" >\n");
-            sb.append("        "+tableField.getName()+" = #{"+tableField.getCamelName()+"},\n");
+            sb.append("        "+tableField.getSqlEscapeName()+" = #{"+tableField.getCamelName()+"},\n");
             sb.append("      </if>\n");
         }
         return sb.toString();
@@ -131,7 +131,7 @@ public class MapperXMLGenerator {
 
         boolean isFirst=true;
         for (TableField tableField: tableFieldList){
-            String  column=tableField.getName();
+            String  column=tableField.getSqlEscapeName();
             String  key=tableField.getCamelName();
             where.append("      <if test=\""+key+" != null\" >\n");
             where.append("        AND "+column+" = #{"+key+"}\n");
@@ -165,6 +165,12 @@ public class MapperXMLGenerator {
         fullTextSearch.append("           )\n");
         fullTextSearch.append("      </if>\n");
         if (whereContainWherein){
+            where.append("      <if test=\"idList != null\" >\n");
+            where.append("        AND id in\n");
+            where.append("        <foreach collection=\"idList\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");
+            where.append("            #{item}\n");
+            where.append("        </foreach>\n");
+            where.append("      </if>\n");
             where.append(getWhereInColumnListKeyList(tableFieldList));
         }
         where.append(fullTextSearch);
@@ -174,7 +180,7 @@ public class MapperXMLGenerator {
         StringBuilder where=new StringBuilder();
 
         for (TableField tableField: tableFieldList){
-            String  column=tableField.getName();
+            String  column=tableField.getSqlEscapeName();
             String  key=tableField.getCamelName();
             where.append("      <if test=\""+key+" != null\" >\n");
             where.append("        AND "+column+" in\n");
@@ -191,7 +197,7 @@ public class MapperXMLGenerator {
         StringBuilder where=new StringBuilder();
 
         for (TableField tableField: tableFieldList){
-            String  column=tableField.getName();
+            String  column=tableField.getSqlEscapeName();
             String  key=tableField.getCamelName();
             where.append("      <if test=\""+key+"List != null\" >\n");
             where.append("        AND "+column+" in\n");
