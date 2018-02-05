@@ -145,7 +145,7 @@ public class Generator {
 
     public void generateCodeByType(String type, String gcPath) throws Exception {
         String daoTemplate = getTemplate(type + ".template");
-        String date = DateUtil.format(new Date(), "yyyy年MM月dd日 HH:MM");
+        String date = DateUtil.format(new Date(), "yyyy年MM月dd日 HH:mm");
         File file = new File(beanPath);
         File[] files = file.listFiles();
         for (File f : files) {

@@ -34,7 +34,7 @@ public class ApiHtmlDoc {
 
     public String toString() {
         Map map=new HashMap();
-        map.put("date",DateUtil.format(new Date(), "yyyy年MM月dd日 HH:MM"));
+        map.put("date",DateUtil.format(new Date(), "yyyy年MM月dd日 HH:mm"));
         map.put("host",host);
         try {
             map.put("apiList",getApiListHtml());

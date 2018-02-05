@@ -25,7 +25,7 @@ public class BeanGenerator {
         map.put("fieldsMethods",beanFieldsMethods);
         map.put("BeanName",BeanName);
         map.put("packagePrefix",packagePrefix);
-        String date = DateUtil.format(new Date(), "yyyy年MM月dd日 HH:MM");
+        String date = DateUtil.format(new Date(), "yyyy年MM月dd日 HH:mm");
         map.put("Date",date);
         return ELUtil.replace(template,map);
     }
