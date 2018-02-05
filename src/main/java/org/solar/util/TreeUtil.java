@@ -1,11 +1,13 @@
 package org.solar.util;
 
 
+import org.solar.bean.Tree;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TreeUtil {
 
@@ -66,20 +68,39 @@ public class TreeUtil {
                 }
                 return obj;
             }
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
+    public static List<Map> convertToTreeByParentId(List list) {
+        List treeList = new ArrayList();
+        for (Object obj : list) {
+            Map map = BeanUtil.objectToMap(obj);
+            String parentId = (String) map.get("parentId");
+            if (parentId == null || "".equals(parentId)) {
+                treeList.add(map);
+                map.put("childList", getChildListByParentId(list, (String) map.get("id")));
+            }
+        }
+        return treeList;
+    }
 
+    public static List<Map> getChildListByParentId(List list, String id) {
+        List childList = new ArrayList();
+        for (Object obj : list) {
+            Map map = BeanUtil.objectToMap(obj);
+            String parentId = (String) map.get("parentId");
+            if (id.equals(parentId)) {
+                childList.add(map);
+                map.put("childList", getChildListByParentId(list, (String) map.get("id")));
+            }
+        }
+        return childList;
+    }
 
+    public static void main(String[] args) {
+
+    }
 }

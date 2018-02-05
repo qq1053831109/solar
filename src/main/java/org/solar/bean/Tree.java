@@ -77,13 +77,12 @@ public class Tree {
 	public List<Tree> getChild() {
 		return child;
 	}
-	public static List<Tree> getTreeByKinds(List obj) {
-		return null;
-	}
 
 	public void setChild(List<Tree> child) {
 		this.child = child;
 	}
+
+
 
 
 }
