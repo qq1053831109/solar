@@ -20,14 +20,6 @@
         <div class="bean">
             <table>
 ${fieldList}
-                <tr>
-                    <td>
-                        <div>名称</div>
-                    </td>
-                    <td>
-                        <div><input v-model="bean.name"></div>
-                    </td>
-                </tr>
             </table>
         </div>
 

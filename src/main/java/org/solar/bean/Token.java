@@ -2,7 +2,7 @@ package org.solar.bean;
 
 public class Token {
     private String id;
-    private String type;
+    private Object type;
     private String ip;
     public Token( ) {
     }
@@ -38,11 +38,11 @@ public class Token {
         this.id = id;
     }
 
-    public String getType() {
+    public Object getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Object type) {
         this.type = type;
     }
 
