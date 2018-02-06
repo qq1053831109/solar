@@ -6,19 +6,14 @@
 //import com.alipay.api.domain.AlipayTradeQueryModel;
 //import com.alipay.api.domain.AlipayTradeWapPayModel;
 //import com.alipay.api.internal.util.AlipaySignature;
-//import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
-//import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
-//import com.alipay.api.request.AlipayTradeQueryRequest;
-//import com.alipay.api.request.AlipayTradeWapPayRequest;
+//import com.alipay.api.request.*;
 //import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 //import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
+//import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 //import com.alipay.api.response.AlipayTradeQueryResponse;
-//import org.solar.exception.SolarRuntimeException;
 //import org.solar.util.JsonUtil;
-//import org.solar.util.XMLUtil;
 //
 //import java.util.HashMap;
-//import java.util.Iterator;
 //import java.util.Map;
 //
 ///**
@@ -27,6 +22,9 @@
 //public class Alipay {
 //    public static final String payeeType_ALIPAY_USERID="ALIPAY_USERID";
 //    public static final String payeeType_ALIPAY_LOGONID="ALIPAY_LOGONID";
+//    public final static String scope_auth_base="auth_base";//静默授权
+//    public final static String scope_auth_user="auth_user";//获取用户信息、网站支付宝登录
+//
 //    private String gatewayUrl="https://openapi.alipay.com/gateway.do";
 //    private String appid;
 //    private String rsaPrivateKey;
@@ -109,7 +107,7 @@
 //     */
 //    public Map orderQuery(String out_trade_no){
 //        // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-//         AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
+//        AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
 //
 //        AlipayTradeQueryModel model=new AlipayTradeQueryModel();
 //        model.setOutTradeNo(out_trade_no);
@@ -227,6 +225,34 @@
 //        }
 //        return response.getMsg();
 //    }
+//    public String getOauthUrl(String redirect_uri, String state) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=" + appid);
+//        sb.append("&scope="+scope_auth_base);
+//        sb.append("&redirect_uri="+redirect_uri);
+//        if (state != null) {
+//            sb.append("&state=" + state);
+//        }
+//        return sb.toString();
+//    }
+//
+//
+//    public String getUserIdByAuthCode(String auth_code) {
+//        AlipaySystemOauthTokenRequest request = new AlipaySystemOauthTokenRequest();
+//        request.setCode(auth_code);
+//        request.setGrantType("authorization_code");
+//        AlipaySystemOauthTokenResponse oauthTokenResponse=null;
+//        try {
+//            oauthTokenResponse = client.execute(request);
+//        } catch (AlipayApiException e) {
+//            //处理异常
+//            e.printStackTrace();
+//        }
+//        return oauthTokenResponse.getUserId();
+//    }
+//
+//
+//
 //
 //    public Map onPayResultNotify(Map<String,String> params){
 //        //获取支付宝POST过来反馈信息
@@ -290,7 +316,7 @@
 //            }
 //
 //            //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-//           // out.println("success");	//请不要修改或删除
+//            // out.println("success");	//请不要修改或删除
 //
 //            //////////////////////////////////////////////////////////////////////////////////////////
 //        }
@@ -299,7 +325,7 @@
 //        return params;
 //    }
 //    public boolean checkSignature(Map params){
-//         boolean verify_result = false;
+//        boolean verify_result = false;
 //        try {
 //            verify_result = AlipaySignature.rsaCheckV1(params, alipayPublicKey, "UTF-8", "RSA2");
 //        } catch (AlipayApiException e) {
