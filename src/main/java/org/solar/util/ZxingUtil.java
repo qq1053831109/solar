@@ -16,7 +16,7 @@ public class ZxingUtil {
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         // 内容所使用字符集编码
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
-        hints.put(EncodeHintType.MARGIN, 1);//设置二维码边的空度，非负数
+        hints.put(EncodeHintType.MARGIN, 0);//设置二维码边的空度，非负数
         BitMatrix bitMatrix = new MultiFormatWriter().encode(contents,
                 BarcodeFormat.QR_CODE,
                 width, //条形码的宽度

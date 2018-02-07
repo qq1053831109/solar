@@ -9,14 +9,21 @@ import java.util.Date;
  * 单号生成为年月日时分秒+今天生成的第几个数(每超过9999将从1重新开始)
  */
 public class SerialNoGenerater {
-    private static int sequence = 0;
-    private static int day = 0;
-    private static long lastTimestamp = -1L;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+    private   int sequence = 0;
+    private   int day = 0;
+    private   boolean dayReset = true;
+    private   long lastTimestamp = -1L;
+    private   SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 
-    public static synchronized String nextNo() {
+    public SerialNoGenerater( ) {
+    }
+    public SerialNoGenerater(boolean dayReset) {
+        this.dayReset=dayReset;
+    }
+
+    public  synchronized String nextNo() {
         int today=Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-        if (today!=day){
+        if (today!=day&&dayReset){
             day=today;
             sequence = 0;
         }
@@ -50,11 +57,7 @@ public class SerialNoGenerater {
     }
 
 
-    public static void main(String[] args) throws InterruptedException {
-        for (int i = 0; i < 10000; i++) {
-            System.out.println(nextNo());
-        }
-    }
+
 
     private static String convert4Length(long num) {
         if (num < 10) {
@@ -68,4 +71,8 @@ public class SerialNoGenerater {
         }
         return num + "";
     }
+    public static String getNextNo( ) {
+        return serialNoGenerater.nextNo();
+    }
+    private static SerialNoGenerater serialNoGenerater=new SerialNoGenerater();
 }
