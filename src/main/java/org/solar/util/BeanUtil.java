@@ -59,6 +59,9 @@ public class BeanUtil {
                     map.put(name1+"Object",defult);
                 }
             }
+            if (val==null){
+                continue;
+            }
             for (Object obj2:li2) {
                 Map map2=(Map)obj2;
                 Object val2=map2.get(name2);
