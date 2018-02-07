@@ -37,6 +37,9 @@ public class BeanUtil {
         return listMap;
     }
     public static List<Map> leftJoin(List li1,List li2,String name1,String name2) {
+        return leftJoin(  li1,  li2,  name1,  name2,null);
+    }
+    public static List<Map> leftJoin(List li1,List li2,String name1,String name2,Object defult) {
         if (li1==null){
             return null;
         }
@@ -48,6 +51,14 @@ public class BeanUtil {
         for (Object obj:li1) {
             Map map=(Map)obj;
             Object val=map.get(name1);
+            //添加默认对象
+            if (defult!=null){
+                if (name1.endsWith("Id")){
+                    map.put(name1.substring(0,name1.length()-2),defult);
+                }else {
+                    map.put(name1+"Object",defult);
+                }
+            }
             for (Object obj2:li2) {
                 Map map2=(Map)obj2;
                 Object val2=map2.get(name2);
