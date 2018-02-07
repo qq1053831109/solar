@@ -21,17 +21,10 @@
                 <thead>
                 <tr>
                     <td>
-                        <div style="width: 25px">
-
-                        </div>
-
+                        <div style="width: 25px"></div>
                     </td>
                     <td>
-                        <div style="width: 30px">
-
-                            <input type="checkbox" v-model="checked" @click="checkedAll()"/>
-
-                        </div>
+                        <input type="checkbox" v-model="checked" @click="checkedAll()"/>
                     </td>
 ${fieldNameHtmlList}
                     <td>
