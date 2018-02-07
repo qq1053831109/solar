@@ -21,14 +21,13 @@
                 <thead>
                 <tr>
                     <td>
-                        <div style="width: 25px"></div>
                     </td>
                     <td>
                         <input type="checkbox" v-model="checked" @click="checkedAll()"/>
                     </td>
 ${fieldNameHtmlList}
                     <td>
-                        <div style="width: 100px">操作</div>
+                        <div>操作</div>
                     </td>
                 </tr>
                 </thead>
@@ -88,7 +87,6 @@ ${fieldValueHtmlList}
             var data=copyObject(baseData);
             data.beanName="${beanName}";
             return data;
-
         },
         methods: {
             select: baseMethods.selectPage,
@@ -102,7 +100,6 @@ ${fieldValueHtmlList}
         },
         mounted: function () {
             this.select();
-
         },
         watch: {//深度 watcher
             'checkboxModel':checkboxModelWatch
