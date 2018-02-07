@@ -3,23 +3,18 @@
         <h5 class="title">当前位置: ${beanComment}</h5>
         <hr class="split"/>
         <div class="toolBar">
-            <div class="float-left">
-
-                <button class="button" type="button" onclick="location.reload()">刷新</button>
-                <button class="button" type="button" onclick="history.back()">返回</button>
-                <button class="button" type="button" @click="saveOrUpdate()">保存</button>
-                <button class="button" type="button"
-                        v-if="$route.query.id"
-                        @click="deleteBean($route.query.id)">删除</button>
-            </div>
-            <div class="float-right">
-
-            </div>
-            <div style="clear: both"></div>
         </div>
         <div class="bean">
             <table>
 ${fieldList}
+                <tr class="buttonBar">
+                    <td>
+                         <button class="button blue" type="button" @click="saveOrUpdate()">保存</button>
+                    </td>
+                    <td>
+                        <button class="button" type="button" onclick="history.back()">返回</button>
+                    </td>
+                </tr>
             </table>
         </div>
 
