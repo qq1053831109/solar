@@ -110,7 +110,11 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     public List<T> selectByWhere(Object... obj) {
         Map map = new HashMap();
         for (int i = 0; i < obj.length; i = i + 2) {
-            map.put(obj[i], obj[i + 1]);
+            Object value=obj[i + 1];
+            if (value instanceof List&&((List)value).isEmpty()){
+                return null;
+            }
+            map.put(obj[i], value);
         }
         return selectByWhere(map);
     }
@@ -118,7 +122,11 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     public Long selectCountByWhere(Object... obj) {
         Map map = new HashMap();
         for (int i = 0; i < obj.length; i = i + 2) {
-            map.put(obj[i], obj[i + 1]);
+            Object value=obj[i + 1];
+            if (value instanceof List&&((List)value).isEmpty()){
+                return 0L;
+            }
+            map.put(obj[i], value);
         }
         return sessionTemplate.selectOne(selectByWhereCountStatement, map);
     }
