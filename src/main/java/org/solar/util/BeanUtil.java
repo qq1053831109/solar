@@ -109,6 +109,8 @@ public class BeanUtil {
                 PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
                 for (PropertyDescriptor property : propertyDescriptors) {
                     String key = property.getName();
+                    //javabean规范变量的前两个字母要么全部大写，要么全部小写（暂时不遵循javabean规范）
+                    key=StringUtil.toLowerCaseFirstOne(key);
                     if (key.compareToIgnoreCase("class") == 0) {
                         continue;
                     }
