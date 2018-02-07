@@ -95,7 +95,7 @@ public class VueGenerator {
             }
             sb.append("\n");
             sb.append("                    <td @click=\"changeOrder('" + fieldName + "')\" style=\"cursor: pointer\">\n");
-            sb.append("                        <div style=\"width: 100px\">"+comment+"</div>\n");
+            sb.append("                        <div>"+comment+"</div>\n");
             sb.append("                    </td>\n");
         }
         return sb.toString();
