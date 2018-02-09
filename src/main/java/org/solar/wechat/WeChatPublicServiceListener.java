@@ -133,6 +133,9 @@ public class WeChatPublicServiceListener {
         result.put("ToUserName",map.get("FromUserName"));
         result.put("FromUserName",map.get("ToUserName"));
         result.put("CreateTime",System.currentTimeMillis()/1000);
+//        result.put("MsgType","transfer_customer_service");//转发到客服微信
+//        String content= map.get("Content");
+//        result.put("Content",content);
         result.put("MsgType","text");
         String content="你的消息:\r\n";
           content=content+map.get("Content");
