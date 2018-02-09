@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <link rel="Shortcut Icon" href="http://g.hiphotos.baidu.com/zhidao/pic/item/e1fe9925bc315c60e9ece95a8ab1cb134954770e.jpg"/>
+    <link rel="Shortcut Icon" href=""/>
     <title>接口文档(solar)</title>
 <style type="text/css">
 *{
@@ -137,8 +137,8 @@ ${apiNavList}
                         </tr>
                         <tr>
                             <td>请求参数格式</td>
-                            <td>表单格式</td>
-                            <td>application/x-www-form-urlencoded</td>
+                            <td>json格式(application/json)/td>
+                            <td>查询和删除参数放入url,保存和更新用post将json数据放入请求体</td>
                         </tr>
                         <tr>
                             <td>返回格式</td>
