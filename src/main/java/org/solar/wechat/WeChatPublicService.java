@@ -156,17 +156,16 @@ public class WeChatPublicService {
         return jsapiTicket;
     }
     public  Map getJsSdkConfig(String url) {
-         String noncestr="solar";
          Map map=new HashMap();
          map.put("noncestr", UUID.randomUUID().toString().replace("-", ""));
          map.put("jsapi_ticket",getJsapiTicket());
-         map.put("timestamp",System.currentTimeMillis()/1000+"");
+         map.put("timestamp",System.currentTimeMillis()/1000);
         if (url.contains("#")){
             url=url.substring(0,url.indexOf("#"));
         }
          map.put("url",url);
          map.put("signature",generateSignature(map));
-         map.put("appId",appid);
+         map.put("appid",appid);
          return map;
     }
     public static String generateSignature(final Map<String, String> data)  {
@@ -175,7 +174,6 @@ public class WeChatPublicService {
         Arrays.sort(keyArray);
         StringBuilder sb = new StringBuilder();
         for (String k : keyArray) {
-            if (data.get(k).trim().length() > 0) // 参数值为空，则不参与签名
                 sb.append(k).append("=").append(String.valueOf(data.get(k)).trim()).append("&");
         }
         String str=sb.toString().substring(0,sb.length()-1);

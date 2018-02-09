@@ -51,7 +51,7 @@ public class TableField {
 
     public String getSqlEscapeName() {
         if (sqlKeyWord.contains(name)){
-            return "'"+name+"'";
+            return "`"+name+"`";
         }
         return name;
     }

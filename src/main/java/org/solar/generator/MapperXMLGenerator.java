@@ -89,10 +89,9 @@ public class MapperXMLGenerator {
     public  String getBaseResultMap(List<TableField> tableFieldList){
         StringBuilder sb=new StringBuilder();
         for (TableField tableField: tableFieldList){
-            String  column=tableField.getSqlEscapeName();
             String  jdbcType=tableField.getJdbcType();
             sb.append("    ");//前面空格
-            sb.append("<result column=\""+column+"\" property=\""+tableField.getCamelName()+"\" jdbcType=\""+jdbcType+"\" />\n");
+            sb.append("<result column=\""+tableField.getName()+"\" property=\""+tableField.getCamelName()+"\" jdbcType=\""+jdbcType+"\" />\n");
         }
         return sb.toString();
     }
