@@ -122,6 +122,9 @@ public class BeanUtil {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             for (int i = 0; i < obj.length; i++) {
+                if (obj[i]==null){
+                    continue;
+                }
                 BeanInfo beanInfo = Introspector.getBeanInfo(obj[i].getClass());
                 PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
                 for (PropertyDescriptor property : propertyDescriptors) {
