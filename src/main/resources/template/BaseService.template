@@ -4,6 +4,7 @@ import org.solar.bean.Page;
 import org.solar.bean.Pageable;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public interface BaseService<T> {
 
@@ -32,5 +33,7 @@ public interface BaseService<T> {
      T selectOneByWhere(Object... obj);
 
      Long selectCountByWhere(Object... obj);
+
+     Map executeSql(String sql);
 
 }

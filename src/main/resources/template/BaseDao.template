@@ -2,7 +2,7 @@ package ${packagePrefix}dao;
 
 import org.solar.bean.Page;
 import org.solar.bean.Pageable;
-
+import java.util.Map;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,16 +22,11 @@ public interface BaseDao<T> {
 
     Long selectCountByWhere(Object... obj);
 
-    List<T> selectByWhereIn(Object map);
-
-    List<T> selectByWhereIn(Object... obj);
-
-    Long selectCountByWhereIn(Object... obj);
-
     int save(T entity);
 
     void saveList(List<T> list);
 
     int updateByPrimaryKeySelective(T entity);
 
+    Map executeSql(String sql);
 }

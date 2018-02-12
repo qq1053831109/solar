@@ -31,8 +31,6 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         deleteByPrimaryKeyStatement = entityName + ".deleteByPrimaryKey";
         selectByWhereStatement = entityName + ".selectByWhere";
         selectByWhereCountStatement = entityName + ".selectByWhereCount";
-        selectByWhereInStatement = entityName + ".selectByWhereIn";
-        selectByWhereInCountStatement = entityName + ".selectByWhereInCount";
         insertSelectiveStatement = entityName + ".insertSelective";
         updateByPrimaryKeySelectiveStatement = entityName + ".updateByPrimaryKeySelective";
     }
@@ -90,6 +88,10 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return sessionTemplate.selectOne(selectByPrimaryKeyStatement, id);
     }
 
+    public Map executeSql(String sql) {
+        return sessionTemplate.selectOne("Base.executeSql",sql);
+    }
+
     public List<T> selectByWhere(Object obj) {
         Map map=(Map)obj;
         if (map.get("orderProperty") != null) {
@@ -129,38 +131,6 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
             map.put(obj[i], value);
         }
         return sessionTemplate.selectOne(selectByWhereCountStatement, map);
-    }
-
-    public List<T> selectByWhereIn(Object obj) {
-        Map map=(Map)obj;
-        if (map.get("orderProperty") != null) {
-            String orderProperty = (String) map.get("orderProperty");
-            if (!tableFields.contains(orderProperty)) {
-                throw new SolarRuntimeException(orderProperty + "字段在表中不存在");
-            }
-            String orderDirection = (String) map.get("orderDirection");
-            if (!"asc".equalsIgnoreCase(orderDirection) && !"desc".equalsIgnoreCase(orderDirection)) {
-                throw new SolarRuntimeException(orderDirection + "排序方向值不正确");
-            }
-        };
-
-        return sessionTemplate.selectList(selectByWhereInStatement, map);
-    }
-
-    public List<T> selectByWhereIn(Object... obj) {
-        Map map = new HashMap();
-        for (int i = 0; i < obj.length; i = i + 2) {
-            map.put(obj[i], obj[i + 1]);
-        }
-        return selectByWhere(map);
-    }
-
-    public Long selectCountByWhereIn(Object... obj) {
-        Map map = new HashMap();
-        for (int i = 0; i < obj.length; i = i + 2) {
-            map.put(obj[i], obj[i + 1]);
-        }
-        return sessionTemplate.selectOne(selectByWhereInCountStatement, map);
     }
 
     final static Class[] dateParam = new Class[]{Date.class};
@@ -214,8 +184,6 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     final String deleteByPrimaryKeyStatement;
     final String selectByWhereStatement;
     final String selectByWhereCountStatement;
-    final String selectByWhereInStatement;
-    final String selectByWhereInCountStatement;
     final String insertSelectiveStatement;
     final String updateByPrimaryKeySelectiveStatement;
 }

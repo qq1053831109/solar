@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.solar.bean.Page;
 import org.solar.bean.Pageable;
-import org.solar.util.GenericsUtils;
+import java.util.Map;
 import org.springframework.transaction.annotation.Transactional;
 import ${packagePrefix}service.BaseService;
 import ${packagePrefix}dao.BaseDao;
@@ -71,18 +71,8 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return baseDao.selectCountByWhere(obj);
     }
 
-    @Transactional(readOnly = true)
-    public List<T> selectByWhereIn(Object map) {
-        return baseDao.selectByWhereIn(map);
+    public Map executeSql(String sql) {
+        return baseDao.executeSql(sql);
     }
 
-    @Transactional(readOnly = true)
-    public List<T> selectByWhereIn(Object... obj) {
-        return baseDao.selectByWhereIn(obj);
-    }
-
-    @Transactional(readOnly = true)
-    public Long selectCountByWhereIn(Object... obj) {
-        return baseDao.selectCountByWhereIn(obj);
-    }
 }

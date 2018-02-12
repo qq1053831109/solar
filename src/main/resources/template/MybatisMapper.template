@@ -32,28 +32,6 @@ ${BaseResultMap}
     </where>
   </select>
 
-  <select id="selectByWhereIn" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ${tableName}
-        <where>
-            <include refid="where_In_Column_List"/>
-        </where>
-        <if test="orderProperty != null and orderDirection != null ">
-            ORDER BY ${orderProperty} ${orderDirection}
-        </if>
-        <if test="pageStart != null and pageLimit != null ">
-            limit #{pageStart},#{pageLimit}
-        </if>
-  </select>
-
-  <select id="selectByWhereInCount" resultType="java.lang.Long">
-        select count(*) from ${tableName}
-        <where>
-            <include refid="where_In_Column_List"/>
-        </where>
-  </select>
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
@@ -93,7 +71,7 @@ ${insertTrimValueList}
 
   <update id="updateByPrimaryKeySelective" parameterType="${packagePrefix}entity.${BeanName}" >
     update ${tableName}
-    <set >
+    <set>
 ${updateSetList}
     </set>
     where id = #{id}
@@ -101,15 +79,5 @@ ${updateSetList}
 
   <sql id="where_Column_List" >
 ${where}
-  </sql>
-
-  <sql id="where_In_Column_List" >
-     <if test="id != null" >
-         AND id in
-         <foreach collection="id" index="index" item="item" open="(" separator="," close=")">
-             #{item}
-         </foreach>
-     </if>
-${whereInColumnList}
   </sql>
 </mapper>

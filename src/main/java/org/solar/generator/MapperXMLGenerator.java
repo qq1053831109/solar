@@ -34,7 +34,6 @@ public class MapperXMLGenerator {
         replaceMap.put("Base_Column_Value_List",getBase_Column_Value_List(tableFieldList));
         replaceMap.put("tableName",table.getName());
         replaceMap.put("where",getWhere(tableFieldList));
-        replaceMap.put("whereInColumnList",getWhereInColumnList(tableFieldList));
         replaceMap.put("insertTrimList",getInsertTrimList(tableFieldList));
         replaceMap.put("insertTrimValueList",getInsertTrimValueList(tableFieldList));
         replaceMap.put("updateSetList",getUpdateSetList(tableFieldList));
@@ -138,11 +137,11 @@ public class MapperXMLGenerator {
             String javaType=tableField.getJAVAType();
             //&lt;=<  &gt;=>
             if ("Date".equals(javaType)||"Timestamp".equals(javaType)){
-                where.append("      <if test=\"" + key + "Start != null\" >\n");
+                where.append("      <if test=\"" + key + "Start != null and "+key+"Start != ''\" >\n");
                 where.append("        AND " + column + " &gt;= #{" + key + "Start}\n");
                 where.append("      </if>\n");
                 //end
-                where.append("      <if test=\"" + key + "End != null\" >\n");
+                where.append("      <if test=\"" + key + "End != null and "+key+"End != ''\" >\n");
                 where.append("        AND " + column + " &lt; #{" + key + "End}\n");
                 where.append("      </if>\n");
                 if (!fullTextSearchContainDate){
@@ -173,23 +172,6 @@ public class MapperXMLGenerator {
             where.append(getWhereInColumnListKeyList(tableFieldList));
         }
         where.append(fullTextSearch);
-        return where.toString();
-    }
-    public  String getWhereInColumnList(List<TableField> tableFieldList){
-        StringBuilder where=new StringBuilder();
-
-        for (TableField tableField: tableFieldList){
-            String  column=tableField.getSqlEscapeName();
-            String  key=tableField.getCamelName();
-            where.append("      <if test=\""+key+" != null\" >\n");
-            where.append("        AND "+column+" in\n");
-            where.append("        <foreach collection=\""+key+"\" index=\"index\" item=\"item\" open=\"(\" separator=\",\" close=\")\">\n");
-            where.append("            #{item}\n");
-            where.append("        </foreach>\n");
-            where.append("      </if>\n");
-
-
-        }
         return where.toString();
     }
     public  String getWhereInColumnListKeyList(List<TableField> tableFieldList){

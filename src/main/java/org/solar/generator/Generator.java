@@ -107,11 +107,18 @@ public class Generator {
         generateBaseCode("BaseService", servicePath);
         generateBaseCode("BaseServiceImpl", ServiceImplPath);
         generateBaseCode("BaseController", ControllerPath);
+        generateBaseCode("BaseMapper", mapperXMLRootPath,".xml");
     }
 
     private void generateBaseCode(String type, String gcPath) {
+        generateBaseCode( type, gcPath,null);
+    }
+    private void generateBaseCode(String type, String gcPath,String suffix) {
+        if (suffix==null){
+            suffix=".java";
+        }
         String daoTemplate = getTemplate(type + ".template");
-        File gcfile = new File(gcPath + type + ".java");
+        File gcfile = new File(gcPath + type + suffix);
         Map map = new LinkedHashMap();
         map.put("packagePrefix", packagePrefix);
         if (!gcfile.exists()||overWriteFile) {
