@@ -34,16 +34,17 @@ public class ${BeanName}CrudController extends BaseController {
     private ${BeanName}Service ${beanName}Service;
     @RequestMapping("/select")
     @ResponseBody
-    public  JsonResult select(@RequestParam Map<String,String> map) {
+    public  JsonResult select(@RequestParam Map<String,String> requestMap) {
         //按id查询
-        String id=map.get("id");
+        String id=requestMap.get("id");
         if (id!=null&&!"".equals(id)){
-            return JsonResult.success(${beanName}Service.getById(id));
+            ${BeanName} ${beanName}=${beanName}Service.getById(id);
+            return JsonResult.success(${beanName});
         }
         //按分页查询
-        String pageNum=map.get("pageNum");
+        String pageNum=requestMap.get("pageNum");
         if (pageNum!=null&&!"".equals(pageNum)){
-            Pageable pageable=Pageable.getPageable(map);
+            Pageable pageable=Pageable.getPageable(requestMap);
             Page page=${beanName}Service.selectPage(pageable);
 //            List<${BeanName}> list=page.getList();
 //            List parentIdList=BeanUtil.getProperties(list,"parentId");
@@ -53,7 +54,7 @@ public class ${BeanName}CrudController extends BaseController {
             return JsonResult.success(page);
         }
         //按条件查询List
-        return JsonResult.success(${beanName}Service.selectByWhere(map));
+        return JsonResult.success(${beanName}Service.selectByWhere(requestMap));
     }
     @RequestMapping("/delete")
     @ResponseBody
