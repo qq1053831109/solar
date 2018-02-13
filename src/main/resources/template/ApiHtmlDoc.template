@@ -137,7 +137,7 @@ ${apiNavList}
                         </tr>
                         <tr>
                             <td>请求参数格式</td>
-                            <td>json格式(application/json)/td>
+                            <td>json格式(application/json)</td>
                             <td>查询和删除参数放入url,保存和更新用post将json数据放入请求体</td>
                         </tr>
                         <tr>
@@ -205,7 +205,7 @@ ${apiNavList}
                              <td></td>
                              <td></td>
                              <td>值为一对多关联表的参数规则:
-                                 参数key为表名,值为json数组字符串，数组内对象的key为字段名
+                                 参数key为表名,值为json数组，数组内对象的key为字段名
                              </td>
                          </tr>
                     </table>
