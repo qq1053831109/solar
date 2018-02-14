@@ -27,7 +27,7 @@ public class Token {
     /**
      * 秒单位
      */
-    private long expireTime=0;
+    private long expireTime=60*60*2;//2小时
     private long createTime=System.currentTimeMillis()/1000;
 
     public String getId() {
