@@ -82,6 +82,31 @@ public class DateUtil {
       return DateUtil.format(new Date(yesterdayTime), "yyyy-MM-dd");
     }
 
+    public static boolean inTimeRange(String beginTime,String endTime) {
+        return inTimeRange(  beginTime,  endTime,  new Date());
+    }
+    public static boolean inTimeRange(String beginTimeStr,String endTimeStr,Date nowTime) {
+        if (StringUtil.isEmpty(beginTimeStr)||StringUtil.isEmpty(endTimeStr)){
+            return false;
+        }
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式
+        Date now =null;
+        Date beginTime = null;
+        Date endTime = null;
+        try {
+            now = df.parse(df.format(nowTime));
+            beginTime = df.parse(beginTimeStr);
+            endTime = df.parse(endTimeStr);
+            if (beginTime.getTime()<=now.getTime()&&now.getTime()<=endTime.getTime()){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return  false;
+    }
+
     public static void main(String[] args) {
         System.out.println(DateUtil.format(new Date(), "HH"));
     }
