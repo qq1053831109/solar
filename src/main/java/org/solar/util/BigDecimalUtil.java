@@ -8,7 +8,7 @@ public class BigDecimalUtil {
     }
 
     public static String divide(String var1,String var2) {
-        return divide(var1,var2,4);
+        return new BigDecimal(var1).divide(new BigDecimal(var2)).toString();
     }
 
 }

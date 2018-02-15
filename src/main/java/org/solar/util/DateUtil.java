@@ -108,6 +108,7 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(DateUtil.format(new Date(), "HH"));
+        System.out.println(DateUtil.inTimeRange("11:19",
+                "23:59"));
     }
 }
