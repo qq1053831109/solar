@@ -67,8 +67,11 @@ public class BeanUtil {
                 Object val2=map2.get(name2);
                 if (val.equals(val2)){
                     if (defult==null&&map2!=null){
-                        map2.putAll(map);
-                        map.putAll(map2);
+                        Map tempMap=new HashMap();
+                        tempMap.putAll(map2);
+                        tempMap.putAll(map);
+                        map.clear();
+                        map.putAll(tempMap);
                     }else if (name1.endsWith("Id")){
                         map.put(name1.substring(0,name1.length()-2),map2);
                     }else {
