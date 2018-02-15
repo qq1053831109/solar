@@ -128,6 +128,10 @@ public class BeanUtil {
                 if (obj[i]==null){
                     continue;
                 }
+                if (obj[i]instanceof Map){
+                    map.putAll((Map)obj[i]);
+                    continue;
+                }
                 BeanInfo beanInfo = Introspector.getBeanInfo(obj[i].getClass());
                 PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
                 for (PropertyDescriptor property : propertyDescriptors) {
