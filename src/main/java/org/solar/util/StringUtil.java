@@ -35,13 +35,13 @@ public class StringUtil {
         return s.substring(0,len);
     }
 
-    public static boolean isNotEmpty(String str) {
+    public static boolean isNotEmpty(Object str) {
         if (str==null||"".equals(str)){
             return false;
         }
         return true;
     }
-    public static boolean isEmpty(String str) {
+    public static boolean isEmpty(Object str) {
         if (str==null||"".equals(str)){
             return true;
         }

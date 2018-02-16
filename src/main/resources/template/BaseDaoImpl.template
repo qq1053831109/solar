@@ -85,6 +85,9 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 
 
     public T selectByPrimaryKey(Serializable id) {
+        if (StringUtil.isEmpty(id)){
+            return null;
+        }
         return sessionTemplate.selectOne(selectByPrimaryKeyStatement, id);
     }
 
