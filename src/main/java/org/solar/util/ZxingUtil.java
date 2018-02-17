@@ -1,11 +1,15 @@
 package org.solar.util;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class ZxingUtil {
@@ -30,5 +34,27 @@ public class ZxingUtil {
             }
         }
          return image;
+    }
+
+    public static String decodeImage(BufferedImage bufferedImage){
+        LuminanceSource luminanceSource = new BufferedImageLuminanceSource(bufferedImage);
+        Binarizer binarizer = new HybridBinarizer(luminanceSource);
+        BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+        HashMap decodeHints=new HashMap();
+        decodeHints.put(DecodeHintType.CHARACTER_SET,"utf-8");
+        Result result= null;
+        try {
+            result = new MultiFormatReader().decode(binaryBitmap,decodeHints);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result.getText();
+    }
+
+    public static void main(String[] args){
+        String filePath="/Users/xianchuanwu/Documents/众橙/外包/测试资源/二维码描述.jpeg";
+        BufferedImage bufferedImage=ImageUtil.read(new File(filePath));
+        System.out.print(decodeImage(bufferedImage));
     }
 }
