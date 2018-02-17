@@ -161,17 +161,17 @@ public class Pageable implements Serializable {
 
     public static  Pageable getPageable(Map map) {
         Pageable pageable = new Pageable();
-        String pageNumber = String.valueOf(map.get("pageNum"));
+        Object pageNumber =  map.get("pageNum");
         if (pageNumber != null && !"".equals(pageNumber)) {
-            pageable.setPageNumber(Integer.valueOf(pageNumber));
+            pageable.setPageNumber(Integer.valueOf(String.valueOf(pageNumber)));
         }
-        String pageSize = String.valueOf(map.get("pageSize"));
+        Object pageSize =  map.get("pageSize");
         if (pageSize != null && !"".equals(pageSize)) {
-            pageable.setPageSize(Integer.valueOf(pageSize));
+            pageable.setPageSize(Integer.valueOf(String.valueOf(pageSize)));
         }
-        String orderProperty = String.valueOf(map.get("orderProperty"));
+        Object orderProperty =  map.get("orderProperty");
         if (orderProperty != null && !"".equals(orderProperty)) {
-            pageable.setOrderProperty(orderProperty);
+            pageable.setOrderProperty((String) orderProperty);
             String orderDirection = String.valueOf(map.get("orderDirection"));
             if (orderDirection != null && !"".equals(orderDirection)) {
                     pageable.setOrderDirection(orderDirection);

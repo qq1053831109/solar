@@ -28,5 +28,5 @@ public interface BaseDao<T> {
 
     int updateByPrimaryKeySelective(T entity);
 
-    Map executeSql(String sql);
+    List<Map> executeSql(String sql);
 }

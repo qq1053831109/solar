@@ -71,7 +71,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return baseDao.selectCountByWhere(obj);
     }
 
-    public Map executeSql(String sql) {
+    public List<Map> executeSql(String sql) {
         return baseDao.executeSql(sql);
     }
 

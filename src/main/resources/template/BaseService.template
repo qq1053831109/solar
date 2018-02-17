@@ -34,6 +34,6 @@ public interface BaseService<T> {
 
      Long selectCountByWhere(Object... obj);
 
-     Map executeSql(String sql);
+     List<Map> executeSql(String sql);
 
 }

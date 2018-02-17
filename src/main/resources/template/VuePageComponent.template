@@ -10,7 +10,7 @@
                 <button class="button" type="button" @click="deleteBeans(checkboxModel)">删除</button>
             </div>
             <div class="float-right">
-                <input type="text" v-model="fullTextSearchValue" placeholder="全文搜索"/>
+                <input type="text" v-model="fullTextSearchValue" placeholder="搜索"/>
                 <button class="button" type="button" @click="pageNum=1;select()">搜索</button>
             </div>
             <div style="clear: both"></div>
