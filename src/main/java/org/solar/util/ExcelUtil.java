@@ -23,6 +23,7 @@ public class ExcelUtil {
             SXSSFRow row = sheet.createRow(i) ;
             List cellList=rowList.get(i);
             for (int j = 0; j <cellList.size() ; j++) {
+                sheet.setColumnWidth(j,3800);
                 Object val=cellList.get(j);
                 if (val==null){
                     continue;
