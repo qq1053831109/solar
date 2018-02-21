@@ -38,16 +38,20 @@ public class DateUtil {
     }
 
     public static Date parse(String dateStr) {
-
+        SimpleDateFormat sdf;
+        if (dateStr.length() > 13) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        } else {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        }
         try {
-            synchronized (sdf) {
-                return sdf.parse(dateStr);
-            }
+            return sdf.parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     /**
      *  <p>将字符串转换为时间Date类型,如果转换出错则会返回一个null</p>
      *  @author txj  
@@ -68,43 +72,55 @@ public class DateUtil {
         return date;
     }
 
+    /**
+     * add day
+     *
+     * @return
+     */
+    public static Date addDay(Date date, int day) {
+        long time = 1000 * 60 * 60 * 24;
+        time = time * day;
+        return new Date(date.getTime() + time);
+    }
 
 
     public static String getNowTime() {
-      return DateUtil.format(new Date(), "yyyyMMddHHmmss");
+        return DateUtil.format(new Date(), "yyyyMMddHHmmss");
     }
 
     public static String getTodayString() {
-      return DateUtil.format(new Date(), "yyyy-MM-dd");
-    }
-    public static String getYesterdayString() {
-        long yesterdayTime=System.currentTimeMillis()-(1000*60*60*24);
-      return DateUtil.format(new Date(yesterdayTime), "yyyy-MM-dd");
+        return DateUtil.format(new Date(), "yyyy-MM-dd");
     }
 
-    public static boolean inTimeRange(String beginTime,String endTime) {
-        return inTimeRange(  beginTime,  endTime,  new Date());
+    public static String getYesterdayString() {
+        long yesterdayTime = System.currentTimeMillis() - (1000 * 60 * 60 * 24);
+        return DateUtil.format(new Date(yesterdayTime), "yyyy-MM-dd");
     }
-    public static boolean inTimeRange(String beginTimeStr,String endTimeStr,Date nowTime) {
-        if (StringUtil.isEmpty(beginTimeStr)||StringUtil.isEmpty(endTimeStr)){
+
+    public static boolean inTimeRange(String beginTime, String endTime) {
+        return inTimeRange(beginTime, endTime, new Date());
+    }
+
+    public static boolean inTimeRange(String beginTimeStr, String endTimeStr, Date nowTime) {
+        if (StringUtil.isEmpty(beginTimeStr) || StringUtil.isEmpty(endTimeStr)) {
             return false;
         }
         SimpleDateFormat df = new SimpleDateFormat("HH:mm");//设置日期格式
-        Date now =null;
+        Date now = null;
         Date beginTime = null;
         Date endTime = null;
         try {
             now = df.parse(df.format(nowTime));
             beginTime = df.parse(beginTimeStr);
             endTime = df.parse(endTimeStr);
-            if (beginTime.getTime()<=now.getTime()&&now.getTime()<=endTime.getTime()){
+            if (beginTime.getTime() <= now.getTime() && now.getTime() <= endTime.getTime()) {
                 return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return  false;
+        return false;
     }
 
     public static void main(String[] args) {
