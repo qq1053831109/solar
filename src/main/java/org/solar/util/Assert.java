@@ -29,4 +29,9 @@ public class Assert {
             throw new SolarRuntimeException(info);
         }
     }
+    public static void notNull(Object obj) {
+        if (obj==null){
+            throw new SolarRuntimeException("参数不能为空");
+        }
+    }
 }
