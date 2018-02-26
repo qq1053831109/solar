@@ -106,6 +106,15 @@ public class ImageUtil {
             throw new SolarRuntimeException(e);
         }
     }
+    public static byte[] toByteArray(RenderedImage img) {
+        try {
+            ByteArrayOutputStream bytesOs = new ByteArrayOutputStream();
+            ImageIO.write(img,"jpg",bytesOs);
+            return bytesOs.toByteArray();
+        } catch (IOException e) {
+            throw new SolarRuntimeException(e);
+        }
+    }
     public static void main(String[] args) throws Exception {
         BufferedImage img =  read(new File("/Users/xianchuanwu/Desktop/8.jpg"));
         BufferedImage logo =  read(new File("/Users/xianchuanwu/Desktop/WechatIMG50.jpeg"));
