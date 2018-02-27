@@ -108,8 +108,26 @@ public class StringUtil {
         return true;
     }
 
+    public static String numStringAddNum(String str,int num) {
+        if (str==null){
+            return null;
+        }
+        if (!isNumeric(str)){
+            return null;
+        }
+        if (num==0){
+            return str;
+        }
+        String resultStr=Integer.valueOf(str)+num+"";
+        int length=str.length()-resultStr.length();
+        for (int i = 0; i <length ; i++) {
+            resultStr="0"+resultStr;
+        }
+        return resultStr;
+    }
+
     public static String removeEmoji(String str){
         return str.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
-
     }
+
 }
