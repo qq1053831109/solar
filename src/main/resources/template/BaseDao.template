@@ -20,6 +20,8 @@ public interface BaseDao<T> {
 
     List<T> selectByWhere(Object... obj);
 
+    T selectOneByWhere(Object... obj);
+
     Long selectCountByWhere(Object... obj);
 
     int save(T entity);
@@ -29,4 +31,5 @@ public interface BaseDao<T> {
     int updateByPrimaryKeySelective(T entity);
 
     List<Map> executeSql(String sql);
+
 }

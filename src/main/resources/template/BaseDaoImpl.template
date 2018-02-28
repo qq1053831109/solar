@@ -124,6 +124,14 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
         return selectByWhere(map);
     }
 
+    public T selectOneByWhere(Object... obj) {
+        List<T> li=selectByWhere(obj);
+        if (li==null||li.size()==0){
+            return null;
+        }
+        return li.get(0);
+    }
+
     public Long selectCountByWhere(Object... obj) {
         Map map = new HashMap();
         for (int i = 0; i < obj.length; i = i + 2) {
