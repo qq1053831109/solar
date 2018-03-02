@@ -19,7 +19,7 @@ public class FileUtil {
             io.close();
             return bytes;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return null;
     }
