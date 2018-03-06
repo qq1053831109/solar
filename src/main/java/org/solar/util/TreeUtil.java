@@ -88,7 +88,10 @@ public class TreeUtil {
             String parentId = (String) map.get("parentId");
             if (parentId == null || "".equals(parentId)) {
                 treeList.add(map);
-                map.put("childList", getChildListByParentId(listMap, (String) map.get("id")));
+                List childList= getChildListByParentId(listMap, (String) map.get("id"));
+                if (childList!=null&&childList.size()>0){
+                    map.put("childList", childList);
+                }
             }
         }
         return treeList;
@@ -102,7 +105,10 @@ public class TreeUtil {
             String parentId = (String) map.get("parentId");
             if (id.equals(parentId)) {
                 childList.add(map);
-                map.put("childList", getChildListByParentId(list, (String) map.get("id")));
+                List childList2= getChildListByParentId(list, (String) map.get("id"));
+                if (childList2!=null&&childList2.size()>0){
+                    map.put("childList", childList2);
+                }
             }
         }
         return childList;
