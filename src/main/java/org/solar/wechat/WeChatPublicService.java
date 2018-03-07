@@ -94,8 +94,16 @@ public class WeChatPublicService {
             String result=JdkHttpUtil.get(getAccessTokenUrl+"?grant_type=client_credential&appid="+appid+"&secret="+secret);
             Map resultMap=JsonUtil.parseObject(result);
             accessToken=(String)resultMap.get("access_token");
-            long expires_in=Long.valueOf(String.valueOf(resultMap.get("expires_in")));
-            cache.put("WeChatPublicService:"+appid+":accessToken",accessToken,(expires_in-60)*1000);
+            try{
+                long expires_in=Long.valueOf(String.valueOf(resultMap.get("expires_in")));
+                cache.put("WeChatPublicService:"+appid+":accessToken",accessToken,(expires_in-60)*1000);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                System.out.println("resultMap:");
+                System.out.println(resultMap);
+            }
+
         }
         return accessToken;
     }
