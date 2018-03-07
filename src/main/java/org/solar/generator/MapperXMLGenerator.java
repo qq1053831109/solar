@@ -16,6 +16,7 @@ import static org.solar.generator.Generator.packagePrefix;
 public class MapperXMLGenerator {
     public   boolean fullTextSearchContainDate=true;
     public   boolean whereContainWherein=true;
+    public   boolean whereContainLike=true;
 
     private final String template;
     private String packagePrefix;
@@ -171,6 +172,9 @@ public class MapperXMLGenerator {
             where.append("      </if>\n");
             where.append(getWhereInColumnListKeyList(tableFieldList));
         }
+        if (whereContainLike){
+            where.append(getWhereLike(tableFieldList));
+        }
         where.append(fullTextSearch);
         return where.toString();
     }
@@ -188,6 +192,17 @@ public class MapperXMLGenerator {
             where.append("      </if>\n");
 
 
+        }
+        return where.toString();
+    }
+    public  String getWhereLike(List<TableField> tableFieldList){
+        StringBuilder where=new StringBuilder();
+        for (TableField tableField: tableFieldList){
+            String  column=tableField.getSqlEscapeName();
+            String  key=tableField.getCamelName();
+            where.append("      <if test=\""+key+"Like != null\" >\n");
+            where.append("        AND "+column+" like #{"+key+"Like}\n");
+            where.append("      </if>\n");
         }
         return where.toString();
     }
