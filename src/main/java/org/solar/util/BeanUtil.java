@@ -36,6 +36,19 @@ public class BeanUtil {
         }
         return listMap;
     }
+    public static List<Map> innerJoin(List li1,List li2) {
+        if (li1==null||li2==null){
+            return null;
+        }
+        List list=new ArrayList();
+        for (Object obj:li1){
+            if (li2.contains(obj)){
+                list.add(obj);
+            }
+        }
+
+        return list;
+    }
     public static List<Map> leftJoin(List li1,List li2,String name1,String name2) {
         return leftJoin(  li1,  li2,  name1,  name2,null);
     }

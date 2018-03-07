@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import org.solar.util.JsonUtil;
 import org.solar.util.BeanUtil;
+import org.solar.util.StringUtil;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Description:
@@ -33,27 +35,30 @@ public class ${BeanName}CrudController extends BaseController {
     private ${BeanName}Service ${beanName}Service;
     @RequestMapping("/select")
     @ResponseBody
-    public  JsonResult select(@RequestParam Map<String,String> requestMap) {
+    public  JsonResult select(HttpServletRequest req,@RequestParam Map requestMap,
+                            @RequestParam(value = "idList[]", required = false) List idList) {
+        map.put("idList", idList);
+        String id=(String)requestMap.get("id");
+        String pageNum=(String)requestMap.get("pageNum");
+         //按条件查询List
+        if (StringUtil.isEmpty(id)&&StringUtil.isEmpty(pageNum)){
+           return JsonResult.success(${beanName}Service.selectByWhere(requestMap));
+        }
         //按id查询
-        String id=requestMap.get("id");
-        if (id!=null&&!"".equals(id)){
+        if (StringUtil.isNotEmpty(id)){
             ${BeanName} ${beanName}=${beanName}Service.getById(id);
             return JsonResult.success(${beanName});
         }
         //按分页查询
-        String pageNum=requestMap.get("pageNum");
-        if (pageNum!=null&&!"".equals(pageNum)){
-            Pageable pageable=Pageable.getPageable(requestMap);
-            Page page=${beanName}Service.selectPage(pageable);
+        Pageable pageable=Pageable.getPageable(requestMap);
+        Page page=${beanName}Service.selectPage(pageable);
 //            List<${BeanName}> ${beanName}List=page.getList();
 //            List childIdList=BeanUtil.getProperties(${beanName}List,"childId");
 //            List childList=${beanName}Service.selectByWhere("idList",childIdList);
 //            List<Map> resultList=BeanUtil.leftJoin(${beanName}List,childList,"childId","id");
 //            page.setList(resultList);
-            return JsonResult.success(page);
-        }
-        //按条件查询List
-        return JsonResult.success(${beanName}Service.selectByWhere(requestMap));
+        return JsonResult.success(page);
+
     }
     @RequestMapping("/delete")
     @ResponseBody
@@ -67,7 +72,7 @@ public class ${BeanName}CrudController extends BaseController {
         ${BeanName} bean= JsonUtil.toJavaObject(requestMap,${BeanName}.class);
        //如果id不为空则更新
         Date nowTime=new Date();
-        if (bean.getId()!=null&&!"".equals(bean.getId())){
+        if (StringUtil.isNotEmpty(bean.getId())){
             int row=${beanName}Service.updateByPrimaryKey(bean);
             return JsonResult.success(row);
         }
