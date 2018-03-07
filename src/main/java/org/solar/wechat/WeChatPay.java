@@ -32,14 +32,14 @@ public class WeChatPay {
     }
 
     public WeChatPay(String appid, String mch_id, String key, String notify_url,
-                     String mch_appid, String spbill_create_ip, String keyStore, String keyStorePass) {
+                      String spbill_create_ip, String certFilePath, String certPassword) {
         this.appid = appid;
         this.mch_id = mch_id;
         this.notify_url = notify_url;
         this.key = key;
-        this.mch_appid = mch_appid;
+        this.mch_appid = appid;
         this.spbill_create_ip = spbill_create_ip;
-        httpsWithCert = new HttpsWithCert(keyStore, keyStorePass);
+        httpsWithCert = new HttpsWithCert(certFilePath, certPassword);
     }
 
 
@@ -252,20 +252,30 @@ public class WeChatPay {
      Ip地址	spbill_create_ip	是	192.168.0.1	String(32)	调用接口的机器Ip地址
      */
     /**
-     * <xml>
-     * <return_code><![CDATA[SUCCESS]]></return_code>
-     * <return_msg><![CDATA[]]></return_msg>
-     * <mch_appid><![CDATA[wxec38b8ff840bd989]]></mch_appid>
-     * <mchid><![CDATA[10013274]]></mchid>
-     * <device_info><![CDATA[]]></device_info>
-     * <nonce_str><![CDATA[lxuDzMnRjpcXzxLx0q]]></nonce_str>
-     * <result_code><![CDATA[SUCCESS]]></result_code>
-     * <partner_trade_no><![CDATA[10013574201505191526582441]]></partner_trade_no>
-     * <payment_no><![CDATA[1000018301201505190181489473]]></payment_no>
-     * <payment_time><![CDATA[2015-05-19 15：26：59]]></payment_time>
-     * </xml>
+     * return
+     <xml>
+     <return_code><![CDATA[SUCCESS]]></return_code>
+     <return_msg><![CDATA[支付失败]]></return_msg>
+     <mch_appid><![CDATA[wx550ba0dd3e19d5f6]]></mch_appid>
+     <mchid><![CDATA[1313364101]]></mchid>
+     <result_code><![CDATA[FAIL]]></result_code>
+     <err_code><![CDATA[NOTENOUGH]]></err_code>
+     <err_code_des><![CDATA[余额不足]]></err_code_des>
+     </xml>
+        or
+     <xml>
+     <return_code> <![CDATA[SUCCESS]]> </return_code>
+     <return_msg> <![CDATA[]]> </return_msg>
+     <mch_appid> <![CDATA[wx550ba0dd3e19d5f6]]> </mch_appid>
+     <mchid> <![CDATA[1313364101]]> </mchid>
+     <nonce_str> <![CDATA[8eb2cbb3e91c407aa39fc1dba000cd9b]]> </nonce_str>
+     <result_code> <![CDATA[SUCCESS]]> </result_code>
+     <partner_trade_no> <![CDATA[1803071538470001]]> </partner_trade_no>
+     <payment_no> <![CDATA[1000018301201803075577750142]]> </payment_no>
+     <payment_time> <![CDATA[2018-03-07 15:38:49]]> </payment_time>
+     </xml>
      */
-    public String transfer(String partner_trade_no, String openid, String amount, String desc) {
+    public String transfer(String partner_trade_no, String openid, String amount, String remark) {
         Map<String, String> reqData = new HashMap();
         reqData.put("mch_appid", mch_appid);
         reqData.put("mchid", mch_id);
@@ -273,7 +283,7 @@ public class WeChatPay {
         reqData.put("partner_trade_no", partner_trade_no);
         reqData.put("openid", openid);
         reqData.put("check_name", "NO_CHECK");
-        reqData.put("desc", desc);
+        reqData.put("desc", remark);
         reqData.put("spbill_create_ip", spbill_create_ip);
         reqData.put("amount", amount);
         reqData.put("sign", generateSignature(reqData, key));

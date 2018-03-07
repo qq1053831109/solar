@@ -43,12 +43,9 @@ public class HttpsWithCert {
 
         PrintWriter out = null;
         BufferedReader in = null;
-        String result = null;
+        String result = "";
 
         try {
-//            TrustManager[] tms =null;
-
-
             // 服务链接
             URL url = new URL(urlStr);
             // 请求参数
@@ -114,7 +111,6 @@ public class HttpsWithCert {
             fp.close();
             factory.init(ks);
             TrustManager[] tms = factory.getTrustManagers();
-            System.out.println(tms);
             return tms;
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +137,6 @@ public class HttpsWithCert {
             fp.close();
             factory.init(ks, keyStorePass.toCharArray());
             KeyManager[] keyms = factory.getKeyManagers();
-            System.out.println(keyms);
             return keyms;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
