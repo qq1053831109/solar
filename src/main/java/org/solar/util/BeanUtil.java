@@ -49,6 +49,31 @@ public class BeanUtil {
 
         return list;
     }
+    public static List<Map> innerJoin(List li1,List li2,String name1,String name2) {
+        if (li1==null||li2==null){
+            return null;
+        }
+        li1=objectToMap(li1);
+        li2=objectToMap(li2);
+        List list=new ArrayList();
+        for (Object obj1:li1){
+            Object kv1=((Map)obj1).get(name1);
+            if (kv1==null){
+                continue;
+            }
+            for (Object obj2:li2){
+                Object kv2=((Map)obj2).get(name2);
+                if (kv1.equals(kv2)){
+                    Map temp=new HashMap();
+                    temp.putAll((Map)obj2);
+                    temp.putAll((Map)obj1);
+                    list.add(temp);
+                }
+
+            }
+        }
+        return list;
+    }
     public static List<Map> leftJoin(List li1,List li2,String name1,String name2) {
         return leftJoin(  li1,  li2,  name1,  name2,null);
     }
