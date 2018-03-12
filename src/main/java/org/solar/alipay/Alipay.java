@@ -49,7 +49,10 @@
 //     body 描述 可空
 //     * @return 创建支付宝订单并返回手机网站支付的html页面
 //     */
-//    public String mobileWebPay(String out_trade_no,String  subject,String  total_amount){
+//    public String mobileWebPay(String out_trade_no,String  subject,String  total_amount) {
+//        return mobileWebPay(out_trade_no,subject,total_amount,return_url);
+//    }
+//    public String mobileWebPay(String out_trade_no,String  subject,String  total_amount,String  return_url){
 ////         // 销售产品码
 //        /**********************/
 //        AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
@@ -107,7 +110,7 @@
 //     */
 //    public Map orderQuery(String out_trade_no){
 //        // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签
-//        AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
+//         AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
 //
 //        AlipayTradeQueryModel model=new AlipayTradeQueryModel();
 //        model.setOutTradeNo(out_trade_no);
@@ -138,6 +141,10 @@
 //     payee_real_name	String	可选	100	收款方真实姓名（最长支持100个英文/50个汉字）。
 //     如果本参数不为空，则会校验该账户在支付宝登记的实名是否与收款方真实姓名一致。	张三
 //     remark	String	可选	200	转账备注（支持200个英文/100个汉字）。
+//        return
+//     {"msg":"Success","pay_date":"2018-03-07 16:21:09","code":"10000",
+//     "out_biz_no":"1803071621080001",
+//     "order_id":"20180307110070001502550071386666"}
 //     */
 //    public String transfer(String out_biz_no,String payee_type,String payee_account,String amount,String remark){
 //        Map map=new HashMap();
@@ -154,12 +161,11 @@
 //        } catch (AlipayApiException e) {
 //            e.printStackTrace();
 //        }
-//        if(response.isSuccess()){
-//            System.out.println("调用成功");
-//        } else {
-//            System.out.println("调用失败");
+//        if(!response.isSuccess()){
+//            System.err.println(JsonUtil.toJSONString(response));
 //        }
-//        return response.getMsg();
+//        Map resultMap=JsonUtil.parseObject(response.getBody());
+//        return JsonUtil.toJSONString(resultMap.get("alipay_fund_trans_toaccount_transfer_response"));
 //    }
 //
 //    /**
@@ -225,6 +231,7 @@
 //        }
 //        return response.getMsg();
 //    }
+//    //app_id=2016032301002387 &scope=auth_user&auth_code=10e20498fe5d42f18427d893fc06WX59
 //    public String getOauthUrl(String redirect_uri, String state) {
 //        StringBuilder sb = new StringBuilder();
 //        sb.append("https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=" + appid);
@@ -316,7 +323,7 @@
 //            }
 //
 //            //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-//            // out.println("success");	//请不要修改或删除
+//           // out.println("success");	//请不要修改或删除
 //
 //            //////////////////////////////////////////////////////////////////////////////////////////
 //        }
@@ -325,7 +332,7 @@
 //        return params;
 //    }
 //    public boolean checkSignature(Map params){
-//        boolean verify_result = false;
+//         boolean verify_result = false;
 //        try {
 //            verify_result = AlipaySignature.rsaCheckV1(params, alipayPublicKey, "UTF-8", "RSA2");
 //        } catch (AlipayApiException e) {
