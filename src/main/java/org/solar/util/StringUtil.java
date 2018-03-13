@@ -125,6 +125,15 @@ public class StringUtil {
         }
         return resultStr;
     }
+    public static String numConvert3Length(int num) {
+        if (num<10){
+            return "00"+num;
+        }
+        if (num<100){
+            return "0"+num;
+        }
+        return num+"";
+    }
 
     public static String removeEmoji(String str){
         return str.replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
