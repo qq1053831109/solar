@@ -160,6 +160,9 @@ public class BeanUtil {
         if (obj == null){
             return null;
         }
+        if (obj.length==1&&obj[0]instanceof Map){
+            return (Map)obj[0];
+        }
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             for (int i = 0; i < obj.length; i++) {
