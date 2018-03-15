@@ -144,10 +144,9 @@ public class WeChatPublicService {
      remark	公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注
      groupid	用户所在的分组ID（兼容旧的用户分组接口）
      tagid_list	用户被打上的标签ID列表
-
+        （Json格式）
      */
     public   String getUserInfo(String openid) {
-        //?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
             String param="access_token=" + getAccessToken()+"&openid="+openid;
             String result=JdkHttpUtil.get(getUserInfoUrl,param);
             return  result;

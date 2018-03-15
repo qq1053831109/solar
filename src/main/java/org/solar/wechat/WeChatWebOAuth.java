@@ -98,6 +98,7 @@ public class WeChatWebOAuth {
         }
      */
     //需scope为 snsapi_userinfo
+    // 可使用公众号的另一个获取用户信息接口WeChatPublicService.getUserInfo(String openId)
     public String getUserInfo(String access_token,String openid) {
         String param = "access_token=" + access_token;
         param = param + "&openid="+openid;
