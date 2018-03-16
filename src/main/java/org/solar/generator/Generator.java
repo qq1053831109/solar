@@ -93,6 +93,15 @@ public class Generator {
         }
 
     }
+    public void generateVueWithElementUICode() {
+        try {
+            generateVueWithElementUIHtml(vueHtmlRootPath);
+            generateVuePageWithElementUIHtml(vueHtmlRootPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public void generatePackageAndBaseDaoAndBaseService() {
         FileUtil.mkdirs(beanPath);
@@ -313,6 +322,61 @@ public class Generator {
         System.out.println("----------------------生成VuePage.Html结束!----------------------");
 
     }
+    public void generateVueWithElementUIHtml(String gcPath) throws Exception {
+        String template = getTemplate("VueWithElementUI.template");
+        VueWithElementUIGenerator vueGenerator = new VueWithElementUIGenerator(tableList, template);
 
+        for (Table table : tableList) {
+            String beanName = table.getCamelName();
+            File fileFolder = new File(gcPath + beanName);
+            if (!fileFolder.exists()) {
+                fileFolder.mkdir();
+            }
+            File beanFile = new File(gcPath + beanName + "/" + beanName + ".html");
+            if (beanFile.exists() && !overWriteFile) {
+                return;
+            } else {
+                beanFile.createNewFile();
+            }
+
+            FileOutputStream fos = new FileOutputStream(beanFile);
+            String text = vueGenerator.toString(table);
+            fos.write(text.getBytes());
+            fos.flush();
+            fos.close();
+            System.out.println("生成 " + beanName + ".html 成功!");
+
+        }
+        System.out.println("----------------------生成Vue.Html结束!----------------------");
+
+    }
+
+    public void generateVuePageWithElementUIHtml(String gcPath) throws Exception {
+        String template = getTemplate("VuePageWithElementUI.template");
+        VueWithElementUIGenerator vueGenerator = new VueWithElementUIGenerator(tableList, template);
+        for (Table table : tableList) {
+            String beanName = table.getCamelName();
+            File fileFolder = new File(gcPath + beanName);
+            if (!fileFolder.exists()) {
+                fileFolder.mkdir();
+            }
+            File beanFile = new File(gcPath + beanName + "/" + beanName + "Page.html");
+            if (beanFile.exists() && !overWriteFile) {
+                return;
+            } else {
+                beanFile.createNewFile();
+            }
+
+            FileOutputStream fos = new FileOutputStream(beanFile);
+            String text = vueGenerator.toString(table);
+            fos.write(text.getBytes());
+            fos.flush();
+            fos.close();
+            System.out.println("\""+beanName+"-"+beanName+"\",");
+            System.out.println("\""+beanName+"-"+beanName+"Page\",");
+        }
+        System.out.println("----------------------生成VuePage.Html结束!----------------------");
+
+    }
 
 }

@@ -270,7 +270,7 @@ ${apiNavList}
                 </div>
                 <div class="api" id="loginCommon">
                     <h3>登录接口</h3>
-
+                    <h6><a  href="" onclick="openUri('/login?account=admin&password=admin');" >登录接口</a> host+"/login"</h6>
                     <table>
                         <tr>
                             <td>参数名</td>

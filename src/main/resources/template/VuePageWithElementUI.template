@@ -1,0 +1,99 @@
+<script type="text/template" id="template-${beanName}-${beanName}Page">
+    <div class="MainContainer beanPageView ${beanName}">
+        <el-row class="breadcrumb">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                <el-breadcrumb-item>${beanComment}</el-breadcrumb-item>
+            </el-breadcrumb>
+        </el-row>
+        <el-row class="tool-bar">
+            <el-col :span="9" :offset="1">
+                <el-button icon="el-icon-refresh" onclick="location.reload()">刷新</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="goBeanPage(null)">新增</el-button>
+
+            </el-col>
+            <el-col :span="5" :offset="7">
+                <el-input prefix-icon="el-icon-search" v-model="fullTextSearchValue" placeholder="搜索">
+
+                </el-input>
+            </el-col>
+            <el-col :span="1">
+
+                <el-button type="primary" @click="pageNum=1;select()">搜索</el-button>
+
+            </el-col>
+        </el-row>
+        <el-row class="table-container">
+            <el-col :span="22" :offset="1">
+                <el-table
+                        :data="beans"
+                        stripe
+                        border
+                        class="table"
+                        max-height="450"
+                        @sort-change="changeOrder">
+                    <el-table-column
+                            label=" "
+                            type="index">
+                    </el-table-column>
+${pageFieldList}
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="170">
+                        <template slot-scope="scope">
+                            <el-button-group>
+                                <el-button icon="el-icon-edit" @click="goBeanPage(scope.row.id)" type="primary"
+                                           size="mini">查看
+                                </el-button>
+                                <el-button icon="el-icon-delete" @click="deleteBean(scope.row.id)" type="danger"
+                                           size="mini">删除
+                                </el-button>
+                            </el-button-group>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-row class="pagination">
+                        <el-pagination
+                                @size-change="select"
+                                @current-change="select"
+                                :current-page="pageNum"
+                                :page-sizes="[10, 20, 50, 100]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="totalRecordNum">
+                        </el-pagination>
+                </el-row>
+            </el-col>
+        </el-row>
+    </div>
+</script>
+<script type="application/javascript">
+    templateName = "${beanName}-${beanName}Page";
+    templates[templateName] = Vue.extend({
+        template: '#template-' + templateName,
+        data: function () {
+            var data=copyObject(baseData);
+            data.beanName="${beanName}";
+            return data;
+        },
+        methods: {
+            select: baseMethods.selectPage,
+            checkedAll: baseMethods.checkedAll,
+            deleteBean: baseMethods.deleteBean,
+            deleteBeans: baseMethods.deleteBeans,
+            changeEnable: baseMethods.changeEnable,
+            goBeanPage: baseMethods.goBeanPage,
+            goUpdatePage: baseMethods.goUpdatePage,
+            changeOrder: baseMethods.changeOrder,
+            dateFormat: baseMethods.dateFormat,
+        },
+        mounted: function () {
+            this.select();
+        },
+        watch: {//深度 watcher
+            'checkboxModel':checkboxModelWatch
+        }
+
+    });
+</script>

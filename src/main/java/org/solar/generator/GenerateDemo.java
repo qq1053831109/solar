@@ -22,11 +22,12 @@ public class GenerateDemo {
         generator.mapperXMLGenerator.fullTextSearchContainDate=false;
         generator.generateMybatisMapperXML();
         //生成VUE的CRUD界面
-        generator.generateVueCode();
+        generator.generateVueWithElementUICode();
 
 
         //生成api 文档
         generator.apiHtmlDocPath = apiHtmlDocPath;
+        generator.apiHtmlDocHost="http://solar.heduim.com";
         generator.generateApiHtmlDoc();
 
         //生成数据库字段与备注的properties
