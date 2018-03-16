@@ -344,7 +344,8 @@ public class Generator {
             fos.write(text.getBytes());
             fos.flush();
             fos.close();
-            System.out.println("生成 " + beanName + ".html 成功!");
+            System.out.println("\""+beanName+"-"+beanName+"\",");
+            System.out.println("\""+beanName+"-"+beanName+"Page\",");
 
         }
         System.out.println("----------------------生成Vue.Html结束!----------------------");
@@ -356,6 +357,7 @@ public class Generator {
         VueWithElementUIGenerator vueGenerator = new VueWithElementUIGenerator(tableList, template);
         for (Table table : tableList) {
             String beanName = table.getCamelName();
+            String comment = table.getCommentInOneLine();
             File fileFolder = new File(gcPath + beanName);
             if (!fileFolder.exists()) {
                 fileFolder.mkdir();
@@ -372,8 +374,8 @@ public class Generator {
             fos.write(text.getBytes());
             fos.flush();
             fos.close();
-            System.out.println("\""+beanName+"-"+beanName+"\",");
-            System.out.println("\""+beanName+"-"+beanName+"Page\",");
+
+            System.out.println("<el-menu-item index=\"/"+beanName+"/"+beanName+"Page\" >"+comment+"</el-menu-item>");
         }
         System.out.println("----------------------生成VuePage.Html结束!----------------------");
 
