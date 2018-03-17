@@ -50,7 +50,7 @@ public class VueWithElementUIGenerator {
             }
             sb.append("                    <el-form-item label=\""+comment+"\" prop=\""+fieldName+"\">\n");
 
-            if ("TEXT".equals(jdbcType) || size >= 1000) {
+            if ("TEXT".equals(jdbcType) || size >= 500) {
                 sb.append("                        <el-input type=\"textarea\" :rows=\"5\" v-model=\"bean."+fieldName+"\"></el-input>\n");
             } else if (jdbcType.startsWith("DATE") || jdbcType.startsWith("TIMESTAMP")) {
                 sb.append("                        <el-date-picker placeholder=\"选择日期\" type=\"date\"\n");
@@ -59,7 +59,7 @@ public class VueWithElementUIGenerator {
             } else {
                 sb.append("                        <el-input v-model=\"bean."+fieldName+"\"></el-input>\n");
             }
-            sb.append("                    </el-form-item>");
+            sb.append("                    </el-form-item>\n");
         }
         return sb.toString();
     }
@@ -91,15 +91,15 @@ public class VueWithElementUIGenerator {
                 comment = fieldName;
             }
             if ("Date".equals(javaType)) {
-                sb.append("                    <el-table-column sortable=\"custom\" min-width=\"70px\" :formatter=\"dateFormat\"\n");
-                sb.append("                        label=\""+comment+"\"\n");
-                sb.append("                        prop=\""+fieldName+"\">\n");
-                sb.append("                    </el-table-column>\n");
+                sb.append("            <el-table-column sortable=\"custom\" min-width=\"110px\" :formatter=\"dateFormat\"\n");
+                sb.append("                label=\""+comment+"\"\n");
+                sb.append("                prop=\""+fieldName+"\">\n");
+                sb.append("            </el-table-column>\n");
             } else {
-                sb.append("                    <el-table-column sortable=\"custom\" min-width=\"150px\"\n");
-                sb.append("                        label=\""+comment+"\"\n");
-                sb.append("                        prop=\""+fieldName+"\">\n");
-                sb.append("                    </el-table-column>\n");
+                sb.append("            <el-table-column sortable=\"custom\" min-width=\"150px\"\n");
+                sb.append("                label=\""+comment+"\"\n");
+                sb.append("                prop=\""+fieldName+"\">\n");
+                sb.append("            </el-table-column>\n");
             }
         }
         return sb.toString();
