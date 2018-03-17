@@ -29,21 +29,17 @@ ${fieldList}
                 beanName:"${beanName}",
                 bean: {},
                 temp: {},
-                contentViewName: "",
-                contentView: "",
                 rules: solar.validatorRules,
-                openContentView: false
             }
         },
         methods: {
-            select: baseMethods.select,
-            deleteBean: baseMethods.deleteBeanGoBack,
-            saveOrUpdate: baseMethods.saveOrUpdate
+            select: solar.baseMethods.select,
+            deleteBean: solar.baseMethods.deleteBeanGoBack,
+            saveOrUpdate: solar.baseMethods.saveOrUpdate,
 
         },
         mounted: function () {
             this.select();
-
         }
 
     });

@@ -61,27 +61,23 @@ ${pageFieldList}
     templates[templateName] = Vue.extend({
         template: '#template-' + templateName,
         data: function () {
-            var data=copyObject(baseData);
+            var data=solar.copyObject(solar.baseData);
             data.beanName="${beanName}";
             return data;
         },
         methods: {
-            select: baseMethods.selectPage,
-            checkedAll: baseMethods.checkedAll,
-            deleteBean: baseMethods.deleteBean,
-            deleteBeans: baseMethods.deleteBeans,
-            changeEnable: baseMethods.changeEnable,
-            goBeanPage: baseMethods.goBeanPage,
-            goUpdatePage: baseMethods.goUpdatePage,
-            changeOrder: baseMethods.changeOrder,
-            dateFormat: baseMethods.dateFormat,
+            select: solar.baseMethods.selectPage,
+            checkedAll: solar.baseMethods.checkedAll,
+            deleteBean: solar.baseMethods.deleteBean,
+            deleteBeans: solar.baseMethods.deleteBeans,
+            changeEnable: solar.baseMethods.changeEnable,
+            goBeanPage: solar.baseMethods.goBeanPage,
+            goUpdatePage: solar.baseMethods.goUpdatePage,
+            changeOrder: solar.baseMethods.changeOrder,
+            dateFormat: solar.baseMethods.dateFormat,
         },
         mounted: function () {
             this.select();
         },
-        watch: {//深度 watcher
-            'checkboxModel':checkboxModelWatch
-        }
-
     });
 </script>
