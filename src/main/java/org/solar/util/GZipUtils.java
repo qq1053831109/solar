@@ -5,11 +5,9 @@
 package org.solar.util;
   
 import java.io.*;
+import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import sun.misc.BASE64Encoder;
-import sun.misc.BASE64Decoder;
 
 /**
  * GZIP工具
@@ -31,7 +29,7 @@ public abstract class GZipUtils {
     	String result=null;
     	try {
 			//result=Base64.encode(compress(data.getBytes("UTF-8")));
-    		result = new BASE64Encoder().encode(compress(data.getBytes("UTF-8")));
+    		result = Base64.getUrlEncoder().encodeToString(compress(data.getBytes("UTF-8")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,8 +41,8 @@ public abstract class GZipUtils {
      * @return 解压的字符串
      */
     public static String decoderStr(String data) throws Exception {
-    	String result = new String((decompress(new BASE64Decoder().decodeBuffer(data))),"UTF-8");
-    	return result;
+    	byte[] bs =decompress(Base64.getUrlDecoder().decode(data));
+    	return new String(bs,"utf-8");
     }
     
     /**  

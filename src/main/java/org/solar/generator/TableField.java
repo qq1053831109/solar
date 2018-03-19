@@ -65,6 +65,9 @@ public class TableField {
     }
 
     public String getComment() {
+        if(StringUtil.isEmpty(comment)){
+            return getCamelName();
+        }
         return comment;
     }
 
@@ -74,6 +77,9 @@ public class TableField {
         Matcher m = CRLF.matcher(str);
         if (m.find()) {
             str = m.replaceAll("");
+        }
+        if(StringUtil.isEmpty(str)){
+            return getCamelName();
         }
         return str;
     }
