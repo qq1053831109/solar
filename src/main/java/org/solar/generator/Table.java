@@ -28,6 +28,9 @@ public class Table {
     }
 
     public String getComment() {
+        if(StringUtil.isEmpty(comment)){
+            return getCamelName();
+        }
         return comment;
     }
     public String getCommentInOneLine() {
@@ -36,6 +39,9 @@ public class Table {
         Matcher m = CRLF.matcher(str);
         if (m.find()) {
             str = m.replaceAll("");
+        }
+        if(StringUtil.isEmpty(str)){
+            return getCamelName();
         }
         return str;
     }
