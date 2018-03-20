@@ -55,11 +55,11 @@ public class ${BeanName}CrudController extends BaseController {
         //按分页查询
         Pageable pageable=Pageable.getPageable(requestMap);
         Page page=${beanName}Service.selectPage(pageable);
-//            List<${BeanName}> ${beanName}List=page.getList();
-//            List childIdList=BeanUtil.getProperties(${beanName}List,"childId");
-//            List childList=${beanName}Service.selectByWhere("idList",childIdList);
-//            List<Map> resultList=BeanUtil.leftJoin(${beanName}List,childList,"childId","id");
-//            page.setList(resultList);
+//        List<${BeanName}> ${beanName}List=page.getList();
+//        List childIdList=BeanUtil.getProperties(${beanName}List,"childId");
+//        List childList=${beanName}Service.selectByWhere("idList",childIdList);
+//        List<Map> resultList=BeanUtil.leftJoin(${beanName}List,childList,"childId","id");
+//        page.setList(resultList);
         return JsonResult.success(page);
 
     }
@@ -81,7 +81,7 @@ public class ${BeanName}CrudController extends BaseController {
             return JsonResult.success(row);
         }
         int row=${beanName}Service.save(bean);
-        return JsonResult.success(row);
+        return JsonResult.success(bean);
     }
 
 
