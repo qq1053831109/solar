@@ -3,6 +3,7 @@ package ${packagePrefix}controller.base;
 import org.solar.bean.JsonResult;
 import org.solar.bean.Page;
 import org.solar.bean.Pageable;
+import org.solar.bean.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ${packagePrefix}entity.${BeanName};
 import ${packagePrefix}service.${BeanName}Service;
+import ${packagePrefix}util.TokenUtil;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Map;
@@ -37,6 +39,7 @@ public class ${BeanName}CrudController extends BaseController {
     @ResponseBody
     public  JsonResult select(HttpServletRequest req,@RequestParam Map requestMap,
                             @RequestParam(value = "idList[]", required = false) List idList) {
+//        Token token = TokenUtil.getToken(req);
         requestMap.put("idList", idList);
         String id=(String)requestMap.get("id");
         String pageNum=(String)requestMap.get("pageNum");
@@ -68,7 +71,8 @@ public class ${BeanName}CrudController extends BaseController {
     }
     @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public  JsonResult saveOrUpdate(@RequestBody Map requestMap) {
+    public  JsonResult saveOrUpdate(HttpServletRequest req,@RequestBody Map requestMap) {
+//        Token token = TokenUtil.getToken(req);
         ${BeanName} bean= JsonUtil.toJavaObject(requestMap,${BeanName}.class);
        //如果id不为空则更新
         Date nowTime=new Date();
