@@ -1,10 +1,15 @@
 package org.solar.util;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.security.Security;
+import java.util.Base64;
 import java.util.Properties;
 
 public class MailSender {
@@ -39,6 +44,9 @@ public class MailSender {
     }
 
     public boolean send(String to,String subject,String content) {
+        return send(  to,  subject,  content,null);
+    }
+    public boolean send(String to,String subject,String content,File file) {
         // 用刚刚设置好的props对象构建一个session
         Session session = Session.getDefaultInstance(props);
         // 有了这句便可以在发送邮件的过程中在console处显示过程信息，供调试使
@@ -61,19 +69,21 @@ public class MailSender {
             BodyPart contentPart = new MimeBodyPart();
             contentPart.setText(content);
             multipart.addBodyPart(contentPart);
-//             添加附件
-//            BodyPart messageBodyPart = new MimeBodyPart();
-//            DataSource source = new FileDataSource(affix);
-//             添加附件的内容
-//            messageBodyPart.setDataHandler(new DataHandler(source));
-//             添加附件的标题
-//             这里很重要，通过下面的Base64编码的转换可以保证你的中文附件标题名在发送时不会变成乱码
-//            sun.misc.BASE64Encoder enc = new sun.misc.BASE64Encoder();
-//            messageBodyPart.setFileName("=?GBK?B?"
-//                    + enc.encode(affixName.getBytes()) + "?=");
-//            multipart.addBodyPart(messageBodyPart);
-//
-//             将multipart对象放到message中
+           //  添加附件
+            if (file !=null){
+                BodyPart messageBodyPart = new MimeBodyPart();
+                DataSource source = new FileDataSource(file);
+                //   添加附件的内容
+                messageBodyPart.setDataHandler(new DataHandler(source));
+                //    添加附件的标题
+                //    这里很重要，通过下面的Base64编码的转换可以保证你的中文附件标题名在发送时不会变成乱码
+                String fileName= Base64.getEncoder().encodeToString(file.getName().getBytes());
+                messageBodyPart.setFileName("=?utf-8?B?"
+                        + fileName + "?=");
+
+                multipart.addBodyPart(messageBodyPart);
+            }
+           //  将multipart对象放到message中
             message.setContent(multipart);
             // 保存邮件
             message.saveChanges();
@@ -93,8 +103,13 @@ public class MailSender {
 
     public static void main(String[] args) {
 //      MailSender mailSender = new MailSender("smtp.126.com", "xxx@126.com","xxx");
-        MailSender mailSender = new MailSender("smtp.adsmar.com","465","service@adsmar.com","service@adsmar.com","xxx",true);
-        mailSender.send("xxx@qq.com", "标题","内容");
+        MailSender mailSender = new MailSender("smtp.exmail.qq.com","465",
+                "service@xxx.cn","service@xxx.cn",
+                "xxxxxx",true);
+        String filePath="/filePath";
+        mailSender.send("xxx@xxx.com", "标题","内容");
+        mailSender.send("xxx@xxx.com", "标题","内容",
+                new File(filePath));
     }
 
 }
