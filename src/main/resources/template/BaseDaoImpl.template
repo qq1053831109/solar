@@ -104,7 +104,7 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
            map.put("orderProperty",StringUtil.camel2Underline(orderProperty));
            String orderDirection = (String) map.get("orderDirection");
            if (!"asc".equalsIgnoreCase(orderDirection) && !"desc".equalsIgnoreCase(orderDirection)) {
-               map.put("orderDirection","asc");
+               map.put("orderDirection","desc");
            }
         };
 
