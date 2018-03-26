@@ -178,7 +178,13 @@ public class WeChatPay {
      * </xml>
      */
     public Map onPayResultNotify(String data) {
+        if (data==null){
+            throw new SolarRuntimeException("data为null!");
+        }
         Map<String, String> dataMap = XMLUtil.parseXml(data);
+        if (dataMap==null){
+            throw new SolarRuntimeException("dataMap为null:"+data);
+        }
         if (!"SUCCESS".equals(dataMap.get("return_code"))) {
             return null;
         }

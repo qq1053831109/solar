@@ -6,9 +6,6 @@ import java.io.*;
  * Created by xianchuanwu on 2017/9/22.
  */
 public class IoUtil {
-    /**
-     * 该方法最大支持2G的本地文件
-     */
     public static byte[] getBytes(InputStream inputStream) {
         try{
             ByteArrayOutputStream result = new ByteArrayOutputStream();
