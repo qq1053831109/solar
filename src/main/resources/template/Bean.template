@@ -2,9 +2,8 @@ package ${packagePrefix}entity;
 
 import java.util.Date;
 /**
- * @Description:
+ * ${tableComment}
  * @author solar
- * @date ${Date}
  */
 public class ${BeanName} {
     private String id;

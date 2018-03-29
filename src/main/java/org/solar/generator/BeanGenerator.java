@@ -24,9 +24,10 @@ public class BeanGenerator {
         map.put("fields",beanFields);
         map.put("fieldsMethods",beanFieldsMethods);
         map.put("BeanName",BeanName);
+        map.put("tableComment",table.getCommentInOneLine());
         map.put("packagePrefix",packagePrefix);
-        String date = DateUtil.format(new Date(), "yyyy年MM月dd日 HH:mm");
-        map.put("Date",date);
+//        String date = DateUtil.format(new Date(), "yyyy年MM月dd日 HH:mm");
+//        map.put("Date",date);
         return ELUtil.replace(template,map);
     }
 

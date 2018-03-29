@@ -75,7 +75,6 @@ public class ${BeanName}CrudController extends BaseController {
 //        Token token = TokenUtil.getToken(req);
         ${BeanName} bean= JsonUtil.toJavaObject(requestMap,${BeanName}.class);
        //如果id不为空则更新
-        Date nowTime=new Date();
         if (StringUtil.isNotEmpty(bean.getId())){
             int row=${beanName}Service.updateByPrimaryKey(bean);
             return JsonResult.success(row);
