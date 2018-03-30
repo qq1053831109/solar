@@ -1,11 +1,7 @@
 package org.solar.util;
 
-import org.solar.bean.JsonResult;
-import org.solar.bean.Pageable;
 import org.solar.exception.SolarRuntimeException;
-
 import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -25,7 +21,12 @@ public class BeanUtil {
         }
     }
 
-    public static List<Map> objectToMap(List list) {
+    /**
+     *
+     * @param list
+     * @return List<Map>
+     */
+    public static List objectToMap(List list) {
         if (list==null){
             return null;
         }
@@ -36,7 +37,7 @@ public class BeanUtil {
         }
         return listMap;
     }
-    public static List<Map> innerJoin(List li1,List li2) {
+    public static List innerJoin(List li1,List li2) {
         if (li1==null||li2==null){
             return null;
         }
@@ -49,7 +50,7 @@ public class BeanUtil {
 
         return list;
     }
-    public static List<Map> innerJoin(List li1,List li2,String name1,String name2) {
+    public static List innerJoin(List li1,List li2,String name1,String name2) {
         if (li1==null||li2==null){
             return null;
         }
@@ -74,10 +75,10 @@ public class BeanUtil {
         }
         return list;
     }
-    public static List<Map> leftJoin(List li1,List li2,String name1,String name2) {
+    public static List leftJoin(List li1,List li2,String name1,String name2) {
         return leftJoin(  li1,  li2,  name1,  name2,null);
     }
-    public static List<Map> leftJoin(List li1,List li2,String name1,String name2,Object defult) {
+    public static List leftJoin(List li1,List li2,String name1,String name2,Object defult) {
         if (li1==null){
             return null;
         }
