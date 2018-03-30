@@ -1,13 +1,16 @@
 package ${packagePrefix}service.impl;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.List;
 import org.solar.bean.Page;
 import org.solar.bean.Pageable;
-import java.util.Map;
+import org.solar.util.BeanUtil;
+import org.solar.util.StringUtil;
 import org.springframework.transaction.annotation.Transactional;
 import ${packagePrefix}service.BaseService;
 import ${packagePrefix}dao.BaseDao;
+import ${packagePrefix}util.SpringContextsUtil;
 @Transactional
 public class BaseServiceImpl<T> implements BaseService<T> {
 
@@ -69,6 +72,29 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     @Transactional(readOnly = true)
     public Long selectCountByWhere(Object... obj) {
         return baseDao.selectCountByWhere(obj);
+    }
+
+    @Transactional(readOnly = true)
+    public Map getSublist(Object obj,String keyName) {
+        Map map=BeanUtil.objectToMap(obj);
+        String id=(String) map.get(keyName);
+        String entityName=keyName.substring(0,keyName.length()-2);
+        BaseDao entityDao=SpringContextsUtil.getBean(
+                StringUtil.toUpperCaseFirstOne(entityName)+"Dao");
+        Object sublistObject=entityDao.selectByPrimaryKey(id);
+        map.put(entityName,sublistObject);
+        return map;
+    }
+
+    @Transactional(readOnly = true)
+    public List getSublist(List list,String keyName) {
+        List childIdList=BeanUtil.getProperties(list,keyName);
+        String entityName=keyName.substring(0,keyName.length()-2);
+        BaseDao entityDao=SpringContextsUtil.getBean(
+                StringUtil.toUpperCaseFirstOne(entityName)+"Dao");
+        List childList=entityDao.selectByWhere("idList",childIdList);
+        List<Map> resultList=BeanUtil.leftJoin(list,childList,keyName,"id",new HashMap());
+        return resultList;
     }
 
     public List<Map> executeSql(String sql) {

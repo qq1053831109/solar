@@ -33,6 +33,13 @@ public interface BaseService<T> {
      T selectOneByWhere(Object... obj);
 
      Long selectCountByWhere(Object... obj);
+     /**
+      * 第一参数为主表实体
+      * 第二个参数为实体的子表名+Id
+      */
+     Map getSublist(Object obj,String keyName);
+
+     List getSublist(List list,String keyName);
 
      List<Map> executeSql(String sql);
 
